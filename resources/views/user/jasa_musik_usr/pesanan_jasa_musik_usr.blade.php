@@ -87,21 +87,6 @@
                                     color = "danger"
                                 }
 
-                                // let status1 = "";
-                                // let color1 = "";
-
-                                // if (data.status_pembayaran === "Y") {
-                                //     status1 = "Lunas"
-                                //     color1 = "success"
-                                // } else if (data.status_pembayaran === "N") {
-                                //     status1 = "Belum Bayar"
-                                //     color1 = "warning"
-                                // }
-                                //  <a type="button" class="badge bg-${color1}">
-                                //     ${status1}
-                                // </a>
-
-
                                 return `
                                    <div>
                                         <a type="button" class="badge bg-${color}">
@@ -146,13 +131,8 @@
                                 let textPersetujuan = "Detail";
                                 let colorBtn = "primary"
 
-                                // if (data.status_persetujuan === "Y" && data.status_pembayaran === "N") {
-                                //     textPersetujuan = "Bayar";
-                                //     colorBtn = "info";
-                                // }.
-                                // data.status_pembayaran === "Y" &&
-
-                                if (data.status_persetujuan === "Y" && data.status_produksi === "Y") {
+                                if (data.status_persetujuan === "Y" && data.status_produksi === "Y" &&
+                                    data.review === null && data.rating === null) {
                                     return `
                                         <td>
                                             <div style="margin-rigth=20px;">
@@ -172,6 +152,20 @@
                                     `;
                                 }
 
+                                if (data.status_persetujuan === "Y" && data.status_produksi === "Y" &&
+                                    data.review !== null && data.rating !== null) {
+                                    return `
+                                        <td>
+                                            <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white"
+                                                    data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+                                }
+
                                 if (data.status_persetujuan !== "P") {
                                     return `
                                         <td>
@@ -184,6 +178,10 @@
                                         </td>
                                     `;
 
+                                } else if (data.status_pengajuan === "X") {
+                                    return `
+                                    <td><i class="text-danger">Dibatalkan</i></td>
+                                    `;
                                 } else {
                                     return `
                                         <td>
@@ -194,7 +192,7 @@
                                                 </button>
 
                                                 <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})"> 
-                                                    <i class="bi bi-trash"></i>
+                                                    Batalkan
                                                 </button>
                                             </div>
                                         </td>
@@ -208,13 +206,13 @@
 
             function hapus_pesanan(id_pesanan_jasa_musik) {
                 Swal.fire({
-                    title: "Apakah ada yakin hapus?",
-                    text: "Data pesanan akan terhapus.",
+                    title: "Batalkan pesanan?",
+                    text: "Data pesanan akan dibatalkan.",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, Hapus!"
+                    confirmButtonText: "Yes, Batalkan!"
                 }).then((result) => {
                     if (result.isConfirmed) {
 
@@ -226,8 +224,8 @@
                             method: 'delete',
                             success: function(response) {
                                 Swal.fire({
-                                    title: "Dihapus!",
-                                    text: "Data pesanan telah dihapus.",
+                                    title: "Dibatalkan!",
+                                    text: "Data pesanan telah dibatalkan.",
                                     icon: "success"
                                 });
 
@@ -260,15 +258,15 @@
                             <label for="rating">Nilai Kami</label> <br>
 
                             <div class="rating">
-                                <input type="radio" id="star5" name="rating" value="5" />
+                                <input type="radio" id="star5" name="rating0" value="5" />
                                 <label for="star5" title="5 stars">&#9733;</label>
-                                <input type="radio" id="star4" name="rating" value="4" />
+                                <input type="radio" id="star4" name="rating0" value="4" />
                                 <label for="star4" title="4 stars">&#9733;</label>
-                                <input type="radio" id="star3" name="rating" value="3" />
+                                <input type="radio" id="star3" name="rating0" value="3" />
                                 <label for="star3" title="3 stars">&#9733;</label>
-                                <input type="radio" id="star2" name="rating" value="2" />
+                                <input type="radio" id="star2" name="rating0" value="2" />
                                 <label for="star2" title="2 stars">&#9733;</label>
-                                <input type="radio" id="star1" name="rating" value="1" />
+                                <input type="radio" id="star1" name="rating0" value="1" />
                                 <label for="star1" title="1 star">&#9733;</label>
                             </div>
 
@@ -292,7 +290,7 @@
     @push('script')
         <script>
             function btnRating() {
-                let selectedRating = $('input[name="rating"]:checked').val();
+                let selectedRating = $('input[name="rating0"]:checked').val();
                 let review = $("#komentar_rating").val()
                 let id_pesanan_jasa_musik = $("#id_pesanan_jasa_musik").val()
 

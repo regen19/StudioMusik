@@ -37,12 +37,11 @@ class PesananJasaMusikController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            "id_jenis_jasa" => "required",
+            "id_jasa_musik" => "required",
             "tgl_produksi" => "required",
             "id_user" => "required|numeric",
             "no_wa" => "required|numeric",
             "keterangan" => "required",
-            // "id_paket_jasa_musik" => "required",
         ]);
 
         if ($validate->fails()) {
@@ -51,9 +50,9 @@ class PesananJasaMusikController extends Controller
             ], 422);
         }
 
-        $pesanan = $request->only('id_jenis_jasa', 'tgl_produksi', 'id_user', 'no_wa', 'keterangan');
+        $pesanan = $request->only('id_jasa_musik', 'tgl_produksi', 'id_user', 'no_wa', 'keterangan');
         $pesanan['status_persetujuan'] = "P";
-        $pesanan['status_pembayaran'] = "N";
+        $pesanan['status_pengajuan'] = "Y";
         $pesanan['status_produksi'] = "N";
 
         $tanggalProduksi = $request->tgl_produksi;
@@ -72,11 +71,9 @@ class PesananJasaMusikController extends Controller
     {
         $data = DB::table('pesanan_jasa_musik')
             ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_user")
-            ->join("master_jenis_jasa", "master_jenis_jasa.id_jenis_jasa", "=", "pesanan_jasa_musik.id_jenis_jasa")
-            ->join("master_jasa_musik", "master_jasa_musik.id_jenis_jasa", "=", "pesanan_jasa_musik.id_jenis_jasa")
-            // ->join("paket_jasa_musik", "paket_jasa_musik.id_jasa_musik", "=", "master_jasa_musik.id_jasa_musik")
+            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
             ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
-            ->select('users.username', 'pesanan_jasa_musik.*', 'master_jenis_jasa.nama_jenis_jasa')
+            ->select('users.username', 'pesanan_jasa_musik.*', "master_jasa_musik.nama_jenis_jasa")
             ->first();
 
         if (empty($data)) {
@@ -116,7 +113,8 @@ class PesananJasaMusikController extends Controller
     public function destroy(string $id_pesanan_jasa_musik)
     {
         $data = PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik);
-        $data->delete();
+        $data->status_pengajuan = "X";
+        $data->save();
 
         return response()->json(['msg' => 'Pesanan berhasil dihapus'], 200);
     }

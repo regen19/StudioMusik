@@ -14,13 +14,13 @@ class PesananJasaMusikModel extends Model
     protected $fillable = [
         'tgl_produksi',
         'tenggat_produksi',
-        'id_jenis_jasa',
+        'id_jasa_musik',
         'id_user',
         'no_wa',
         'keterangan',
         'keterangan_admin',
         'status_persetujuan',
-        'status_pembayaran',
+        'status_pengajuan',
         'status_produksi',
         'review',
         'rating'

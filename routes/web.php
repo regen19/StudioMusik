@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
         Route::get("/pesanan_jasa_musik_saya", [UserPesananJasaMusikController::class, 'index']);
         Route::get("/fetch_jasa_musik_saya", [UserPesananJasaMusikController::class, 'data_index']);
         Route::post("/beri_rating_jasa/{id}", [UserPesananJasaMusikController::class, 'beri_rating_jasa']);
+        Route::get("/list_data_jasa_musik", [UserPesananJasaMusikController::class, 'list_data_jasa_musik']);
 
         // DISLAY JASA MUSIK 
         Route::get("/pembuatan_jingle", [DisplayJasaMusikController::class, 'view_jingle']);

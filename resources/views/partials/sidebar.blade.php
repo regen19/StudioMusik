@@ -163,7 +163,7 @@
                     </a>
 
                     <ul class="submenu">
-                        <li class="submenu-item {{ request()->is('pembuatan_jingle') ? 'active' : '' }}">
+                        {{-- <li class="submenu-item {{ request()->is('pembuatan_jingle') ? 'active' : '' }}">
                             <a href="{{ url('/pembuatan_jingle') }}" class="submenu-link">Pembuatan Jingle</a>
                         </li>
 
@@ -173,7 +173,7 @@
 
                         <li class="submenu-item {{ request()->is('pembuatan_minusone') ? 'active' : '' }}">
                             <a href="{{ url('/pembuatan_minusone') }}" class="submenu-link">Pembuatan Minus One</a>
-                        </li>
+                        </li> --}}
 
                         <li class="submenu-item {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
                             <a href="{{ url('/pesanan_jasa_musik_saya') }}" class="submenu-link">Pesanan Saya</a>

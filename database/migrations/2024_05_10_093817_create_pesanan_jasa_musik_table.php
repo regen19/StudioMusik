@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText("keterangan");
             $table->longText("keterangan_admin")->nullable();
             $table->enum("status_persetujuan", ['Y', 'N', 'P'])->default("P");
-            $table->enum("status_pembayaran", ['Y', 'N'])->default("N");
+            $table->enum("status_pengajuan", ['Y', 'X'])->default("Y");
             $table->enum("status_produksi", ['Y', 'N', 'P'])->default("N");
             $table->string('rating')->nullable();
             $table->string('review')->nullable();

@@ -22,26 +22,16 @@
                             value="{{ Auth::user()->id_user }}" readonly required>
                     </div>
                     <div class="form-group">
-                        <label for="id_jenis_jasa">Jenis Jasa</label>
+                        <label for="id_jasa_musik">Jenis Jasa Musik</label>
                         <div class="form-group row">
                             <div class="col-lg-12">
-                                <select class="form-select" id="id_jenis_jasa">
-                                    <option selected disabled>Pilih Jenis</option>
+                                <select class="form-select" id="id_jasa_musik">
+                                    <option selected disabled>Pilih Jasa Musik</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    {{-- <div class="form-group paket-list" style="display: none">
-                        <label for="id_paket_jasa_musik">Paket Jasa</label>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <select class="form-select id_paket_jasa_musik" id="id_paket_jasa_musik">
-                                    <option selected disabled>Pilih Paket</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div> --}}
                     <div class="form-group">
                         <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic">(ex :
                                 0821234*****)</small></label>
@@ -64,58 +54,21 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            $('#add_jasa_musik').on('shown.bs.modal', function() {
-                // var element2 = document.getElementById('id_jenis_jasa');
-                // var choices2 = new Choices(element2);
-
-                // var element1 = document.getElementById('id_paket_jasa_musik');
-                // var choices1 = new Choices(element1);
-
-                // choices2.setValue()
-                // choices1.setValue()
-            });
-
-            list_jenis_jasa()
-
-            // breakdown list paket harga jasa
-            $("#add_jasa_musik").on("change", "#id_jenis_jasa", function() {
-                $(".paket-list").show()
-
-                let id_jenis_jasa = $("#id_jenis_jasa").val()
-
-                // $.ajax({
-                //     url: `{{ url('/select_paket_jasa/') }}/${id_jenis_jasa}`,
-                //     method: "post",
-                //     data: {
-                //         "_token": "{{ csrf_token() }}"
-                //     },
-                //     success: function(response) {
-                //         $("#id_paket_jasa_musik").empty()
-
-                //         $.each(response, function(key, value) {
-                //             $("#id_paket_jasa_musik").append(
-                //                 `<option value="${value.id_paket_jasa_musik}">${value.nama_paket} - Rp${value.biaya_paket}</option>`
-                //             )
-                //         })
-                //     }
-                // })
-            })
+            list_jasa_musik()
         })
 
-        function list_jenis_jasa() {
+        function list_jasa_musik() {
             $.ajax({
-                url: `{{ url('/fetch_master_jenis_jasa') }}`,
+                url: `{{ url('/list_data_jasa_musik') }}`,
                 method: 'get',
                 data: {
                     "_token": "{{ csrf_token() }}"
                 },
                 dataType: 'json',
                 success: function(response) {
-                    let list_jenis = response.data;
-
-                    $.each(list_jenis, function(key, value) {
-                        $("#id_jenis_jasa").append(
-                            `<option value="${value.id_jenis_jasa}">${value.nama_jenis_jasa}</option>`
+                    $.each(response, function(key, value) {
+                        $("#id_jasa_musik").append(
+                            `<option value="${value.id_jasa_musik}">${value.nama_jenis_jasa}</option>`
                         )
                     })
                 }
@@ -123,14 +76,13 @@
         }
 
         function btnSimpan() {
-            let id_jenis_jasa = $('#id_jenis_jasa').val();
+            let id_jasa_musik = $('#id_jasa_musik').val();
             let tgl_produksi = $('#tgl_produksi').val();
             let id_user = "{{ Auth::user()->id_user }}";
             let no_wa = $('#no_wa').val();
             let keterangan = $('#keterangan').val();
-            // let id_paket_jasa_musik = $("#id_paket_jasa_musik").val();
 
-            if (!id_jenis_jasa || !tgl_produksi || !id_user || !no_wa || !keterangan) {
+            if (!id_jasa_musik || !tgl_produksi || !id_user || !no_wa || !keterangan) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
@@ -143,8 +95,7 @@
                 url: "{{ url('/add_pesanan_jasa_musik') }}",
                 method: 'POST',
                 data: {
-                    // "id_paket_jasa_musik": id_paket_jasa_musik,
-                    "id_jenis_jasa": id_jenis_jasa,
+                    "id_jasa_musik": id_jasa_musik,
                     "tgl_produksi": tgl_produksi,
                     "id_user": id_user,
                     "no_wa": no_wa,
@@ -172,7 +123,7 @@
                         title: "Data Berhasil Disimpan!"
                     });
 
-                    $('#id_jenis_jasa').val("");
+                    $('#id_jasa_musik').val("");
                     $('#tgl_produksi').val("");
                     $('#no_wa').val("");
                     $('#keterangan').val("");
