@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class MasterJasaMusikModel extends Model
+{
+    use HasFactory;
+
+    protected $table = "master_jasa_musik";
+    protected $primaryKey = "id_jasa_musik";
+    protected $fillable = [
+        "id_jenis_jasa",
+        "sk",
+        "deskripsi",
+        "gambar",
+        "keterangan",
+        "biaya_produksi",
+    ];
+}
