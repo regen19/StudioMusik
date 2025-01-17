@@ -79,20 +79,6 @@
                     </ul>
                 </li>
 
-                {{-- <li class="sidebar-item {{ request()->is('jadwal_studio') ? 'active' : '' }}">
-                    <a href="{{ url('/jadwal_studio') }}" class="sidebar-link">
-                        <i class="bi bi-calendar3"></i>
-                        <span>Data Ruangan Studio</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item {{ request()->is('jadwal_studio') ? 'active' : '' }}">
-                    <a href="{{ url('/jadwal_studio') }}" class="sidebar-link">
-                        <i class="bi bi-calendar3"></i>
-                        <span>Data Peminjam Studio</span>
-                    </a>
-                </li> --}}
-
                 <li
                     class="sidebar-item has-sub {{ request()->is('master_jasa_musik') || request()->is('pesanan_jasa_musik') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
@@ -155,25 +141,25 @@
                     </ul>
                 </li>
 
-                <li
-                    class="sidebar-item has-sub {{ request()->is('pesanan_jasa_musik_saya') || request()->is('pembuatan_jingle') || request()->is('pembuatan_aransemen') || request()->is('pembuatan_minusone') ? 'active' : '' }}">
+                @php
+                    $menu_jasa = DB::table('master_jasa_musik')->get();
+                @endphp
+
+                <li class="sidebar-item has-sub {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-music-note-list"></i>
                         <span>Jasa Musik</span>
                     </a>
 
                     <ul class="submenu">
-                        {{-- <li class="submenu-item {{ request()->is('pembuatan_jingle') ? 'active' : '' }}">
-                            <a href="{{ url('/pembuatan_jingle') }}" class="submenu-link">Pembuatan Jingle</a>
-                        </li>
 
-                        <li class="submenu-item {{ request()->is('pembuatan_aransemen') ? 'active' : '' }}">
-                            <a href="{{ url('/pembuatan_aransemen') }}" class="submenu-link">Pembuatan Aransemen</a>
-                        </li>
-
-                        <li class="submenu-item {{ request()->is('pembuatan_minusone') ? 'active' : '' }}">
-                            <a href="{{ url('/pembuatan_minusone') }}" class="submenu-link">Pembuatan Minus One</a>
-                        </li> --}}
+                        @foreach ($menu_jasa as $menu)
+                            <li
+                                class="submenu-item {{ request()->is('pembuatan_jasa_musik/' . $menu->id_jasa_musik) ? 'active' : '' }}">
+                                <a href="{{ url('/pembuatan_jasa_musik/' . $menu->id_jasa_musik) }}"
+                                    class="submenu-link">{{ $menu->nama_jenis_jasa }}</a>
+                            </li>
+                        @endforeach
 
                         <li class="submenu-item {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
                             <a href="{{ url('/pesanan_jasa_musik_saya') }}" class="submenu-link">Pesanan Saya</a>

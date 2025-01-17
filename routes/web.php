@@ -118,9 +118,7 @@ Route::middleware('auth')->group(function () {
         Route::get("/list_data_jasa_musik", [UserPesananJasaMusikController::class, 'list_data_jasa_musik']);
 
         // DISLAY JASA MUSIK 
-        Route::get("/pembuatan_jingle", [DisplayJasaMusikController::class, 'view_jingle']);
-        Route::get("/pembuatan_aransemen", [DisplayJasaMusikController::class, 'view_aransemen']);
-        Route::get("/pembuatan_minusone", [DisplayJasaMusikController::class, 'view_minusone']);
+        Route::get("/pembuatan_jasa_musik/{id}", [DisplayJasaMusikController::class, 'pembuatan_jasa_musik']);
     });
 
     // ALL ROLE
