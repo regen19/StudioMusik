@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\DataRuanganController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\MasterJasaMusikController;
-use App\Http\Controllers\Admin\MasterJenisJasaController;
 use App\Http\Controllers\Admin\PaketJasaMusikController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -57,12 +56,6 @@ Route::middleware('auth')->group(function () {
         Route::post("/showById_master_jasa_musik/{id}", [MasterJasaMusikController::class, 'show']);
         Route::post("/edit_master_jasa_musik/{id}", [MasterJasaMusikController::class, 'update']);
         Route::delete("/hapus_master_jasa_musik/{id}", [MasterJasaMusikController::class, 'destroy']);
-
-        // JENIS JASA MUSIK
-        Route::post("/add_master_jenis_jasa", [MasterJenisJasaController::class, 'store']);
-        Route::post("/showById_master_jenis_jasa/{id}", [MasterJenisJasaController::class, 'show']);
-        Route::put("/edit_master_jenis_jasa/{id}", [MasterJenisJasaController::class, 'update']);
-        Route::delete("/hapus_master_jenis_jasa/{id}", [MasterJenisJasaController::class, 'destroy']);
 
         // DATA RUANGAN STUDIO
         Route::get("/data_ruangan", [DataRuanganController::class, 'index']);
@@ -132,8 +125,6 @@ Route::middleware('auth')->group(function () {
     // ALL ROLE
     Route::get("/lihat_harga_sewa_studio", [PesananJadwalStudioController::class, 'lihat_harga_studio']);
 
-    // FETCH MASTER JENIS JASA
-    Route::get("/fetch_master_jenis_jasa", [MasterJenisJasaController::class, 'index']);
 
     // JADWAL STUDIO
     Route::post("/add_pesanan_jadwal_studio", [PesananJadwalStudioController::class, 'store']);

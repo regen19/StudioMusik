@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('master_jasa_musik', function (Blueprint $table) {
             $table->id("id_jasa_musik");
-            $table->unsignedBigInteger("id_jenis_jasa");
+            $table->string("nama_jenis_jasa");
             $table->longText("sk")->nullable();
             $table->longText("deskripsi")->nullable();
             $table->string('gambar')->nullable();
             // $table->longText("keterangan")->nullable();
             $table->string("biaya_produksi")->nullable();
             $table->timestamps();
-
-            $table->foreign('id_jenis_jasa')->references('id_jenis_jasa')->on('master_jenis_jasa')->onDelete('cascade');
         });
     }
 

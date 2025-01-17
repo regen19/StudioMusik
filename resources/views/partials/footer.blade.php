@@ -27,7 +27,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {{-- Quill --}}
-<script src="{{ asset('assets/quill/quill.min.js') }}"></script>
-<script src="{{ asset('assets/quill/quill.js') }}"></script>
+{{-- <script src="{{ asset('assets/quill/quill.min.js') }}"></script>
+<script src="{{ asset('assets/quill/quill.js') }}"></script> --}}
 
 @stack('script')
