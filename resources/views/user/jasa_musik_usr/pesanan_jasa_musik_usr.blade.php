@@ -319,6 +319,8 @@
 
                         $('#tbPesanan').DataTable().ajax.reload()
                         $("#rating").modal("hide")
+                        selectedRating.val("")
+                        review.val("")
 
                         setTimeout(() => {
                             swal.close()

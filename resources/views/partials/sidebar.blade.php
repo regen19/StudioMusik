@@ -152,6 +152,9 @@
                     </a>
 
                     <ul class="submenu">
+                        <li class="submenu-item {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
+                            <a href="{{ url('/pesanan_jasa_musik_saya') }}" class="submenu-link">Pesanan Saya</a>
+                        </li>
 
                         @foreach ($menu_jasa as $menu)
                             <li
@@ -160,10 +163,6 @@
                                     class="submenu-link">{{ $menu->nama_jenis_jasa }}</a>
                             </li>
                         @endforeach
-
-                        <li class="submenu-item {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
-                            <a href="{{ url('/pesanan_jasa_musik_saya') }}" class="submenu-link">Pesanan Saya</a>
-                        </li>
                     </ul>
                 </li>
             @endcan
