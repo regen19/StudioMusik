@@ -23,11 +23,9 @@ class UserJadwalStudioController extends Controller
                 $query->where("detail_pesanan_jadwal_studio.status_persetujuan", "P")
                     ->orWhere("detail_pesanan_jadwal_studio.status_persetujuan", "Y");
             })
-            // ->where("detail_pesanan_jadwal_studio.status_pembayaran", "N")
             ->where("detail_pesanan_jadwal_studio.status_peminjaman", "N")
+            ->where("detail_pesanan_jadwal_studio.status_pengajuan", "Y")
             ->first();
-
-        // dd($cek_pesanan);
 
         return view('user.jadwal_studio_usr.jadwal_studio_usr', compact([
             'cek_pesanan'
@@ -150,7 +148,7 @@ class UserJadwalStudioController extends Controller
         DetailPesananJadwalStudioModel::findOrFail($id_pesanan_jadwal_studio)->update($rating);
 
         return response()->json([
-            "msg" => "Status persetujuan telah diubah",
+            "msg" => "Status rating telah diubah",
         ], 200);
     }
 }

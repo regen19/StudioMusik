@@ -18,9 +18,9 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('storage/img_upload/data_ruangan/' . $data_ruangan->thumbnail) }}"
-                                class="card-img-top " alt="..." style="width: auto; heigth: auto;">
+                                class="card-img-top " alt="..." style="max-width: 1200px; max-height: 500px;">
                         </div>
-                        <h4 class="card-title">{{ $data_ruangan->nama_ruangan }}</h4>
+                        <h4 class="card-title mt-3">{{ $data_ruangan->nama_ruangan }}</h4>
                         <p><span class="badge text-bg-info text-white"><i class="bi bi-people"></i>
                                 {{ $data_ruangan->kapasitas }}</span>
 

@@ -113,6 +113,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response)
                     if (response.length === 0) {
                         $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
                         !</small>`);
@@ -274,13 +275,15 @@
                     const isAdd = action === "add";
 
                     if (isEdit) {
-                        if (response.status === "ada") {
+                        if (response.status === "ada" || response.status === "ada2") {
                             Swal.fire({
                                 title: "Gagal simpan.",
                                 text: "Tanggal tersebut telah di BOOKING!!",
                                 icon: "error"
                             });
-                        } else if (!isDateBooked || (response[0].tgl_pinjam === tgl_pinjam)) {
+
+                            return 0;
+                        } else if (!isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
@@ -311,6 +314,8 @@
                             text: "Tanggal tersebut telah di BOOKING!",
                             icon: "error"
                         });
+
+                        return 0;
                     }
                 },
                 error: function(xhr, status, error) {

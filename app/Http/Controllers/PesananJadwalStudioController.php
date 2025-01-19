@@ -27,19 +27,21 @@ class PesananJadwalStudioController extends Controller
         $cek_tanggal =
             DB::table('pesanan_jadwal_studio')
             ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
-            ->where('tgl_pinjam', $tgl_pinjam)
-            ->where("id_ruangan", $id_ruangan)
-            ->first();
+            ->where('pesanan_jadwal_studio.tgl_pinjam', $tgl_pinjam)
+            ->where("pesanan_jadwal_studio.id_ruangan", $id_ruangan)
+            ->get();
 
-        if ($cek_tanggal) {
-            if ($cek_tanggal->status_peminjaman === "Y") {
-                return response()->json(["status" => "ada"]);
-            } else if ($cek_tanggal->status_persetujuan !== "N") {
-                return response()->json([$cek_tanggal]);
-            } else {
-                return response()->json([]);
-            }
+        if ($cek_tanggal->isEmpty()) {
+            return response()->json([]);
         } else {
+            foreach ($cek_tanggal as $item) {
+                if ($item->status_peminjaman === "Y" && $item->status_pengajuan === "Y" && $item->status_persetujuan === "Y") {
+                    return response()->json(["status" => "ada"]);
+                }
+                if ($item->status_persetujuan !== "N" && $item->status_pengajuan === "Y") {
+                    return response()->json(["status" => "ada2"]);
+                }
+            }
             return response()->json([]);
         }
     }
@@ -201,7 +203,7 @@ class PesananJadwalStudioController extends Controller
 
     public function destroy(string $id_pesanan_jadwal_studio)
     {
-        $data = PesananJadwalStudioModel::findOrFail($id_pesanan_jadwal_studio);
+        $data = DetailPesananJadwalStudioModel::findOrFail($id_pesanan_jadwal_studio);
         $path = '/storage/img_upload/pesanan_jadwal/' . $data->img_jaminan;
 
         if ($data) {
@@ -210,7 +212,8 @@ class PesananJadwalStudioController extends Controller
                 File::delete(public_path($path));
             }
 
-            $data->delete();
+            $data->status_pengajuan = "X";
+            $data->save();
 
             return response()->json(['msg' => 'Data berhasil dihapus'], 200);
         }

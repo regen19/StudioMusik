@@ -12,6 +12,9 @@
         <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
             Ajukan Sewa Studio
         </button>
+
+
+        <input type="hidden" value="{{ Auth::user()->id_user }}" id="id_user">
     </div>
 
     <section class="section">
@@ -46,6 +49,8 @@
     @push('script')
         <script>
             $(document).ready(function() {
+                let id_user = $("#id_user").val();
+
                 $('#tableJadwalStudio').DataTable({
                     processing: true,
                     serverSide: true,
@@ -107,16 +112,50 @@
                             title: 'Menu',
                             data: null,
                             render: function(data) {
+
                                 let textPersetujuan = "Detail";
                                 let colorBtn = "primary"
 
-                                // if (data.status_persetujuan === "Y" && data.status_pembayaran === "N") {
-                                //     textPersetujuan = "Bayar";
-                                //     colorBtn = "info";
-                                // }    
+                                if (data.id_user == id_user) {
+                                    if (data.status_persetujuan === "Y" && data.status_peminjaman ===
+                                        "Y" &&
+                                        data.review === null && data.rating === null) {
+                                        return `
+                                        <td>
+                                            <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-warning icon icon-left text-white"
+                                                    data-bs-toggle="modal" data-bs-target="#rating" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Beri Rating
+                                                </button>
+                                            </div>
 
-                                if (data.status_persetujuan === "P") {
-                                    return `
+                                            <div style="margin-right: 20px;">
+                                                <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    ${textPersetujuan}
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+
+                                    } else if (data.status_persetujuan === "Y" && data
+                                        .status_peminjaman ===
+                                        "Y" &&
+                                        data.review !== null && data.rating !== null) {
+                                        return `
+                                        <td>
+                                            <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+                                    }
+
+
+                                    if (data.status_persetujuan === "P" && data.status_pengajuan !==
+                                        "X") {
+                                        return `
                                         <td>
                                             <div style="margin-right: 20px;">
                                                 <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_studio}')">
@@ -124,7 +163,7 @@
                                                 </button>
 
                                                 <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})"> 
-                                                    <i class="bi bi-trash"></i>
+                                                    Batalkan
                                                 </button>
 
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
@@ -133,10 +172,10 @@
                                             </div>
                                         </td>
                                     `;
-                                } else if (data.status_persetujuan === "Y" && data.status_peminjaman ===
-                                    "N") {
-                                    // && data.status_pembayaran === "Y" &&
-                                    return `
+
+                                    } else if (data.status_persetujuan === "Y" && data
+                                        .status_peminjaman === "N") {
+                                        return `
                                             <td>
                                                 <div style="margin-right: 20px;">
                                                     <button type="button" class="btn btn-success icon icon-left text-white" onclick="PengembalianRuangan(${data.id_pesanan_jadwal_studio})">
@@ -149,8 +188,27 @@
                                                 </div>
                                             </td>
                                         `;
+                                    } else if (data.status_pengajuan === "X" && data
+                                        .status_persetujuan === "P") {
+                                        return `
+                                            <td><i class="text-danger">Dibatalkan</i></td>
+                                        `;
+                                    } else {
+                                        return `
+                                            <td>
+                                                <div style="margin-right: 20px;">
+                                                    <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                        Selesai
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        `;
+                                    }
                                 } else {
-                                    return `
+                                    if (data.status_persetujuan === "Y" && data.status_peminjaman ===
+                                        "Y" &&
+                                        data.review === null && data.rating === null) {
+                                        return `
                                         <td>
                                             <div style="margin-right: 20px;">
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
@@ -159,6 +217,64 @@
                                             </div>
                                         </td>
                                     `;
+
+                                    } else if (data.status_persetujuan === "Y" && data
+                                        .status_peminjaman ===
+                                        "Y" &&
+                                        data.review !== null && data.rating !== null) {
+                                        return `
+                                        <td>
+                                            <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+                                    }
+
+
+                                    if (data.status_persetujuan === "P" && data.status_pengajuan !==
+                                        "X") {
+                                        return `
+                                        <td>
+                                            <div style="margin-right: 20px;">
+                                                    <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Detail
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+
+                                    } else if (data.status_persetujuan === "Y" && data
+                                        .status_peminjaman ===
+                                        "N") {
+                                        return `
+                                            <td>
+                                                <div style="margin-right: 20px;">
+                                                    <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                        ${textPersetujuan}
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        `;
+                                    } else if (data.status_pengajuan === "X" && data
+                                        .status_persetujuan ===
+                                        "P") {
+                                        return `
+                                        <td><i class="text-danger">Dibatalkan</i></td>
+                                    `;
+                                    } else {
+                                        return `
+                                        <td>
+                                            <div style="margin-right: 20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+                                    }
                                 }
                             }
                         }
@@ -240,6 +356,7 @@
         </script>
     @endpush
 
+    {{-- STATUS PERSETUJUAN --}}
     <div class="modal fade" id="status_jadwal_studio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -274,8 +391,56 @@
         </div>
     </div>
 
+    {{-- RATING --}}
+    <div class="modal fade" id="rating" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Beri Rating</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="rating">Nilai Kami</label> <br>
+
+                            <div class="rating">
+                                <input type="radio" id="star5" name="rating1" value="5" />
+                                <label for="star5" title="5 stars">&#9733;</label>
+                                <input type="radio" id="star4" name="rating1" value="4" />
+                                <label for="star4" title="4 stars">&#9733;</label>
+                                <input type="radio" id="star3" name="rating1" value="3" />
+                                <label for="star3" title="3 stars">&#9733;</label>
+                                <input type="radio" id="star2" name="rating1" value="2" />
+                                <label for="star2" title="2 stars">&#9733;</label>
+                                <input type="radio" id="star1" name="rating1" value="1" />
+                                <label for="star1" title="1 star">&#9733;</label>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="komentar_rating">Komentar</label> <br>
+                            <textarea class="form-control" name="komentar_rating" id="komentar_rating" cols="30" rows="5" required></textarea>
+
+                            <input type="hidden" id="id_pesanan_jadwal_studio1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" onclick="btnRating()">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     @push('script')
         <script>
+            let status_peminjaman
+            let status_pengajuan
+
             function cek_setuju() {
                 let selectedValue = $('#status_persetujuan').val()
 
@@ -294,7 +459,9 @@
                         "_token": "{{ csrf_token() }}"
                     },
                     success: function(response) {
-                        $("#id_pesanan_jadwal_studio").val(id_pesanan_jadwal_studio)
+                        status_peminjaman = response.status_peminjaman
+                        status_pengajuan = response.status_pengajuan
+                        $(".id_pesanan_jadwal_studio").val(id_pesanan_jadwal_studio)
                         $('#status_persetujuan').val(response.status_persetujuan)
 
                         if (response.ket_admin) {
@@ -310,34 +477,94 @@
                 let keterangan_admin = $('#keterangan_admin').val()
                 let id_pesanan_jadwal_studio = $('#id_pesanan_jadwal_studio').val()
 
+                if (status_peminjaman == "Y") {
+                    Swal.fire({
+                        title: "Pesanan Telah Selesai!",
+                        text: "Tidak dapat mengubah status persetujuan",
+                        icon: "warning"
+                    });
+
+                    return 0;
+                } else if (status_pengajuan == "X") {
+                    Swal.fire({
+                        title: "Pesanan Telah Dibatalkan!",
+                        text: "Tidak dapat mengubah status persetujuan",
+                        icon: "warning"
+                    });
+
+                    return 0;
+                } else {
+                    $.ajax({
+                        url: `{{ url('/status_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
+                        method: 'post',
+                        data: {
+                            "status_persetujuan": status_persetujuan,
+                            "ket_admin": keterangan_admin,
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            $('#tableJadwalStudio').DataTable().ajax.reload()
+                            $("#status_jadwal_studio").modal("hide")
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Status persetujuan berhasil diubah!"
+                            });
+                        }
+                    });
+                }
+            }
+
+            function btnRating() {
+                let selectedRating = $('input[name="rating1"]:checked').val();
+                let review = $("#komentar_rating").val()
+                let id_pesanan_jadwal_studio = $('#id_pesanan_jadwal_studio1').val()
+
+                if (!selectedRating) {
+                    alert('Pilih nilai rating terlebih dahulu!');
+                    return;
+                }
+
+                const data = {
+                    rating: selectedRating,
+                    review: review,
+                    _token: "{{ csrf_token() }}"
+                };
+
                 $.ajax({
-                    url: `{{ url('/status_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
-                    method: 'post',
-                    data: {
-                        "status_persetujuan": status_persetujuan,
-                        "ket_admin": keterangan_admin,
-                        "_token": "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
+                    url: `{{ url('/beri_rating_studio/${id_pesanan_jadwal_studio}') }}`,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(result) {
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: "Terimakasih atas review anda.",
+                            icon: "success"
+                        });
+
                         $('#tableJadwalStudio').DataTable().ajax.reload()
-                        $("#status_jadwal_studio").modal("hide")
+                        $("#rating").modal("hide")
 
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
-
-                        Toast.fire({
-                            icon: "success",
-                            title: "Status persetujuan berhasil diubah!"
-                        });
+                        setTimeout(() => {
+                            swal.close()
+                        }, 2000);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat mengirim rating');
                     }
                 });
             }

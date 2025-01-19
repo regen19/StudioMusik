@@ -109,7 +109,7 @@ Route::middleware('auth')->group(function () {
         Route::get("/jadwal_studio_saya", [UserJadwalStudioController::class, 'index']);
         Route::get("/fetch_jadwal_studio_saya", [UserJadwalStudioController::class, 'data_index']);
         // Route::post("/add_pesanan_jadwal_studio_usr", [UserJadwalStudioController::class, 'store']);
-        Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
+        // Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
 
         // PESANAN JASA MUSIK SAYA
         Route::get("/pesanan_jasa_musik_saya", [UserPesananJasaMusikController::class, 'index']);
@@ -124,6 +124,8 @@ Route::middleware('auth')->group(function () {
     // ALL ROLE
     Route::get("/lihat_harga_sewa_studio", [PesananJadwalStudioController::class, 'lihat_harga_studio']);
 
+    // RATING STUDIO
+    Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
 
     // JADWAL STUDIO
     Route::post("/add_pesanan_jadwal_studio", [PesananJadwalStudioController::class, 'store']);

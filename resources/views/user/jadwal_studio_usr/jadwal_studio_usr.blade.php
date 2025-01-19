@@ -35,7 +35,7 @@
                                 <th>Ruangan</th>
                                 <th>Nomor WA</th>
                                 <th>Keperluan</th>
-                                <th>Status Persetujuan / Pembayaran</th>
+                                <th>Status Persetujuan</th>
                                 <th>Menu</th>
                             </tr>
                         </thead>
@@ -101,20 +101,6 @@
                                     colorPersetujuan = "danger"
                                 }
 
-                                // let statusBayar = "";
-                                // let colorBayar = "";
-
-                                // if (data.status_pembayaran === "N") {
-                                //     statusBayar = "Belum Bayar"
-                                //     colorBayar = "warning"
-                                // } else if (data.status_pembayaran === "Y") {
-                                //     statusBayar = "Lunas"
-                                //     colorBayar = "success"
-                                // }
-                                // <a type="button" class="badge bg-${colorBayar}">
-                                //     ${statusBayar}
-                                // </a>
-
                                 return `
                                     <div>
                                         <a type="button" class="badge bg-${colorPersetujuan}">
@@ -132,16 +118,12 @@
                                 let textPersetujuan = "Detail";
                                 let colorBtn = "primary"
 
-                                // if (data.status_persetujuan === "Y" && data.status_pembayaran === "N") {
-                                //     textPersetujuan = "Bayar";
-                                //     colorBtn = "info";
-                                // }
-                                if (data.status_persetujuan === "Y" && data.status_peminjaman === "Y") {
-                                    // data.status_pembayaran === "Y" &&
+                                if (data.status_persetujuan === "Y" && data.status_peminjaman === "Y" &&
+                                    data.review === null && data.rating === null) {
                                     return `
                                         <td>
                                             <div style="margin-rigth=20px;">
-                                                <button type="button" class="btn btn-success icon icon-left text-white"
+                                                <button type="button" class="btn btn-warning icon icon-left text-white"
                                                     data-bs-toggle="modal" data-bs-target="#rating" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     Beri Rating
                                                 </button>
@@ -155,7 +137,22 @@
                                         </td>
                                     `;
 
-                                } else if (data.status_persetujuan === "P") {
+                                } else if (data.status_persetujuan === "Y" && data.status_peminjaman ===
+                                    "Y" &&
+                                    data.review !== null && data.rating !== null) {
+                                    return `
+                                        <td>
+                                            <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+                                }
+
+
+                                if (data.status_persetujuan === "P" && data.status_pengajuan !== "X") {
                                     return `
                                         <td>
                                             <div style="margin-right: 20px;">
@@ -164,7 +161,7 @@
                                                 </button>
 
                                                 <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})"> 
-                                                    <i class="bi bi-trash"></i>
+                                                    Batalkan
                                                 </button>
 
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
@@ -173,13 +170,13 @@
                                             </div>
                                         </td>
                                     `;
+
                                 } else if (data.status_persetujuan === "Y" && data.status_peminjaman ===
                                     "N") {
-                                    // && data.status_pembayaran ==="Y" 
                                     return `
                                             <td>
                                                 <div style="margin-right: 20px;">
-                                                    <button type="button" class="btn btn-success icon icon-left text-white" onclick="PengembalianRuangan(${data.id_pesanan_jadwal_studio})">
+                                                    <button type="button" class="btn btn-warning icon icon-left text-white" onclick="PengembalianRuangan(${data.id_pesanan_jadwal_studio})">
                                                         Pengembalian
                                                     </button>
 
@@ -189,16 +186,22 @@
                                                 </div>
                                             </td>
                                         `;
+                                } else if (data.status_pengajuan === "X" && data.status_persetujuan ===
+                                    "P") {
+                                    return `
+                                    <td><i class="text-danger">Dibatalkan</i></td>
+                                    `;
                                 } else {
                                     return `
-                                <td>
-                                    <div style="margin-right: 20px;">
-                                        <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
-                                            ${textPersetujuan}
-                                        </button>
-                                    </div>
-                                </td>
-                            `;
+                                        <td>
+                                            <div style="margin-right: 20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+
                                 }
                             }
                         }
@@ -210,13 +213,13 @@
 
             function hapus_jadwal(id_pesanan_jadwal_studio) {
                 Swal.fire({
-                    title: "Apakah ada yakin hapus?",
-                    text: "Data Jadwal akan terhapus.",
+                    title: "Batalkan Pesanan Studio?",
+                    text: "Data Jadwal akan dibatalkan.",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, Hapus!"
+                    confirmButtonText: "Yes, Batalkan!"
                 }).then((result) => {
                     if (result.isConfirmed) {
 
@@ -228,15 +231,15 @@
                             method: 'delete',
                             success: function(response) {
                                 Swal.fire({
-                                    title: "Dihapus!",
-                                    text: "Data jadwal telah dihapus.",
+                                    title: "Dibatalkan!",
+                                    text: "Data jadwal telah dibatalkan.",
                                     icon: "success"
                                 });
 
                                 $('#tableJadwalStudio').DataTable().ajax.reload()
 
                                 setTimeout(() => {
-                                    swal.close()
+                                    location.reload()
                                 }, 1000);
                             }
                         })

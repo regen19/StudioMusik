@@ -147,7 +147,7 @@
                                                     data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
                                                     Detail
                                                 </button>
-                                            </div>
+                                            </div> 
                                         </td>
                                     `;
                                 }

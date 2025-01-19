@@ -94,7 +94,7 @@
             dataType: 'json',
             data: {
                 "_token": "{{ csrf_token() }}"
-            },
+            }, 
             success: function(response) {
                 no_wa = response.no_wa
                 nama_user = response.username
