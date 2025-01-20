@@ -27,7 +27,7 @@
                                 <th>Jenis Laporan</th>
                                 <th>Keterangan</th>
                                 <th>Gambar</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,7 +39,7 @@
     </section>
 
 
-    @include('admin.modal_popup.md_add_laporan_masalah')
+    @include('admin.modal_popup.md_add_laporan_masalah') 
 
     @push('script')
         <script>

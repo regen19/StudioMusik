@@ -28,7 +28,7 @@
                                 <th>Nama Pemesan</th>
                                 <th>Status Persetujuan</th>
                                 <th>Status Produksi</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -25,10 +25,8 @@
                                 <th>Jenis Jasa</th>
                                 <th>Syarat & Ketentuan</th>
                                 <th>Deskripsi</th>
-                                {{-- <th>Keterangan</th> --}}
-                                {{-- <th>Biaya Produksi</th> --}}
                                 <th>Gambar</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
 
@@ -72,21 +70,6 @@
                         {
                             data: 'deskripsi',
                         },
-                        // {
-                        //     data: null,
-                        //     render: function(data) {
-                        //         let url = "{{ url('/paket_harga_jasa_musik') }}"
-                        //         return `<td>
-                //                 <div style="margin-rigth=20px;">
-                //                     <a href="${url}/${data.id_jasa_musik}">
-                //                         <button type="button" class="btn btn-secondary icon icon-left text-white">
-                //                             <i class="bi bi-plus-lg"></i> Buat Paket
-                //                         </button>
-                //                     </a>
-                //                 </div>
-                //             </td>`;
-                        //     }
-                        // },
                         {
                             data: null,
                             render: function(data) {

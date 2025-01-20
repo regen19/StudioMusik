@@ -76,56 +76,64 @@
             let formData = new FormData();
             formData.append('tgl_laporan', tgl_laporan);
             formData.append('jenis_laporan', jenis_laporan);
-            formData.append('gambar', gambar);
             formData.append('keterangan', keterangan);
             formData.append('_token', "{{ csrf_token() }}");
 
             for (let i = 0; i < gambar_files.length; i++) {
+                if (gambar_files[i].size >
+                    1048576) {
+                    Swal.fire({
+                        title: "Gagal simpan.",
+                        text: "Ukuran file terlalu besar!",
+                        icon: "error"
+                    });
+                    return;
+                }
                 formData.append('gambar[]', gambar_files[i]);
             }
 
-            // $.ajax({
-            //     url: "{{ url('/add_laporan_masalah') }}",
-            //     method: 'POST',
-            //     data: formData,
-            //     contentType: false,
-            //     processData: false,
-            //     success: function(response) {
-            //         $('#tbLaporan').DataTable().ajax.reload();
-            //         $("#add_laporan").modal("hide");
+            $.ajax({
+                url: "{{ url('/add_laporan_masalah') }}",
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $('#tbLaporan').DataTable().ajax.reload();
+                    $("#add_laporan").modal("hide");
 
-            //         const Toast = Swal.mixin({
-            //             toast: true,
-            //             position: "top-end",
-            //             showConfirmButton: false,
-            //             timer: 3000,
-            //             timerProgressBar: true,
-            //             didOpen: (toast) => {
-            //                 toast.onmouseenter = Swal.stopTimer;
-            //                 toast.onmouseleave = Swal.resumeTimer;
-            //             }
-            //         });
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
 
-            //         Toast.fire({
-            //             icon: "success",
-            //             title: "Data Berhasil Disimpan!"
-            //         });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Data Berhasil Disimpan!"
+                    });
 
-            //         $('#tgl_laporan').val("");
-            //         $('#jenis_laporan').val("");
-            //         $('#gambar').val("");
-            //         $('#keterangan').val("");
-            //         $('#output').hide();
-            //     },
-            //     error: function(xhr, status, error) {
-            //         console.error('Terjadi kesalahan:', error);
-            //         Swal.fire({
-            //             icon: 'error',
-            //             title: 'Oops...',
-            //             text: 'Terjadi kesalahan saat memproses data.',
-            //         });
-            //     }
-            // });
+                    $('#tgl_laporan').val("");
+                    $('#jenis_laporan').val("");
+                    $('#gambar').val("");
+                    $('#keterangan').val("");
+                    $('#output').hide();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Terjadi kesalahan:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan saat memproses data.',
+                    });
+                }
+            });
         }
     </script>
 @endpush

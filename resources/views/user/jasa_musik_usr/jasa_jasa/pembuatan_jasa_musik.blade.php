@@ -61,33 +61,6 @@
                     </div>
                 </div>
 
-                {{-- <div class="text-center mb-3">
-                    <h3>Paket Paket</h3>
-                </div>
-
-                <div class="row">
-                    @if ($paket !== null)
-                        @foreach ($paket as $pk)
-                            <div class="col-4">
-                                <div class="card" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title text-uppercase"><u>{{ $pk->nama_paket }}</u></h5>
-                                        <p>
-                                            <span class="badge text-bg-success"><i class="bi bi-cash-stack"></i>
-                                                Rp{{ $pk->biaya_paket }}</span>
-                                        </p>
-                                        <p class="card-text">{{ $pk->deskripsi }}.</p>
-                                        <p>Rincian {{ $pk->rincian_paket }}</p>
-                                        <a href="{{ url('/pesanan_jasa_musik_saya') }}" class="btn btn-primary">Pesan</a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <div>Dalam pembaharuan</div>
-                    @endif
-                </div> --}}
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card">

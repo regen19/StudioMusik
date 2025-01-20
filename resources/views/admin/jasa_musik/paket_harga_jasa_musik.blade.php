@@ -35,7 +35,7 @@
                                 <th>Deskripsi</th>
                                 <th>Rincian Paket</th>
                                 <th>Harga</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
 
