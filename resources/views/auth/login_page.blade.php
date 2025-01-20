@@ -158,7 +158,7 @@
                                     <div class="overlay rounded-left"></div>
                                     <div class="account-testimonial">
                                         <h4 class="text-white mb-1">Studio Musik ITERA</h4>
-                                        <p class="lead text-white mb-1">Sistem Informasi Peminjaman</p>
+                                        <p class="lead text-white mb-1">Sistem Informasi Manajemen</p>
                                         <p>Gedung D Lantai 3</p>
                                     </div>
                                 </div>
