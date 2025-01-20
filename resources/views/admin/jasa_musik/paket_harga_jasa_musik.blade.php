@@ -82,7 +82,6 @@
                             data: 'biaya_paket',
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `

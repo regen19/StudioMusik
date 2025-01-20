@@ -92,30 +92,6 @@
                                 `;
                             }
                         },
-                        // {
-                        //     data: null,
-                        //     render: function(data) {
-
-                        //         let status = "";
-                        //         let color = "";
-
-                        //         if (data.status_pembayaran === "Y") {
-                        //             status = "Lunas"
-                        //             color = "success"
-                        //         } else if (data.status_pembayaran === "N") {
-                        //             status = "Belum Bayar"
-                        //             color = "warning"
-                        //         }
-
-                        //         return `
-                //            <div>
-                //                 <a type="button" class="badge bg-${color}">
-                //                     ${status}
-                //                 </a>
-                //             </div>
-                //         `;
-                        //     }
-                        // },
                         {
                             data: null,
                             render: function(data) {
@@ -144,7 +120,6 @@
                             }
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `

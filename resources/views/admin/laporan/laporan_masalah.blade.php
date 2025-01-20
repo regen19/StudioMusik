@@ -39,7 +39,7 @@
     </section>
 
 
-    @include('admin.modal_popup.md_add_laporan_masalah') 
+    @include('admin.modal_popup.md_add_laporan_masalah')
 
     @push('script')
         <script>
@@ -79,7 +79,6 @@
                         //     }
                         // },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `

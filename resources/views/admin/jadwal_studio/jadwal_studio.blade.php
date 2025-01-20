@@ -10,7 +10,7 @@
         </a>
 
         <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
-            Ajukan Sewa Studio
+            Ajukan Peminjaman
         </button>
 
 
@@ -109,7 +109,6 @@
                             }
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
 

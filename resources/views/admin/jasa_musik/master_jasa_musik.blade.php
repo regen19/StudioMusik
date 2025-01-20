@@ -77,7 +77,6 @@
                             }
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `
