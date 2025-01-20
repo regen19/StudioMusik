@@ -12,11 +12,12 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <img src="{{ asset('/storage/img_upload/tutorial_alat/' . $data[0]->gambar_alat) }}" class="card-img-top"
-                    alt="..." height="200px">
                 <div class="card-body">
-
-                    <h2 class="text-center text-uppercase"><u>{{ $data[0]->nama_alat }}</u></h2>
+                    <div>
+                        <img src="{{ asset('/storage/img_upload/tutorial_alat/' . $data[0]->gambar_alat) }}"
+                            class="card-img-top" alt="..." style="max-height: 700px; max-widht:900px">
+                    </div>
+                    <h2 class="text-center text-uppercase mt-3"><u>{{ $data[0]->nama_alat }}</u></h2>
                     <p>{{ $data[0]->deskripsi }}</p>
                 </div>
             </div>
