@@ -163,7 +163,7 @@
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})"> 
+                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
 
@@ -175,7 +175,7 @@
                                     `;
                                 } else if (data.status_persetujuan === "Y" && data.status_peminjaman ===
                                     "N") {
-                                    // && data.status_pembayaran ==="Y" 
+                                    // && data.status_pembayaran ==="Y"
                                     return `
                                             <td>
                                                 <div style="margin-right: 20px;">
@@ -210,7 +210,7 @@
 
             function hapus_jadwal(id_pesanan_jadwal_studio) {
                 Swal.fire({
-                    title: "Apakah ada yakin hapus?",
+                    title: "Apakah anda yakin hapus?",
                     text: "Data Jadwal akan terhapus.",
                     icon: "warning",
                     showCancelButton: true,

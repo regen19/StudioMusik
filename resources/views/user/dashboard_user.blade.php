@@ -2,7 +2,7 @@
 @section('MainContent')
     <div class="page-heading">
         <h3>Dashboard User</h3>
-        <p>Halo, Selamat datang USERNAME!</p>
+        <p>Halo, Selamat datang!</p>
     </div>
     <div class="page-content">
         <section class="row">
@@ -15,7 +15,7 @@
                                     <h2 class="accordion-header" id="headingOne">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Accordion Item #1
+                                            <strong>Standar Operasional Prosedur (SOP)
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show"
@@ -35,40 +35,17 @@
                                     <h2 class="accordion-header" id="headingTwo">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Accordion Item #2
+                                            <strong>Sejarah Studio Musik ITERA
                                         </button>
                                     </h2>
                                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                                         data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <strong>This is the second item's accordion body.</strong> It is hidden by
-                                            default, until the collapse plugin adds the appropriate classes that we use to
-                                            style each element. These classes control the overall appearance, as well as the
-                                            showing and hiding via CSS transitions. You can modify any of this with custom
-                                            CSS or overriding our default variables. It's also worth noting that just about
-                                            any HTML can go within the <code>.accordion-body</code>, though the transition
-                                            does limit overflow.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingThree">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseThree" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            Accordion Item #3
-                                        </button>
-                                    </h2>
-                                    <div id="collapseThree" class="accordion-collapse collapse"
-                                        aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-                                            <strong>This is the third item's accordion body.</strong> It is hidden by
-                                            default, until the collapse plugin adds the appropriate classes that we use to
-                                            style each element. These classes control the overall appearance, as well as the
-                                            showing and hiding via CSS transitions. You can modify any of this with custom
-                                            CSS or overriding our default variables. It's also worth noting that just about
-                                            any HTML can go within the <code>.accordion-body</code>, though the transition
-                                            does limit overflow.
+                                            <strong>Studio Musik ITERA diresmikan pada tanggal 22 Februari 2018 oleh
+                                            Alm. Prof. Ir. Ofyar Z Tamin, M.Sc., Ph.D., IPU., yang kala itu menjadi rektor ITERA.
+                                            Studio Musik ITERA dibangun sebagai fasilitas kampus yang menunjang kegiatan
+                                            non-akademik seluruh civitas akedemika ITERA. Berlokasi di Gedung D Lantai 3,
+                                            tepat di ruangan ujung lantai.
                                         </div>
                                     </div>
                                 </div>
