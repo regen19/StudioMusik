@@ -28,7 +28,7 @@
                                 <th>Kapasitas</th>
                                 <th>Lokasi</th>
                                 <th>Fasilitas</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,7 +88,6 @@
                             data: 'fasilitas',
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `

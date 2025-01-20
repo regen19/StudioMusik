@@ -76,16 +76,24 @@
             let formData = new FormData();
             formData.append('tgl_laporan', tgl_laporan);
             formData.append('jenis_laporan', jenis_laporan);
-            // formData.append('gambar', gambar);
             formData.append('keterangan', keterangan);
             formData.append('_token', "{{ csrf_token() }}");
 
             for (let i = 0; i < gambar_files.length; i++) {
+                if (gambar_files[i].size >
+                    1048576) {
+                    Swal.fire({
+                        title: "Gagal simpan.",
+                        text: "Ukuran file terlalu besar!",
+                        icon: "error"
+                    });
+                    return;
+                }
                 formData.append('gambar[]', gambar_files[i]);
             }
 
             $.ajax({
-            url: "{{ url('/add_laporan_masalah') }}",
+                url: "{{ url('/add_laporan_masalah') }}",
                 method: 'POST',
                 data: formData,
                 contentType: false,

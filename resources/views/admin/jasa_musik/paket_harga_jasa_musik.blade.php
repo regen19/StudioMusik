@@ -35,7 +35,7 @@
                                 <th>Deskripsi</th>
                                 <th>Rincian Paket</th>
                                 <th>Harga</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
 
@@ -82,7 +82,6 @@
                             data: 'biaya_paket',
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `

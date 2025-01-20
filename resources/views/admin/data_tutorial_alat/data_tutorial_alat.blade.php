@@ -26,7 +26,7 @@
                                 <th>Gambar</th>
                                 <th>Nama Alat</th>
                                 <th>Deskripsi</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +67,6 @@
                             data: 'deskripsi',
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `

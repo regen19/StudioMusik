@@ -10,7 +10,7 @@
         </a>
 
         <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
-            Ajukan Sewa Studio
+            Ajukan Peminjaman
         </button>
 
 
@@ -31,7 +31,7 @@
                                 <th>Ruangan</th>
                                 <th>Keperluan</th>
                                 <th>Status Persetujuan</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,7 +109,6 @@
                             }
                         },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
 

@@ -27,7 +27,7 @@
                                 <th>Jenis Laporan</th>
                                 <th>Keterangan</th>
                                 <th>Gambar</th>
-                                <th>Menu</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,7 +79,6 @@
                         //     }
                         // },
                         {
-                            title: 'Menu',
                             data: null,
                             render: function(data) {
                                 return `
