@@ -12,7 +12,7 @@ class MasterJasaMusikModel extends Model
     protected $table = "master_jasa_musik";
     protected $primaryKey = "id_jasa_musik";
     protected $fillable = [
-        "id_jenis_jasa",
+        "nama_jenis_jasa",
         "sk",
         "deskripsi",
         "gambar",

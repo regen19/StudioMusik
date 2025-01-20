@@ -1,7 +1,7 @@
 @extends('partials.main')
 @section('MainContent')
     <div class="page-heading">
-        <h3>PEMBUATAN ARANSEMEN</h3>
+        <h3 class="text-uppercase">PEMBUATAN {{ $jenis_jasa->nama_jenis_jasa }}</h3>
     </div>
     <div class="page-content">
         <section class="row">
@@ -12,16 +12,17 @@
                             <div class="accordion" id="accordionExample">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            SYARAT DAN KETENTUAN PEMBUATAN Aransemen
+                                        <button class="accordion-button text-uppercase" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            SYARAT DAN KETENTUAN PEMBUATAN {{ $jenis_jasa->nama_jenis_jasa }}
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show"
                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            @if ($aransemen)
-                                                {{ $aransemen->sk }}
+                                            @if ($jenis_jasa)
+                                                {{ $jenis_jasa->sk }}
                                             @else
                                                 <p>Sedang dalam pembaruan...</p>
                                             @endif
@@ -37,66 +38,30 @@
                         <div class="card">
                             <div class="card-header text-center">
                                 <a href="{{ url('/pesanan_jasa_musik_saya') }}"><button class="btn btn-success btn-lg">Buat
-                                        Aransemen</button></a>
+                                        {{ $jenis_jasa->nama_jenis_jasa }}</button></a>
                             </div>
                             <div class="card-body">
                                 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                                     <div class="carousel-indicators">
-                                        {{-- <button type="button" data-bs-target="#carouselExampleCaptions"
-                                            data-bs-slide-to="0" class="active" aria-current="true"
-                                            aria-label="Slide 1"></button> --}}
-                                        {{-- <button type="button" data-bs-target="#carouselExampleCaptions"
-                                            data-bs-slide-to="1" aria-label="Slide 2"></button>
-                                        <button type="button" data-bs-target="#carouselExampleCaptions"
-                                            data-bs-slide-to="2" aria-label="Slide 3"></button> --}}
+
                                     </div>
                                     <div class="carousel-inner">
                                         <div class="carousel-item active">
-                                            @if ($aransemen)
-                                                <img src="{{ asset('storage/img_upload/' . $aransemen->gambar) }}"
-                                                    class="d-block" style="height: 500px; width:100% " alt="...">
+                                            @if ($jenis_jasa)
+                                                <img src="{{ asset('storage/img_upload/jasa_musik/' . $jenis_jasa->gambar) }}"
+                                                    class="d-block w-100 h-100" alt="...">
                                             @else
                                                 <p class="text-center">Gambar sedang diperbarui</p>
                                             @endif
-                                            {{-- <div class="carousel-caption d-none d-md-block">
-                                                <h5>First slide label</h5>
-                                                <p>Some representative placeholder content for the first slide.</p>
-                                            </div> --}}
                                         </div>
-                                        {{-- <div class="carousel-item">
-                                            <img src="{{ asset('assets/img/icon-user/2.jpg') }}" class="d-block w-100 h-100"
-                                                alt="...">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5>Second slide label</h5>
-                                                <p>Some representative placeholder content for the second slide.</p>
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <img src="{{ asset('assets/img/icon-user/3.jpg') }}" class="d-block w-100 h-100"
-                                                alt="...">
-                                            <div class="carousel-caption d-none d-md-block">
-                                                <h5>Third slide label</h5>
-                                                <p>Some representative placeholder content for the third slide.</p>
-                                            </div>
-                                        </div> --}}
                                     </div>
-                                    {{-- <button class="carousel-control-prev" type="button"
-                                        data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button"
-                                        data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">Next</span>
-                                    </button> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="text-center mb-3">
+                {{-- <div class="text-center mb-3">
                     <h3>Paket Paket</h3>
                 </div>
 
@@ -121,7 +86,7 @@
                     @else
                         <div>Dalam pembaharuan</div>
                     @endif
-                </div>
+                </div> --}}
 
                 <div class="row">
                     <div class="col-12">

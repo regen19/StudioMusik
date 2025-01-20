@@ -18,7 +18,7 @@
                 <div class="form-group row">
                     <div class="col-12">
                         <label for="id_ruangan">Ruangan Yang Dipinjam</label>
-                        <select name="id_ruangan" id="id_ruangan" class="form-control" onchange="selectRuangan()">
+                        <select name="id_ruangan" id="id_ruangan" class="form-control">
                             <option value="">Pilih Ruangan</option>
                         </select>
                     </div>
@@ -93,8 +93,6 @@
                             `<option value="${val.id_ruangan}">${val.nama_ruangan}</option>`
                         )
                     })
-
-                    // data-harga="${val.harga_sewa}
                 },
             });
         })
@@ -113,6 +111,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+                    console.log(response)
                     if (response.length === 0) {
                         $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
                         !</small>`);
@@ -127,13 +126,6 @@
                 }
             });
         }
-
-        // function selectRuangan() {
-        //     let selectedOption = $("#id_ruangan option:selected");
-        //     let harga_sewa = selectedOption.data('harga');
-
-        //     $("#harga_sewa").val(harga_sewa);
-        // }
 
         $("#img_jaminan").on("change", function() {
             previewImg(this, '#output');
@@ -274,13 +266,13 @@
                     const isAdd = action === "add";
 
                     if (isEdit) {
-                        if (response.status === "ada") {
+                        if (response.status === "ada" || response.status === "ada2") {
                             Swal.fire({
                                 title: "Gagal simpan.",
                                 text: "Tanggal tersebut telah di BOOKING!!",
                                 icon: "error"
                             });
-                        } else if (!isDateBooked || (response[0].tgl_pinjam === tgl_pinjam)) {
+                        } else if (!isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
@@ -375,221 +367,3 @@
         }
     </script>
 @endpush
-
-
-{{-- @push('script')
-    <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: `{{ url('list_data_ruangan') }}`,
-                method: 'get',
-                data: {
-                    "_token": "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-
-                    $.each(response, function(key, val) {
-                        $("#id_ruangan").append(
-                            `<option value="${val.id_ruangan}" data-harga="${val.harga_sewa}">${val.nama_ruangan}</option>`
-                        )
-                    })
-                },
-            });
-        })
-
-        function selectRuangan() {
-            let selectedOption = $("#id_ruangan option:selected");
-            let harga_sewa = selectedOption.data('harga');
-
-            $("#harga_sewa").val(harga_sewa);
-        }
-
-        $("#img_jaminan").on("change", function() {
-            previewImg(this, '#output');
-        });
-
-        function previewImg(input, outputId) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    $(outputId).attr('src', e.target.result);
-                    $(outputId).css('display', 'block');
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function openModal(action, id_pesanan_jadwal_studio = null) {
-            $("#add_jadwal_studio").modal("show");
-
-            const $title_header = $("#title_header");
-            const $BtnJadwalStudio = $("#BtnJadwalStudio");
-
-            const $id_user = $('#id_user');
-            const $id_ruangan = $('#id_ruangan');
-            const $harga_sewa = $('#harga_sewa');
-            const $tgl_pinjam = $('#tgl_pinjam');
-            const $no_wa = $('#no_wa');
-            const $waktu_mulai = $('#waktu_mulai');
-            const $waktu_selesai = $('#waktu_selesai');
-            const $ket_keperluan = $('#ket_keperluan');
-            const $img_jaminan = $('#img_jaminan');
-            const $output = $('#output');
-
-            if (action === 'add') {
-                $title_header.text("Tambah Pengajuan Jadwal Studio");
-                $BtnJadwalStudio.text("Simpan");
-
-                $id_ruangan.val("");
-                $tgl_pinjam.val("");
-                $waktu_mulai.val("");
-                $waktu_selesai.val("");
-                $ket_keperluan.val("");
-                $no_wa.val("");
-                $img_jaminan.val("");
-                $output.hide();
-
-                $BtnJadwalStudio.off('click').on("click", function() {
-                    saveJadwalStudio("add", id_pesanan_jadwal_studio);
-                });
-            } else if (action === 'edit') {
-                $title_header.text("Edit Pengajuan Jadwal Studio");
-                $BtnJadwalStudio.text("Ubah");
-
-                show_byId_jadwalPesanan(id_pesanan_jadwal_studio);
-
-                $BtnJadwalStudio.off('click').on("click", function() {
-                    saveJadwalStudio("edit", id_pesanan_jadwal_studio);
-                });
-            }
-        }
-
-        function show_byId_jadwalPesanan(id_pesanan_jadwal_studio) {
-            $.ajax({
-                url: `{{ url('/showById_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
-                method: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    const $id_user = $('#id_user');
-                    const $id_ruangan = $('#id_ruangan');
-                    const $harga_sewa = $('#harga_sewa');
-                    const $tgl_pinjam = $('#tgl_pinjam');
-                    const $no_wa = $('#no_wa');
-                    const $waktu_mulai = $('#waktu_mulai');
-                    const $waktu_selesai = $('#waktu_selesai');
-                    const $ket_keperluan = $('#ket_keperluan');
-                    const $img_jaminan = $('#img_jaminan');
-
-                    $('#id_ruangan').val(response.id_ruangan);
-                    $('#harga_sewa').val(response.harga_sewa);
-                    $('#tgl_pinjam').val(response.tgl_pinjam);
-                    $('#no_wa').val(response.no_wa);
-                    $("#waktu_mulai").val(response.waktu_mulai);
-                    $("#waktu_selesai").val(response.waktu_selesai);
-                    $("#ket_keperluan").val(response.ket_keperluan);
-
-                    $('#output').attr('src', '{{ asset('storage/img_upload/pesanan_jadwal') }}/' + response
-                        .img_jaminan);
-                    $('#output').show();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
-                    });
-                }
-            });
-        }
-
-        function saveJadwalStudio(action, id_pesanan_jadwal_studio) {
-            const id_user = $('#id_user').val();
-            const id_ruangan = $('#id_ruangan').val();
-            const tgl_pinjam = $('#tgl_pinjam').val();
-            const harga_sewa = $('#harga_sewa').val();
-            const no_wa = $('#no_wa').val();
-            const waktu_mulai = $('#waktu_mulai').val();
-            const waktu_selesai = $('#waktu_selesai').val();
-            const ket_keperluan = $('#ket_keperluan').val();
-            const img_jaminan = $('#img_jaminan')[0].files[0];
-
-            if (!id_ruangan || !no_wa || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
-                Swal.fire({
-                    title: "Gagal simpan.",
-                    text: "Harap isi semua form!",
-                    icon: "error"
-                });
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('id_user', id_user);
-            formData.append('id_ruangan', id_ruangan);
-            formData.append('harga_sewa', harga_sewa);
-            formData.append('tgl_pinjam', tgl_pinjam);
-            formData.append('waktu_mulai', waktu_mulai);
-            formData.append('waktu_selesai', waktu_selesai);
-            formData.append('ket_keperluan', ket_keperluan);
-            formData.append('no_wa', no_wa);
-            formData.append('img_jaminan', img_jaminan);
-            formData.append('_token', "{{ csrf_token() }}");
-
-            const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
-                `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;
-
-            $.ajax({
-                url: ajaxUrl,
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    $('#tableJadwalStudio').DataTable().ajax.reload();
-                    $("#add_jadwal_studio").modal("hide");
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-
-                    Toast.fire({
-                        icon: "success",
-                        title: action === "add" ? "Data jadwal Berhasil Disimpan!" :
-                            "Data jadwal Berhasil Diubah!"
-                    });
-
-                    // $id_ruangan.val("");
-                    // $tgl_pinjam.val("");
-                    // $waktu_mulai.val("");
-                    // $waktu_selesai.val("");
-                    // $ket_keperluan.val("");
-                    // $img_jaminan.val("");
-                    // $output.hide();
-
-                },
-                error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
-                    });
-                }
-            });
-        }
-    </script>
-@endpush --}}

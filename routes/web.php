@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\DataRuanganController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\MasterJasaMusikController;
-use App\Http\Controllers\Admin\MasterJenisJasaController;
 use App\Http\Controllers\Admin\PaketJasaMusikController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -58,12 +57,6 @@ Route::middleware('auth')->group(function () {
         Route::post("/edit_master_jasa_musik/{id}", [MasterJasaMusikController::class, 'update']);
         Route::delete("/hapus_master_jasa_musik/{id}", [MasterJasaMusikController::class, 'destroy']);
 
-        // JENIS JASA MUSIK
-        Route::post("/add_master_jenis_jasa", [MasterJenisJasaController::class, 'store']);
-        Route::post("/showById_master_jenis_jasa/{id}", [MasterJenisJasaController::class, 'show']);
-        Route::put("/edit_master_jenis_jasa/{id}", [MasterJenisJasaController::class, 'update']);
-        Route::delete("/hapus_master_jenis_jasa/{id}", [MasterJenisJasaController::class, 'destroy']);
-
         // DATA RUANGAN STUDIO
         Route::get("/data_ruangan", [DataRuanganController::class, 'index']);
         Route::get("/fetch_data_ruangan", [DataRuanganController::class, 'data_index']);
@@ -116,24 +109,23 @@ Route::middleware('auth')->group(function () {
         Route::get("/jadwal_studio_saya", [UserJadwalStudioController::class, 'index']);
         Route::get("/fetch_jadwal_studio_saya", [UserJadwalStudioController::class, 'data_index']);
         // Route::post("/add_pesanan_jadwal_studio_usr", [UserJadwalStudioController::class, 'store']);
-        Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
+        // Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
 
         // PESANAN JASA MUSIK SAYA
         Route::get("/pesanan_jasa_musik_saya", [UserPesananJasaMusikController::class, 'index']);
         Route::get("/fetch_jasa_musik_saya", [UserPesananJasaMusikController::class, 'data_index']);
         Route::post("/beri_rating_jasa/{id}", [UserPesananJasaMusikController::class, 'beri_rating_jasa']);
+        Route::get("/list_data_jasa_musik", [UserPesananJasaMusikController::class, 'list_data_jasa_musik']);
 
         // DISLAY JASA MUSIK 
-        Route::get("/pembuatan_jingle", [DisplayJasaMusikController::class, 'view_jingle']);
-        Route::get("/pembuatan_aransemen", [DisplayJasaMusikController::class, 'view_aransemen']);
-        Route::get("/pembuatan_minusone", [DisplayJasaMusikController::class, 'view_minusone']);
+        Route::get("/pembuatan_jasa_musik/{id}", [DisplayJasaMusikController::class, 'pembuatan_jasa_musik']);
     });
 
     // ALL ROLE
     Route::get("/lihat_harga_sewa_studio", [PesananJadwalStudioController::class, 'lihat_harga_studio']);
 
-    // FETCH MASTER JENIS JASA
-    Route::get("/fetch_master_jenis_jasa", [MasterJenisJasaController::class, 'index']);
+    // RATING STUDIO
+    Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
 
     // JADWAL STUDIO
     Route::post("/add_pesanan_jadwal_studio", [PesananJadwalStudioController::class, 'store']);

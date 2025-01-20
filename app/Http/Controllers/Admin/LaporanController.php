@@ -52,15 +52,6 @@ class LaporanController extends Controller
             ], 422);
         }
 
-        // $laporan = $request->only('jenis_laporan', 'tgl_laporan', 'gambar', 'keterangan');
-
-        // if ($request->hasFile('gambar')) {
-        //     $img = $request->file('gambar');
-        //     $nama_img =  "Laporan - " . time() . "-" . str_replace(' ', '_', $request->id_jenis_jasa) . "." . $img->getClientOriginalExtension();
-        //     $img->move(public_path('/storage/img_upload'), $nama_img);
-        //     $laporan['gambar'] = $nama_img;
-        // }
-
         $imagePaths = [];
         if ($request->hasfile('gambar')) {
             foreach ($request->file('gambar') as $image) {

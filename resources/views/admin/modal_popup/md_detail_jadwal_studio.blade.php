@@ -17,7 +17,6 @@
                                 <th>Nama Peminjam</th>
                                 <th>Tanggal & Jam Pinjam</th>
                                 <th>Keperluan</th>
-                                {{-- <th>Biaya Perawatan</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -26,7 +25,6 @@
                                 <td id="nama_user1"></td>
                                 <td id="tanggal"></td>
                                 <td id="catatan"></td>
-                                {{-- <td id="harga_perawatan1"></td> --}}
                             </tr>
                         </tbody>
                     </table>
@@ -35,21 +33,12 @@
                 <div class="table-responsive m-3">
                     <table>
                         <thead>
-                            {{-- <tr>
-                                <td>Metode Pembayaran</td>
-                                <td>:</td>
-                                <td>Transfer</td>
-                            </tr> --}}
                             <tr>
                                 <td>Status Persetujuan</td>
                                 <td>:</td>
                                 <td id="status_setuju"></td>
                             </tr>
-                            {{-- <tr>
-                                <td>Status Pembayaran</td>
-                                <td>:</td>
-                                <td id="status_bayar"></td>
-                            </tr> --}}
+
                             <tr>
                                 <td>Status Peminjaman</td>
                                 <td>:</td>
@@ -98,7 +87,7 @@
                                 <!-- Form Kondisi Awal -->
                                 <form id="form_kondisi_awal" method="POST" enctype="multipart/form-data">
                                     @csrf
-                                    <td id="show_form_kondisi_awal">
+                                    <td id="show_form_kondisi_awal" style="display:none;">
                                         <input type="file" class="image-preview-filepond form-control"
                                             name="kondisi_awal" id="input_kondisi_awal" required>
                                         <p class="my-3">
@@ -116,7 +105,7 @@
                                 <form id="form_kondisi_akhir" method="POST" enctype="multipart/form-data">
                                     @csrf
 
-                                    <td id="show_form_kondisi_akhir">
+                                    <td id="show_form_kondisi_akhir" style="display:none;">
                                         <input type="file" class="image-preview-filepond form-control"
                                             name="kondisi_akhir" id="input_kondisi_akhir" required>
                                         <p class="my-3">
@@ -133,6 +122,26 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="form-group" id="hasil_review" style="display: none">
+                    <label for="rating">Review Anda :</label>
+                    <h5><span id="show_rating">
+                            <div class="rating">
+                                <input type="radio" id="star55" name="rating2" value="5" />
+                                <label for="star5" title="5 stars">&#9733;</label>
+                                <input type="radio" id="star44" name="rating2" value="4" />
+                                <label for="star4" title="4 stars">&#9733;</label>
+                                <input type="radio" id="star33" name="rating2" value="3" />
+                                <label for="star3" title="3 stars">&#9733;</label>
+                                <input type="radio" id="star22" name="rating2" value="2" />
+                                <label for="star2" title="2 stars">&#9733;</label>
+                                <input type="radio" id="star11" name="rating2" value="1" />
+                                <label for="star1" title="1 star">&#9733;</label>
+                            </div>
+                            - <span id="show_review"></span>
+                        </span>
+                    </h5>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -145,13 +154,6 @@
 
 @push('script')
     <script>
-        // function formatRupiah(angka) {
-        //     var reverse = angka.toString().split('').reverse().join(''),
-        //         ribuan = reverse.match(/\d{1,3}/g);
-        //     ribuan = ribuan.join('.').split('').reverse().join('');
-        //     return 'Rp' + ribuan;
-        // }
-
         $("#img_jaminan").on("change", function() {
             previewImg(this, '#output');
         });
@@ -181,6 +183,7 @@
         let harga
         let no_wa
         let id_pesanan_studio
+        let id_user_login = "{{ Auth::user()->id_user }}"
 
         function show_byID(id_pesanan_jadwal_studio) {
             id_pesanan_studio = id_pesanan_jadwal_studio
@@ -199,20 +202,18 @@
                     $("#nama_user1").text(response.username)
                     $("#tanggal").text(response.tgl_pinjam + " / " + response.waktu_mulai + " - " + response
                         .waktu_selesai)
-                    // $("#harga_perawatan1").text(formatRupiah(response.harga_sewa))
+
+                    $("#show_review").text(response.review)
+                    $('input[type="radio"][name="rating2"][value="' + response.rating + '"]').prop('checked',
+                        true);
+                    $("#id_pesanan_jadwal_studio1").val(response.id_pesanan_jadwal_studio)
 
 
-                    // let status = "";
-                    // let color = "";
-
-                    // if (response.status_pembayaran === "Y") {
-                    //     status = "Lunas"
-                    //     color = "success"
-                    // } else if (response.status_pembayaran === "N") {
-                    //     status = "Belum Bayar"
-                    //     color = "warning"
-                    // }
-                    // $("#status_bayar").html(`<span class="badge bg-${color}">${status}</span>`)
+                    if (response.review != null && response.rating != null) {
+                        $("#hasil_review").show()
+                    } else {
+                        $("#hasil_review").hide()
+                    }
 
                     let status1 = "";
                     let color1 = "";
@@ -270,15 +271,6 @@
                         $("#link-img-kondisi-akhir").attr("href",
                             "{{ asset('storage/img_upload/kondisi/akhir') }}/" + response.img_kondisi_akhir);
                         $('#show_kondisi_akhir').show();
-                    }
-
-                    // btn bayar
-                    if (response.status_persetujuan === "Y" && response.status_pembayaran === "N") {
-                        $("#BtnBayar").show().html(
-                            ` <button type="button" class="btn btn-info btn-lg text-white" onclick=get_snap_token(${id_pesanan_jadwal_studio})>Bayar </button>`
-                        )
-                    } else {
-                        $("#BtnBayar").hide()
                     }
                 }
             });

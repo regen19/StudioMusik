@@ -14,7 +14,7 @@ class DetailPesananJadwalStudioModel extends Model
     protected $fillable = [
         "id_pesanan_jadwal_studio",
         "status_persetujuan",
-        "status_pembayaran",
+        "status_pengajuan",
         "status_peminjaman",
         "img_kondisi_awal",
         "img_kondisi_akhir",

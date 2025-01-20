@@ -14,7 +14,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pesanan_jadwal_studio');
 
             $table->enum("status_persetujuan", ['Y', 'N', 'P'])->default("P");
-            $table->enum("status_pembayaran", ['Y', 'N'])->default("N");
+            $table->enum("status_pengajuan", ['Y', 'X'])->default("Y");
             $table->enum("status_peminjaman", ['Y', 'N'])->default("N");
 
             $table->string("img_kondisi_awal")->nullable();

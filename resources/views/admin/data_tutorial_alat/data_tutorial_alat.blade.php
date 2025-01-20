@@ -60,7 +60,7 @@
                         {
                             data: null,
                             render: function(data) {
-                                return `<a target="_blank" href="{{ asset('storage/img_upload/tutorial_alat') }}/${data.gambar_alat}"><img src="{{ asset('storage/img_upload/tutorial_alat') }}/${data.gambar_alat}" class="img-thumbnail" max-width="100px" max-height="120px"></a>`;
+                                return `<a target="_blank" href="{{ asset('storage/img_upload/tutorial_alat') }}/${data.gambar_alat}"><img src="{{ asset('storage/img_upload/tutorial_alat') }}/${data.gambar_alat}" class="img-thumbnail" style="width:100px; height:100px"></a>`;
                             }
                         },
                         {

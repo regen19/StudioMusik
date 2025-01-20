@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ asset('assets/flatpickr/flatpickr.min.css') }}">
 
     {{-- Quill --}}
-    <link rel="stylesheet" href="{{ asset('assets/quill/quill.snow.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/quill/quill.snow.css') }}" /> --}}
 
 
     <script src="{{ asset('assets/js/initTheme.js') }}"></script>

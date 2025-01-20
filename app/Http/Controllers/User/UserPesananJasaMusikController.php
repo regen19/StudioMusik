@@ -22,7 +22,7 @@ class UserPesananJasaMusikController extends Controller
         $id_user = Auth::user()->id_user;
         $pesanan = DB::table("pesanan_jasa_musik")
             ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_user")
-            ->join("master_jenis_jasa", "master_jenis_jasa.id_jenis_jasa", "=", "pesanan_jasa_musik.id_jenis_jasa")
+            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
             ->orderBy('pesanan_jasa_musik.id_pesanan_jasa_musik', "DESC")
             ->where("pesanan_jasa_musik.id_user", $id_user)
             ->get();
@@ -32,6 +32,11 @@ class UserPesananJasaMusikController extends Controller
             ->toJson();
 
         return $datatable;
+    }
+
+    public function list_data_jasa_musik()
+    {
+        return DB::table("master_jasa_musik")->get();
     }
 
 
@@ -53,7 +58,7 @@ class UserPesananJasaMusikController extends Controller
         PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($pesanan);
 
         return response()->json([
-            "msg" => "Status persetujuan telah diubah",
+            "msg" => "Review Rating telah diubah",
         ], 200);
     }
 
