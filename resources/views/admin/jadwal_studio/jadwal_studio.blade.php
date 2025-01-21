@@ -161,7 +161,7 @@
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})"> 
+                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})">
                                                     Batalkan
                                                 </button>
 
