@@ -109,8 +109,6 @@ Route::middleware('auth')->group(function () {
         // JADWAL STUDIO SAYA
         Route::get("/jadwal_studio_saya", [UserJadwalStudioController::class, 'index']);
         Route::get("/fetch_jadwal_studio_saya", [UserJadwalStudioController::class, 'data_index']);
-        // Route::post("/add_pesanan_jadwal_studio_usr", [UserJadwalStudioController::class, 'store']);
-        // Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
 
         // PESANAN JASA MUSIK SAYA
         Route::get("/pesanan_jasa_musik_saya", [UserPesananJasaMusikController::class, 'index']);

@@ -71,7 +71,6 @@ class PesananJadwalStudioController extends Controller
                 "id_user" => "required",
                 "id_ruangan" => "required",
                 'tgl_pinjam' => "nullable",
-                'no_wa' => "nullable",
                 'waktu_mulai' => "nullable",
                 'waktu_selesai' => "nullable",
                 'ket_keperluan' => "nullable",
@@ -85,7 +84,7 @@ class PesananJadwalStudioController extends Controller
             }
 
             // Simpan data pesanan
-            $pesanan = $request->only('id_user', 'id_ruangan', 'tgl_pinjam', 'no_wa', 'waktu_mulai', 'waktu_selesai', 'ket_keperluan');
+            $pesanan = $request->only('id_user', 'id_ruangan', 'tgl_pinjam', 'waktu_mulai', 'waktu_selesai', 'ket_keperluan');
 
             // Proses upload gambar jaminan jika ada
             if ($request->hasFile('img_jaminan')) {
@@ -95,22 +94,14 @@ class PesananJadwalStudioController extends Controller
                 $pesanan['img_jaminan'] = $nama_img;
             }
 
-            // $cek_tanggal =
-            //     DB::table('pesanan_jadwal_studio')
-            //     ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
-            //     ->where('tgl_pinjam', $request->tgl_pinjam)
-            //     ->first();
-
             // Simpan pesanan ke dalam tabel PesananJadwalStudioModel
             $jadwalStudio = PesananJadwalStudioModel::create($pesanan);
 
-            // Siapkan data untuk tabel DetailPesananJadwalStudioModel
             $detailPesanan = [
                 "id_pesanan_jadwal_studio" => $jadwalStudio->id_pesanan_jadwal_studio,
                 "status_persetujuan" => "P",
-                "status_pembayaran" => "N",
+                "status_pengajuan" => "Y",
                 "status_peminjaman" => "N",
-                // "harga_sewa" => $request->harga_sewa,
             ];
 
             // Simpan detail pesanan ke dalam tabel DetailPesananJadwalStudioModel
@@ -263,60 +254,6 @@ class PesananJadwalStudioController extends Controller
         return response()->json(['message' => 'Tidak ada file yang diupload'], 400);
     }
 
-    // public function simpan_img_kondisi_ruangan(Request $request, string $id_pesanan_jadwal_studio)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'kondisi_awal' => 'nullable|image|mimes:jpeg,png,jpg|max:1000',
-    //         'kondisi_akhir' => 'nullable|image|mimes:jpeg,png,jpg|max:1000',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'message' => 'Validasi gagal.',
-    //             'errors' => $validator->errors(),
-    //         ], 422);
-    //     }
-
-    //     $data = DetailPesananJadwalStudioModel::findOrFail($id_pesanan_jadwal_studio);
-
-    //     // Periksa apakah ada file yang diupload
-    //     if ($data) {
-    //         // Menghapus dan mengganti gambar jika ada file gambar baru yang diunggah
-    //         if ($request->hasFile('kondisi_awal')) {
-    //             $path = 'storage/img_upload/kondisi/awal' . $data->img_kondisi_awal;
-    //             if (File::exists(public_path($path))) {
-    //                 File::delete(public_path($path));
-    //             }
-
-    //             $img = $request->file('kondisi_awal');
-    //             $extension = $img->getClientOriginalExtension();
-    //             $nama_img = "awal" . "-" . str_replace(' ', '_', $id_pesanan_jadwal_studio) . "." . $extension;
-    //             $img->move(public_path('/storage/img_upload/kondisi/awal'), $nama_img);
-    //             $data->img_kondisi_awal = $nama_img;
-    //         }
-
-    //         if ($request->hasFile('kondisi_akhir')) {
-    //             $path = 'storage/img_upload/kondisi/akhir' . $data->img_kondisi_akhir;
-    //             if (File::exists(public_path($path))) {
-    //                 File::delete(public_path($path));
-    //             }
-
-    //             $img = $request->file('kondisi_akhir');
-    //             $extension = $img->getClientOriginalExtension();
-    //             $nama_img = "akhir" . "-" . str_replace(' ', '_', $id_pesanan_jadwal_studio) . "." . $extension;
-    //             $img->move(public_path('/storage/img_upload/kondisi/akhir'), $nama_img);
-    //             $data->img_kondisi_awal = $nama_img;
-    //         }
-
-    //         $data->save();
-
-    //         return response()->json([
-    //             'msg' => 'Upload Gambar Kondisi awal berhasil diperbarui',
-    //         ], 200);
-    //     }
-
-    //     return response()->json(['message' => 'Tidak ada file yang diupload'], 400);
-    // }
 
     public function status_pesanan_jadwal_studio(Request $request, string $id_pesanan_jadwal_studio)
     {
@@ -358,43 +295,6 @@ class PesananJadwalStudioController extends Controller
             "msg" => "Status persetujuan telah diubah",
         ], 200);
     }
-
-
-    public function lihat_harga_studio()
-    {
-        $harga = HargaSewaStudioModel::first();
-
-        return response()->json([
-            $harga,
-        ], 200);
-    }
-
-    // public function harga_sewa_studio(Request $request)
-    // {
-    //     $validate = Validator::make($request->all(), [
-    //         "harga_sewa" => "required",
-    //         "id_harga_sewa_studio" => "nullable"
-    //     ]);
-
-    //     if ($validate->fails()) {
-    //         return response()->json([
-    //             "msg" => $validate->errors()
-    //         ], 422);
-    //     }
-
-    //     $harga_sewa = $request->only(["harga_sewa"]);
-    //     $totalData = HargaSewaStudioModel::count();
-
-    //     if ($totalData == 0) {
-    //         HargaSewaStudioModel::create($harga_sewa);
-    //     } else {
-    //         HargaSewaStudioModel::findOrFail($request->input("id_harga_sewa_studio"))->update($harga_sewa);
-    //     }
-
-    //     return response()->json([
-    //         $totalData
-    //     ], 200);
-    // }
 
     // public function bayar_studio_musik(Request $request)
     // {

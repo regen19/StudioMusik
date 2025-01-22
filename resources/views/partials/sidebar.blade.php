@@ -115,21 +115,21 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item {{ request()->is('data_ruangan_studio') ? 'active' : '' }}">
-                    <a href="{{ url('/data_ruangan_studio') }}" class="sidebar-link">
-                        <i class="bi bi-houses"></i>
-                        <span>Ruangan Studio</span>
-                    </a>
-                </li>
+
 
                 <li
-                    class="sidebar-item has-sub {{ request()->is('jadwal_studio_saya') || request()->is('tutorial_penggunaan_alat') ? 'active' : '' }}">
+                    class="sidebar-item has-sub {{ request()->is('data_ruangan_studio') || request()->is('jadwal_studio_saya') || request()->is('tutorial_penggunaan_alat') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-calendar2-week"></i>
-                        <span>Jadwal Studio</span>
+                        <span>Studio Musik</span>
                     </a>
 
                     <ul class="submenu">
+                        <li class="submenu-item {{ request()->is('data_ruangan_studio') ? 'active' : '' }}">
+                            <a href="{{ url('/data_ruangan_studio') }}" class="submenu-link">
+                                <span>Ruangan Studio</span>
+                            </a>
+                        </li>
                         <li class="submenu-item {{ request()->is('jadwal_studio_saya') ? 'active' : '' }}">
                             <a href="{{ url('/jadwal_studio_saya') }}" class="submenu-link">Jadwal Saya</a>
                         </li>
