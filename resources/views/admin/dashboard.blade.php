@@ -20,7 +20,7 @@
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                                         <h6 class="text-muted font-semibold">
-                                            Jumlah Peminjam Studio Musik Disetujui <?php echo strftime('%B', strtotime(date('M'))); ?>
+                                            <strong> Peminjaman Studio </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?>
                                         </h6>
                                         <h6 class="font-extrabold mb-0">{{ $studio_musik_approve }}</h6>
                                     </div>
@@ -38,7 +38,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Jumlah Jasa Musik Disetujui <?php echo strftime('%B', strtotime(date('M'))); ?>
+                                        <h6 class="text-muted font-semibold"> <strong> Jasa Musik </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?>
                                         </h6>
                                         <h6 class="font-extrabold mb-0">{{ $jasa_musik_approve }}</h6>
                                     </div>
@@ -56,7 +56,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Jumlah Laporan <?php echo strftime('%B', strtotime(date('M'))); ?></h6>
+                                        <h6 class="text-muted font-semibold"> <strong> Laporan </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?></h6>
                                         <h6 class="font-extrabold mb-0">{{ $laporan }}</h6>
                                     </div>
                                 </div>
@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Jumlah Users</h6>
+                                        <h6 class="text-muted font-semibold">Users</h6>
                                         <h6 class="font-extrabold mb-0">{{ $jumlah_user }}</h6>
                                     </div>
                                 </div>
