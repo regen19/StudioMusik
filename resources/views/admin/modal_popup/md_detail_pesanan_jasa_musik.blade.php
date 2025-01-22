@@ -60,6 +60,13 @@
                         </thead>
                     </table>
                 </div>
+                <div class="table-responsive m-3">
+                    <table>
+                        <thead id="detail_informasi_pesanan">
+
+                        </thead>
+                    </table>
+                </div>
                 <div class="form-group">
                     <label for="catatan_admin">Keterangan Admin :</label>
                     <textarea class="form-control" name="catatan_admin" id="catatan_admin" cols="30" rows="3" readonly></textarea>
@@ -68,6 +75,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-success" onclick="data_status(${data.id_pesanan_jasa_musik})"
+                    data-bs-toggle="modal" data-bs-target="#status_persetujuan">Proses</button>
+
                 {{-- <button type="button" class="btn btn-info btn-lg">Bayar </button> --}}
             </div>
         </div>
@@ -95,10 +105,17 @@
                 nama_user = response.username
                 biaya_paket = response.biaya_paket
 
-                $("#tgl_pengajuan").text("Pengajuan pada : " + response.tgl_produksi)
+                $("#tgl_pengajuan").text("Pengajuan pada : " + response.created_at)
                 $("#nama_user").text(response.username)
-                $("#tanggal").text(response.tgl_produksi)
-                $("#tenggat").text(response.tenggat_produksi)
+                $("#tanggal").html(
+                    response.tgl_produksi ? response.tgl_produksi.split(" ")[0] :
+                    `<div>
+                        <a type="button" class="badge bg-warning">
+                            Diajukan
+                        </a>
+                    <div>`
+                )
+                $("#tenggat").html(response.tenggat_produksi.split(" ")[0])
                 // $("#biaya").text(formatRupiah(response.biaya_paket))
                 $("#komentar_rating").text(response.review)
                 $("#id_pesanan_jasa_musik").val(id_pesanan_jasa_musik)
@@ -151,7 +168,32 @@
 
                 $("#catatan").text(response.keterangan)
                 $("#catatan_admin").text(response.keterangan_admin)
+                $.ajax({
+                    url: `{{ url('/informasi_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        $("#detail_informasi_pesanan").empty();
+                        const baseUrl = "{{ url('/') }}";
+                        response.forEach((value, index) => {
+                            $("#detail_informasi_pesanan").append(`
+                            <tr>
+                                <td>${value.nama_field}</td>
+                                <td>:</td>
+                                <td>${value.tipe_field == "file" ?
+                                        `<a href="${baseUrl}/download_file_pesanan/${value.value_field}" class="btn btn-primary">
+                                            Download File
+                                        </a>`
+                                        :
+                                        value.value_field
+                                     }
+                                </td>
+                            </tr>
+                        `)
+                        });
 
+                    }
+                });
                 // btn bayar
                 // if (response.status_persetujuan === "Y" && response.status_pembayaran === "N") {
                 //     $("#BtnBayar").show().html(
@@ -164,7 +206,7 @@
         });
     }
 
-    // function show_byID(id_pesanan_jasa_musik) { 
+    // function show_byID(id_pesanan_jasa_musik) {
     //     $.ajax({
     //         url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
     //         method: 'POST',

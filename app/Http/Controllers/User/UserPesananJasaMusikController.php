@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\FormJasaMusikModel;
 use App\Models\PesananJasaMusikModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,11 +21,11 @@ class UserPesananJasaMusikController extends Controller
     public function data_index()
     {
         $id_user = Auth::user()->id_user;
-        $pesanan = DB::table("pesanan_jasa_musik")
-            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_user")
-            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
-            ->orderBy('pesanan_jasa_musik.id_pesanan_jasa_musik', "DESC")
-            ->where("pesanan_jasa_musik.id_user", $id_user)
+        $pesanan = DB::table('pesanan_jasa_musik')
+            ->join('users', 'users.id_user', '=', 'pesanan_jasa_musik.id_user')
+            ->join('master_jasa_musik', 'master_jasa_musik.id_jasa_musik', '=', 'pesanan_jasa_musik.id_jasa_musik')
+            ->orderBy('pesanan_jasa_musik.id_pesanan_jasa_musik', 'DESC')
+            ->where('pesanan_jasa_musik.id_user', $id_user)
             ->get();
 
         $datatable = DataTables::of($pesanan)
@@ -36,20 +37,26 @@ class UserPesananJasaMusikController extends Controller
 
     public function list_data_jasa_musik()
     {
-        return DB::table("master_jasa_musik")->get();
+        return DB::table('master_jasa_musik')->get();
     }
 
+    public function informasi_jasa_musik(string $id)
+    {
+        $jasa_musik = FormJasaMusikModel::where('jasa_musik_id', $id)->get();
 
-    function beri_rating_jasa(Request $request, string $id_pesanan_jasa_musik)
+        return $jasa_musik;
+    }
+
+    public function beri_rating_jasa(Request $request, string $id_pesanan_jasa_musik)
     {
         $validate = Validator::make($request->all(), [
-            "rating" => "required",
-            "review" => "required",
+            'rating' => 'required',
+            'review' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
-                "msg" => $validate->errors()
+                'msg' => $validate->errors(),
             ], 422);
         }
 
@@ -58,7 +65,7 @@ class UserPesananJasaMusikController extends Controller
         PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($pesanan);
 
         return response()->json([
-            "msg" => "Review Rating telah diubah",
+            'msg' => 'Review Rating telah diubah',
         ], 200);
     }
 
@@ -73,16 +80,16 @@ class UserPesananJasaMusikController extends Controller
         // Set 3DS transaction for credit card to true
         \Midtrans\Config::$is3ds = true;
 
-        $params = array(
-            'transaction_details' => array(
+        $params = [
+            'transaction_details' => [
                 'order_id' => rand(),
                 'gross_amount' => $request->input('biaya_paket'),
-            ),
-            'customer_details' => array(
+            ],
+            'customer_details' => [
                 'first_name' => $request->input('nama_user'),
                 'phone' => $request->input('no_wa'),
-            ),
-        );
+            ],
+        ];
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
 
@@ -94,10 +101,10 @@ class UserPesananJasaMusikController extends Controller
 
         $id_pesanan_jasa_musik = $request->input('id_pesanan_jasa_musik');
 
-        $data['status_pembayaran'] = "Y";
+        $data['status_pembayaran'] = 'Y';
 
-        PesananJasaMusikModel::where("id_pesanan_jasa_musik", $id_pesanan_jasa_musik)->update($data);
+        PesananJasaMusikModel::where('id_pesanan_jasa_musik', $id_pesanan_jasa_musik)->update($data);
 
-        return response()->json(["status" => "sukses"]);
+        return response()->json(['status' => 'sukses']);
     }
 }

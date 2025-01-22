@@ -25,6 +25,7 @@
                                 <th>Jenis Jasa</th>
                                 <th>Syarat & Ketentuan</th>
                                 <th>Deskripsi</th>
+                                <th>Informasi Jasa Musik</th>
                                 <th>Gambar</th>
                                 <th>Aksi</th>
                             </tr>
@@ -54,12 +55,17 @@
                     serverSide: true,
                     paging: true,
                     searching: true,
+                    order: [
+                        [2, "asc"]
+                    ],
                     ajax: {
                         url: "{{ url('/fetch_master_jasa_musik') }}",
                         type: 'GET',
                     },
                     columns: [{
                             data: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false,
                         },
                         {
                             data: 'nama_jenis_jasa',
@@ -71,13 +77,28 @@
                             data: 'deskripsi',
                         },
                         {
+                            data: 'form_jasa',
+                            orderable: false,
+                            searchable: false,
+                            render: function(data) {
+                                if (Array.isArray(data)) {
+                                    return `<ol>${data.map(item => `<li>${item.nama_field} (${item.jenis_field})</li>`).join('')}</ol>`;
+                                }
+                                return '';
+                            }
+                        },
+                        {
                             data: null,
+                            orderable: false,
+                            searchable: false,
                             render: function(data) {
                                 return `<a target="_blank" href="{{ asset('storage/img_upload/jasa_musik') }}/${data.gambar}"><img src="{{ asset('storage/img_upload/jasa_musik') }}/${data.gambar}" class="img-thumbnail" max-width="100px" max-height="120px"></a>`;
                             }
                         },
                         {
                             data: null,
+                            orderable: false,
+                            searchable: false,
                             render: function(data) {
                                 return `
                                     <td>
@@ -87,7 +108,7 @@
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
 
-                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jasa(${data.id_jasa_musik})"> 
+                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jasa(${data.id_jasa_musik})">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>

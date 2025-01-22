@@ -53,10 +53,20 @@
                             data: 'DT_RowIndex',
                         },
                         {
-                            data: 'tgl_produksi'
+                            data: 'tgl_produksi',
+                            render: function(data) {
+
+                                return data ? data.split(" ")[0] : `<div>
+                                        <a type="button" class="badge bg-warning">
+                                            Diajukan
+                                        </a> <div>`
+                            }
                         },
                         {
                             data: 'tenggat_produksi',
+                            render: function(data) {
+                                return data.split(" ")[0]
+                            }
 
                         },
                         {
@@ -150,9 +160,14 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="tgl_pinjam">Tenggat Produksi</label>
-                        <input type="datetime-local" class="form-control" id="tenggat_produksi">
+                        <label for="tgl_produksi">Mulai Produksi</label>
+                        <input type="date" class="form-control" id="tgl_produksi">
                     </div>
+                    <div class="form-group">
+                        <label for="tenggat_produksi">Tenggat Produksi</label>
+                        <input type="date" class="form-control" id="tenggat_produksi">
+                    </div>
+
 
                     <div class="form-group">
                         <label for="tgl_pinjam">Status Persetujuan</label>
@@ -211,7 +226,8 @@
                         $('#stts_setuju').val(response.status_persetujuan)
                         $("#stts_produksi").val(response.status_produksi)
                         $("#keterangan_admin").val(response.keterangan_admin)
-                        $("#tenggat_produksi").val(response.tenggat_produksi)
+                        $("#tenggat_produksi").val(response.tenggat_produksi.split(" ")[0])
+                        $("#tgl_produksi").val(response.tgl_produksi ? response.tgl_produksi.split(" ")[0] : "")
                     }
                 });
             }
@@ -222,12 +238,14 @@
                 let keterangan_admin = $('#keterangan_admin').val()
                 let id_pesanan_jasa_musik = $('#id_pesanan_jasa_musik').val()
                 let tenggat_produksi = $("#tenggat_produksi").val()
+                let tgl_produksi = $("#tgl_produksi").val()
 
                 $.ajax({
                     url: `{{ url('/status_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
                     method: 'post',
                     data: {
                         "tenggat_produksi": tenggat_produksi,
+                        "tgl_produksi": tgl_produksi,
                         "status_persetujuan": status_persetujuan,
                         "keterangan_admin": keterangan_admin,
                         "status_produksi": status_produksi,

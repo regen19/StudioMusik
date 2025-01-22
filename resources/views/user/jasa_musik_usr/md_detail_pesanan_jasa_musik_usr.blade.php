@@ -50,6 +50,13 @@
                         </thead>
                     </table>
                 </div>
+                <div class="table-responsive m-3">
+                    <table>
+                        <thead id="detail_informasi_pesanan">
+
+                        </thead>
+                    </table>
+                </div>
                 <div class="form-group">
                     <label for="catatan_admin">Keterangan Admin :</label>
                     <textarea class="form-control" name="catatan_admin" id="catatan_admin" cols="30" rows="3" readonly></textarea>
@@ -94,16 +101,23 @@
             dataType: 'json',
             data: {
                 "_token": "{{ csrf_token() }}"
-            }, 
+            },
             success: function(response) {
                 no_wa = response.no_wa
                 nama_user = response.username
 
-                $("#tgl_pengajuan").text("Pengajuan pada : " + response.tgl_produksi)
+                $("#tgl_pengajuan").text("Pengajuan pada : " + response.created_at)
                 $("#nama_user").text(response.username)
                 $("#nama_jasa_musik").text(response.nama_jenis_jasa)
-                $("#tanggal").text(response.tgl_produksi)
-                $("#tenggat").text(response.tenggat_produksi)
+                $("#tanggal").html(
+                    response.tgl_produksi ? response.tgl_produksi.split(" ")[0] :
+                    `<div>
+                        <a type="button" class="badge bg-warning">
+                            Diajukan
+                        </a>
+                    <div>`
+                )
+                $("#tenggat").html(response.tenggat_produksi.split(" ")[0])
                 $("#show_review").text(response.review)
                 $("#id_pesanan_jasa_musik").val(id_pesanan_jasa_musik)
                 $('input[type="radio"][name="rating1"][value="' + response.rating + '"]').prop('checked',
@@ -148,6 +162,32 @@
 
                 $("#catatan").text(response.keterangan)
                 $("#catatan_admin").text(response.keterangan_admin)
+                $.ajax({
+                    url: `{{ url('/informasi_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        $("#detail_informasi_pesanan").empty();
+                        const baseUrl = "{{ url('/') }}";
+                        response.forEach((value, index) => {
+                            $("#detail_informasi_pesanan").append(`
+                            <tr>
+                                <td>${value.nama_field}</td>
+                                <td>:</td>
+                                <td>${value.tipe_field == "file" ?
+                                        `<a href="${baseUrl}/download_file_pesanan/${value.value_field}" class="btn btn-primary">
+                                            Download File
+                                        </a>`
+                                        :
+                                        value.value_field
+                                     }
+                                </td>
+                            </tr>
+                        `)
+                        });
+
+                    }
+                });
             }
         });
     }

@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('pesanan_jasa_musik', function (Blueprint $table) {
             $table->id('id_pesanan_jasa_musik');
-            $table->unsignedBigInteger("id_user");
-            $table->unsignedBigInteger("id_jasa_musik");
-            $table->timestamp("tgl_produksi");
-            $table->timestamp("tenggat_produksi");
-            $table->bigInteger("no_wa");
-            $table->longText("keterangan");
-            $table->longText("keterangan_admin")->nullable();
-            $table->enum("status_persetujuan", ['Y', 'N', 'P'])->default("P");
-            $table->enum("status_pengajuan", ['Y', 'X'])->default("Y");
-            $table->enum("status_produksi", ['Y', 'N', 'P'])->default("N");
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_jasa_musik');
+            $table->timestamp('tgl_produksi')->nullable();
+            $table->timestamp('tenggat_produksi');
+            $table->bigInteger('no_wa');
+            $table->longText('keterangan');
+            $table->longText('keterangan_admin')->nullable();
+            $table->enum('status_persetujuan', ['Y', 'N', 'P'])->default('P');
+            $table->enum('status_pengajuan', ['Y', 'X'])->default('Y');
+            $table->enum('status_produksi', ['Y', 'N', 'P'])->default('N');
             $table->string('rating')->nullable();
             $table->string('review')->nullable();
             $table->timestamps();

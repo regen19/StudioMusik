@@ -59,10 +59,20 @@
                             data: 'DT_RowIndex',
                         },
                         {
-                            data: 'tgl_produksi'
+                            data: 'tgl_produksi',
+                            render: function(data) {
+
+                                return data ? data.split(" ")[0] : `<div>
+                                        <a type="button" class="badge bg-warning">
+                                            Diajukan
+                                        </a> <div>`
+                            }
                         },
                         {
-                            data: 'tenggat_produksi'
+                            data: 'tenggat_produksi',
+                            render: function(data) {
+                                return data.split(" ")[0]
+                            }
                         },
                         {
                             data: 'nama_jenis_jasa',
@@ -146,7 +156,7 @@
                                                     data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
                                                     Detail
                                                 </button>
-                                            </div> 
+                                            </div>
                                         </td>
                                     `;
                                 }
@@ -190,7 +200,7 @@
                                                     Detail
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})"> 
+                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})">
                                                     Batalkan
                                                 </button>
                                             </div>

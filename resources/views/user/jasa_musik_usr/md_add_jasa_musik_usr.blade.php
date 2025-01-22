@@ -9,10 +9,10 @@
             <form action="" method="post">
                 @csrf
                 <div class="modal-body">
+
                     <div class="form-group">
-                        <label for="tgl_produksi">Tanggal Pesanan</label>
-                        <input type="datetime-local" class="form-control" name="tgl_produksi" id="tgl_produksi"
-                            value="{{ date('Y-m-d\TH:i', strtotime(now())) }}" required>
+                        <label for="tgl_deadline">Tanggal Deadline Pesanan</label>
+                        <input type="date" class="form-control" name="tgl_deadline" id="tgl_deadline" required>
                     </div>
                     <div class="form-group">
                         <label for="nama_peminjam">Nama Peminjam</label>
@@ -30,6 +30,9 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div id="containerInputJasaMusik">
+
                     </div>
 
                     <div class="form-group">
@@ -54,8 +57,43 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            list_jasa_musik()
+            list_jasa_musik();
+            event_list_jasa_musik();
         })
+        async function event_list_jasa_musik() {
+            $("#id_jasa_musik").on('change', function() {
+                $("#containerInputJasaMusik").empty();
+                var selectedValue = $(this).val();
+                $.ajax({
+                    url: `{{ url('/informasi_jasa_musik/${selectedValue}') }}`,
+                    method: 'get',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        $.each(response, function(key, value) {
+                            $("#containerInputJasaMusik").append(
+                                `
+                                <div class="form-group">
+                                    <label for="${value.nama_field}">${value.nama_field}</label>
+                                    <input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" >
+                                </div>
+                                `
+                            )
+                        })
+                    }
+                });
+            });
+
+            $('#add_jasa_musik').on('hidden.bs.modal', function() {
+                $('#id_jasa_musik').val("");
+                $('#tgl_deadline').val("");
+                $('#no_wa').val("");
+                $('#keterangan').val("");
+                $("#containerInputJasaMusik").empty();
+            });
+        }
 
         function list_jasa_musik() {
             $.ajax({
@@ -77,12 +115,42 @@
 
         function btnSimpan() {
             let id_jasa_musik = $('#id_jasa_musik').val();
-            let tgl_produksi = $('#tgl_produksi').val();
+            let tgl_deadline = $('#tgl_deadline').val();
             let id_user = "{{ Auth::user()->id_user }}";
             let no_wa = $('#no_wa').val();
             let keterangan = $('#keterangan').val();
+            let informasi = [];
+            let formData = new FormData();
+            formData.append("id_jasa_musik", id_jasa_musik);
+            formData.append("tgl_deadline", tgl_deadline);
+            formData.append("id_user", id_user);
+            formData.append("no_wa", no_wa);
+            formData.append("keterangan", keterangan);
+            formData.append("_token", "{{ csrf_token() }}");
+            $("#containerInputJasaMusik .informasi").each(function(index) {
+                let namaField = $(this).attr("name");
+                let tipeField = $(this).attr("type");
+                let nilaiField = $(this).val();
+                if (tipeField === 'file') {
+                    // Append file ke formData
+                    formData.append(`informasi[${index}][file]`, $(this)[0].files[0]);
+                    formData.append(`informasi[${index}][nama_field]`, namaField);
+                    formData.append(`informasi[${index}][tipe_field]`, tipeField);
+                } else {
+                    // Append data non-file
+                    formData.append(`informasi[${index}][nama_field]`, namaField);
+                    formData.append(`informasi[${index}][value_field]`, nilaiField);
+                    formData.append(`informasi[${index}][tipe_field]`, tipeField);
+                }
+                informasi.push({
+                    nama_field: namaField,
+                    value_field: nilaiField,
+                    tipe_field: tipeField,
+                });
+            });
 
-            if (!id_jasa_musik || !tgl_produksi || !id_user || !no_wa || !keterangan) {
+            if (!id_jasa_musik || !tgl_deadline || !id_user || !no_wa || !keterangan || informasi.length ==
+                0) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
@@ -94,14 +162,9 @@
             $.ajax({
                 url: "{{ url('/add_pesanan_jasa_musik') }}",
                 method: 'POST',
-                data: {
-                    "id_jasa_musik": id_jasa_musik,
-                    "tgl_produksi": tgl_produksi,
-                    "id_user": id_user,
-                    "no_wa": no_wa,
-                    "keterangan": keterangan,
-                    "_token": "{{ csrf_token() }}"
-                },
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function(response) {
                     $('#tbPesanan').DataTable().ajax.reload();
                     $("#add_jasa_musik").modal("hide")
@@ -122,11 +185,6 @@
                         icon: "success",
                         title: "Data Berhasil Disimpan!"
                     });
-
-                    $('#id_jasa_musik').val("");
-                    $('#tgl_produksi').val("");
-                    $('#no_wa').val("");
-                    $('#keterangan').val("");
                 }
             });
         }
