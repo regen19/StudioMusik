@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
                 'id_user' => 1,
                 'username' => "ADMIN",
                 'email' => 'admin@gmail.com',
+                'no_wa' => '0811',
                 'password' => bcrypt('111'),
                 'user_role' => "admin" //atasan
             ],
@@ -23,6 +24,7 @@ class UserSeeder extends Seeder
                 'id_user' => 2,
                 'username' => "K3L",
                 'email' => 'k3l@gmail.com',
+                'no_wa' => '0822',
                 'password' => bcrypt('222'),
                 'user_role' => "k3l" //atasan
             ],
@@ -30,6 +32,7 @@ class UserSeeder extends Seeder
                 'id_user' => 3,
                 'username' => "MAHASISWA",
                 'email' => 'mhs@gmail.com',
+                'no_wa' => '0833',
                 'password' => bcrypt('333'),
                 'user_role' => "user" //atasan
             ],

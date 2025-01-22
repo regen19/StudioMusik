@@ -45,6 +45,7 @@ Route::get('/system_error_500', function () {
 Route::middleware('auth')->group(function () {
     Route::get("/logout", [AuthController::class, 'logout']);
     Route::get("/profile_user", [AuthController::class, 'profile_user']);
+    Route::post("/edit_profile/{id}", [AuthController::class, 'edit_profile']);
 
     Route::middleware('isAdmin')->group(function () {
         Route::get("/dashboard", [DashboardController::class, 'dashboard']);

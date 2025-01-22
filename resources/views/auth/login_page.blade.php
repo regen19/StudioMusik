@@ -64,89 +64,6 @@
 </head>
 
 <body>
-    {{-- <div id="main-wrapper" class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10">
-                <div class="card border-0 shadow">
-                    <div class="card-body p-0">
-                        <div class="row no-gutters">
-                            <div class="col-lg-6 d-none d-lg-inline-block">
-                                <div class="account-block rounded-left">
-                                    <div class="overlay rounded-left"></div>
-                                    <div class="account-testimonial">
-                                        <h4 class="text-white mb-1">UKMBS ITERA</h4>
-                                        <p class="lead text-white mb-1">Sistem Informasi Peminjaman</p>
-                                        <p>Gedung D Lantai 3</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div id="form-login-coy">
-                                    <div class="p-5">
-                                        <div class="mb-3 text-center">
-                                            <h3 class="h4 font-weight-bold text-theme">Masuk</h3>
-                                            <p class="text-muted mt-2 mb-5">Silahkan Isi Form Dengan Akun Anda!</p>
-                                        </div>
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <label for="email">Email address</label>
-                                                <input type="email" class="form-control" id="email" required>
-                                            </div>
-                                            <div class="form-group mb-2">
-                                                <label for="password">Password</label>
-                                                <input type="password" class="form-control" id="password" required>
-                                            </div>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-theme"
-                                                    onclick="login()">Masuk</button>
-                                            </div>
-                                        </form>
-                                        <a href="#" onclick="ShowForm('registrasi')"><small>belum punya
-                                                akun?</small></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div id="form-register-coy" style="display: none">
-                                    <div class="p-5">
-                                        <div class="mb-3 text-center">
-                                            <h3 class="h4 font-weight-bold text-theme">Registrasi User</h3>
-                                            <p class="text-muted mt-2 mb-5">Silahkan Isi Form Untuk Membuat Akun Anda!
-                                            </p>
-                                        </div>
-                                        <form>
-                                            <div class="form-group mb-2">
-                                                <label for="username">Nama Lengkap</label>
-                                                <input type="username" class="form-control" id="email" required>
-                                            </div>
-                                            <div class="form-group mb-2">
-                                                <label for="email">Email address</label>
-                                                <input type="email" class="form-control" id="email" required>
-                                            </div>
-                                            <div class="form-group mb-2">
-                                                <label for="password">Password</label>
-                                                <input type="password" class="form-control" id="password" required>
-                                            </div>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-theme"
-                                                    onclick="register()">Register</button>
-                                            </div>
-                                        </form>
-
-                                        <a href="#" onclick="ShowForm('login')"><small>kembali
-                                                ke login!</small></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
     <div id="main-wrapper" class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10">
@@ -186,12 +103,12 @@
                                                     onclick="login()">Masuk</button>
                                             </div>
                                         </form>
-                                        {{-- <a href="#" onclick="ShowForm('registrasi')"><small>belum punya
-                                                akun?</small></a> --}}
+                                        <a href="#" onclick="ShowForm('registrasi')"><small>belum punya
+                                                akun?</small></a>
                                     </div>
                                 </div>
 
-                                {{-- <div id="form-register-coy" style="display: none;">
+                                <div id="form-register-coy" style="display: none;">
                                     <div class="p-5">
                                         <div class="mb-3 text-center">
                                             <h3 class="h4 font-weight-bold text-theme">Registrasi User</h3>
@@ -209,6 +126,11 @@
                                                 <input type="email" class="form-control" id="register-email" required>
                                             </div>
                                             <div class="form-group mb-2">
+                                                <label for="register-no_wa">Nomor WA <small class="text-danger"><i>(ex
+                                                            : 08123xxx)</i></small></label>
+                                                <input type="number" class="form-control" id="register-no_wa" required>
+                                            </div>
+                                            <div class="form-group mb-2">
                                                 <label for="register-password">Password</label>
                                                 <input type="password" class="form-control" id="register-password"
                                                     required>
@@ -221,7 +143,7 @@
                                         <a href="#" onclick="ShowForm('login')"><small>Kembali ke
                                                 login!</small></a>
                                     </div>
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -242,6 +164,15 @@
                     login();
                 }
             });
+
+            $('#register-username, #register-email, #register-no_wa, #register-password').on('keypress',
+                function(
+                    e) {
+                    if (e.which === 13) { // 13 kode tombol Enter
+                        e.preventDefault()
+                        register();
+                    }
+                });
         });
 
         function ShowForm(action) {
@@ -334,6 +265,7 @@
         function register() {
             let username = $("#register-username").val();
             let email = $("#register-email").val();
+            let no_wa = $("#register-no_wa").val();
             let password = $("#register-password").val();
 
             const Toast = Swal.mixin({
@@ -348,18 +280,26 @@
                 }
             });
 
-            if (email == '') {
+
+            if (username == '') {
+                Toast.fire({
+                    icon: "warning",
+                    title: "Nama Lengkap tidak boleh kosong!"
+                });
+                return false;
+            } else if (email == '') {
                 Toast.fire({
                     icon: "warning",
                     title: "Email tidak boleh kosong!"
                 });
                 return false;
-            } else if (username == '') {
+            } else if (no_wa == '') {
                 Toast.fire({
                     icon: "warning",
-                    title: "Nama tidak boleh kosong!"
+                    title: "Nomor WA tidak boleh kosong!"
                 });
                 return false;
+
             } else if (IsEmail(email) == false) {
                 Toast.fire({
                     icon: "warning",
@@ -383,6 +323,7 @@
                     'email': email,
                     'password': password,
                     'username': username,
+                    'no_wa': no_wa,
                 },
                 success: function(response) {
                     if (response.status !== 200) {
