@@ -314,7 +314,7 @@
 
                         Toast.fire({
                             icon: "success",
-                            title: "Login berhasil, meluncuuur...",
+                            title: "Login berhasil",
                         });
 
                         setTimeout(() => {

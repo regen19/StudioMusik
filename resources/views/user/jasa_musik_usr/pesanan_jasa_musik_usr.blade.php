@@ -1,7 +1,7 @@
 @extends('partials.main')
 @section('MainContent')
     <div class="page-heading">
-        <h3>Pesanan Jasa Musik</h3>
+        <h3>Pesanan Saya</h3>
     </div>
 
     <div class="mb-3">
@@ -146,7 +146,7 @@
                                                     data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
                                                     Detail
                                                 </button>
-                                            </div> 
+                                            </div>
                                         </td>
                                     `;
                                 }
@@ -190,7 +190,7 @@
                                                     Detail
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})"> 
+                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})">
                                                     Batalkan
                                                 </button>
                                             </div>

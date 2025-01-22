@@ -1,7 +1,7 @@
 @extends('partials.main')
 @section('MainContent')
     <div class="page-heading">
-        <h3>Jadwal Studio</h3>
+        <h3>Jadwal Saya</h3>
     </div>
 
     <div class="mb-3">
