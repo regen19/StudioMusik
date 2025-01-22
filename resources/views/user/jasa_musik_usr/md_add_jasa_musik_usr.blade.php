@@ -14,10 +14,18 @@
                         <input type="datetime-local" class="form-control" name="tgl_produksi" id="tgl_produksi"
                             value="{{ date('Y-m-d\TH:i', strtotime(now())) }}" required>
                     </div>
-                    <div class="form-group">
-                        <label for="nama_peminjam">Nama Peminjam</label>
-                        <input type="text" class="form-control" name="nama_peminjam" id="nama_peminjam"
-                            value="{{ Auth::user()->username }}" readonly required>
+                    <div class="form-group row">
+                        <div class="col-7">
+                            <label for="nama_peminjam">Nama Peminjam</label>
+                            <input type="text" class="form-control" name="nama_peminjam" id="nama_peminjam"
+                                value="{{ Auth::user()->username }}" readonly required>
+                        </div>
+                        <div class="col-5">
+                            <label for="no_wa">Nomor WhatsApp</label>
+                            <input type="number" class="form-control" name="no_wa" id="no_wa"
+                                value="{{ Auth::user()->no_wa }}" readonly required>
+                        </div>
+
                         <input type="hidden" class="form-control" name="id_user" id="id_user"
                             value="{{ Auth::user()->id_user }}" readonly required>
                     </div>
@@ -32,11 +40,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic">(ex :
-                                0821234*****)</small></label>
-                        <input type="number" class="form-control" name="no_wa" id="no_wa" required>
-                    </div>
                     <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="5" required></textarea>
@@ -127,7 +130,23 @@
                     $('#tgl_produksi').val("");
                     $('#no_wa').val("");
                     $('#keterangan').val("");
+                },
+                error: function(xhr, status, error) {
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: errorMsg,
+                    });
                 }
+
             });
         }
     </script>

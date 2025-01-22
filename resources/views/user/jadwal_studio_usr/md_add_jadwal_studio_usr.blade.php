@@ -275,7 +275,6 @@
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
-                                // harga_sewa,
                                 tgl_pinjam,
                                 waktu_mulai,
                                 waktu_selesai,
@@ -287,7 +286,6 @@
                         submitForm(action, id_pesanan_jadwal_studio, {
                             id_user,
                             id_ruangan,
-                            // harga_sewa,
                             tgl_pinjam,
                             waktu_mulai,
                             waktu_selesai,
@@ -305,11 +303,18 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });

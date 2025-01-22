@@ -15,14 +15,14 @@
                                 <div class="row">
                                     <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
                                         <div class="stats-icon purple mb-2">
-                                            <i class="iconly-boldShow"></i>
+                                            <i class="iconly-boldBag"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
                                         <h6 class="text-muted font-semibold">
-                                            Profile Views
+                                            Jumlah Peminjam Studio Musik Disetujui <?php echo strftime('%B', strtotime(date('M'))); ?>
                                         </h6>
-                                        <h6 class="font-extrabold mb-0">112.000</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $studio_musik_approve }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -38,8 +38,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Followers</h6>
-                                        <h6 class="font-extrabold mb-0">183.000</h6>
+                                        <h6 class="text-muted font-semibold">Jumlah Jasa Musik Disetujui <?php echo strftime('%B', strtotime(date('M'))); ?>
+                                        </h6>
+                                        <h6 class="font-extrabold mb-0">{{ $jasa_musik_approve }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -51,12 +52,12 @@
                                 <div class="row">
                                     <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
                                         <div class="stats-icon green mb-2">
-                                            <i class="iconly-boldAdd-User"></i>
+                                            <i class="iconly-boldBookmark"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Following</h6>
-                                        <h6 class="font-extrabold mb-0">80.000</h6>
+                                        <h6 class="text-muted font-semibold">Jumlah Laporan <?php echo strftime('%B', strtotime(date('M'))); ?></h6>
+                                        <h6 class="font-extrabold mb-0">{{ $laporan }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -68,12 +69,12 @@
                                 <div class="row">
                                     <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start">
                                         <div class="stats-icon red mb-2">
-                                            <i class="iconly-boldBookmark"></i>
+                                            <i class="iconly-boldAdd-User"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Saved Post</h6>
-                                        <h6 class="font-extrabold mb-0">112</h6>
+                                        <h6 class="text-muted font-semibold">Jumlah Users</h6>
+                                        <h6 class="font-extrabold mb-0">{{ $jumlah_user }}</h6>
                                     </div>
                                 </div>
                             </div>

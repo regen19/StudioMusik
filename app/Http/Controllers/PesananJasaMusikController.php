@@ -40,7 +40,6 @@ class PesananJasaMusikController extends Controller
             "id_jasa_musik" => "required",
             "tgl_produksi" => "required",
             "id_user" => "required|numeric",
-            "no_wa" => "required|numeric",
             "keterangan" => "required",
         ]);
 
@@ -50,7 +49,7 @@ class PesananJasaMusikController extends Controller
             ], 422);
         }
 
-        $pesanan = $request->only('id_jasa_musik', 'tgl_produksi', 'id_user', 'no_wa', 'keterangan');
+        $pesanan = $request->only('id_jasa_musik', 'tgl_produksi', 'id_user', 'keterangan');
         $pesanan['status_persetujuan'] = "P";
         $pesanan['status_pengajuan'] = "Y";
         $pesanan['status_produksi'] = "N";
