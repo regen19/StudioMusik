@@ -42,10 +42,12 @@
                                         data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <strong>Studio Musik ITERA diresmikan pada tanggal 22 Februari 2018 oleh
-                                            Alm. Prof. Ir. Ofyar Z Tamin, M.Sc., Ph.D., IPU., yang kala itu menjadi rektor ITERA.
-                                            Studio Musik ITERA dibangun sebagai fasilitas kampus yang menunjang kegiatan
-                                            non-akademik seluruh civitas akedemika ITERA. Berlokasi di Gedung D Lantai 3,
-                                            tepat di ruangan ujung lantai.
+                                                Alm. Prof. Ir. Ofyar Z Tamin, M.Sc., Ph.D., IPU., yang kala itu menjadi
+                                                rektor ITERA.
+                                                Studio Musik ITERA dibangun sebagai fasilitas kampus yang menunjang kegiatan
+                                                non-akademik seluruh civitas akedemika ITERA. Berlokasi di Gedung D Lantai
+                                                3,
+                                                tepat di ruangan ujung lantai.
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +78,7 @@
                                             @if ($key == 0)
                                                 <div class="carousel-item active">
                                                     <img src="{{ asset('storage/img_upload/jasa_musik/' . $dp->gambar) }}"
-                                                        class="d-block w-100 h-100" alt="...">
+                                                        class="d-block w-100" alt="..." style="height: 600px">
                                                     <div class="carousel-caption d-none d-md-block">
                                                         <h5>{{ $dp->nama_jenis_jasa }}</h5>
                                                         <p class="text-white">{{ $dp->deskripsi }}</p>
@@ -85,7 +87,7 @@
                                             @else
                                                 <div class="carousel-item">
                                                     <img src="{{ asset('storage/img_upload/jasa_musik/' . $dp->gambar) }}"
-                                                        class="d-block w-100 h-100" alt="...">
+                                                        class="d-block w-100" alt="...">
                                                     <div class="carousel-caption d-none d-md-block">
                                                         <h5>{{ $dp->nama_jenis_jasa }}</h5>
                                                         <p class="text-white">{{ $dp->deskripsi }}</p>

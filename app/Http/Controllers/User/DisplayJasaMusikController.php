@@ -27,14 +27,6 @@ class DisplayJasaMusikController extends Controller
             ->select("pesanan_jasa_musik.id_pesanan_jasa_musik", "pesanan_jasa_musik.rating", "pesanan_jasa_musik.review", "pesanan_jasa_musik.updated_at", 'users.username')
             ->get();
 
-        // $paket =
-        //     DB::table('paket_jasa_musik')
-        //     ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "paket_jasa_musik.id_jasa_musik")
-        //     ->join("master_jenis_jasa", "master_jenis_jasa.id_jenis_jasa", "=", "master_jasa_musik.id_jenis_jasa")
-        //     ->select("paket_jasa_musik.*", "master_jenis_jasa.nama_jenis_jasa")
-        //     ->where('paket_jasa_musik.id_jasa_musik', $id_jasa_musik)
-        //     ->get();
-
         return view('user.jasa_musik_usr.jasa_jasa.pembuatan_jasa_musik',  compact([
             'jenis_jasa',
             'rating',
