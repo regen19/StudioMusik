@@ -58,9 +58,10 @@ class AuthController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'username'  => 'nullable',
+                'username'  => 'required',
                 'email'     => 'required|email|unique:users',
-                'password'  => 'required',
+                'no_wa'  => 'required',
+                'password'  => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -70,6 +71,7 @@ class AuthController extends Controller
             $user = User::create([
                 'username' => $request->username,
                 'email'         => $request->email,
+                'no_wa'         => $request->no_wa,
                 'password'      => Hash::make($request->password),
                 'user_role' => "user",
             ]);
@@ -104,5 +106,30 @@ class AuthController extends Controller
         $user = auth()->user();
 
         return view('user.profil_user', compact(['user']));
+    }
+
+    public function edit_profile(Request $request, string $id_user)
+    {
+        $validate = Validator::make($request->all(), [
+            "username" => "required",
+            "email" => "required|email",
+            "no_wa" => "required|numeric",
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                "msg" => $validate->errors(),
+                "status" => 422,
+            ], 422);
+        }
+
+        $profil = $request->only('username', 'no_wa', 'email');
+
+        User::findOrFail($id_user)->update($profil);
+
+        return response()->json([
+            "msg" => "Profile telah diperbarui",
+            "status" => 200,
+        ], 200);
     }
 }

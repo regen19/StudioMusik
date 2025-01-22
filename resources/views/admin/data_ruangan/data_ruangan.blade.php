@@ -1,7 +1,7 @@
 @extends('partials.main')
 @section('MainContent')
     <div class="page-heading">
-        <h3>Jadwal Studio</h3>
+        <h3>Data Ruangan Studio</h3>
     </div>
 
     <div class="mb-3">
@@ -97,7 +97,7 @@
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_ruangan(${data.id_ruangan})"> 
+                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_ruangan(${data.id_ruangan})">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>

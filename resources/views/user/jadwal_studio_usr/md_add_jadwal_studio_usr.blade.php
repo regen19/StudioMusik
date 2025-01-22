@@ -8,10 +8,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="id_user">Nama Peminjam</label>
-                    <input type="text" class="form-control" name="nama_user" id="nama_user"
-                        value="{{ Auth::user()->username }}" readonly required>
+                <div class="form-group row">
+                    <div class="col-7">
+                        <label for="id_user">Nama Peminjam</label>
+                        <input type="text" class="form-control" name="nama_user" id="nama_user"
+                            value="{{ Auth::user()->username }}" readonly required>
+                    </div>
+                    <div class="col-5">
+                        <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic"></label>
+                        <input type="number" class="form-control" name="no_wa" id="no_wa"
+                            value="{{ Auth::user()->no_wa }}" readonly required>
+                    </div>
+
 
                     <input type="hidden" value="{{ Auth::user()->id_user }}" name="id_user" id="id_user">
                 </div>
@@ -23,10 +31,6 @@
                             <option value="">Pilih Ruangan</option>
                         </select>
                     </div>
-                    {{-- <div class="col-4">
-                        <label for="harga_sewa">Biaya Perawatan</label>
-                        <input type="text" class="form-control" name="harga_sewa" id="harga_sewa" readonly>
-                    </div> --}}
                 </div>
 
                 <div class="form-group">
@@ -45,12 +49,6 @@
                         <label for="waktu_selesai">Waktu Selesai</label>
                         <input type="time" class="form-control" id="waktu_selesai" required>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic">(ex :
-                            0821234*****)</small></label>
-                    <input type="number" class="form-control" name="no_wa" id="no_wa" required>
                 </div>
 
                 <div class="form-group">
@@ -93,8 +91,6 @@
                             `<option value="${val.id_ruangan}">${val.nama_ruangan}</option>`
                         )
                     })
-
-                    // data-harga="${val.harga_sewa}"
                 },
             });
         })
@@ -113,7 +109,6 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response)
                     if (response.length === 0) {
                         $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
                         !</small>`);
@@ -161,9 +156,7 @@
 
             const $id_user = $('#id_user');
             const $id_ruangan = $('#id_ruangan');
-            // const $harga_sewa = $('#harga_sewa');
             const $tgl_pinjam = $('#tgl_pinjam');
-            const $no_wa = $('#no_wa');
             const $waktu_mulai = $('#waktu_mulai');
             const $waktu_selesai = $('#waktu_selesai');
             const $ket_keperluan = $('#ket_keperluan');
@@ -179,7 +172,6 @@
                 $waktu_mulai.val("");
                 $waktu_selesai.val("");
                 $ket_keperluan.val("");
-                $no_wa.val("");
                 $img_jaminan.val("");
                 $output.hide();
 
@@ -211,7 +203,6 @@
                     const $id_ruangan = $('#id_ruangan');
                     // const $harga_sewa = $('#harga_sewa');
                     const $tgl_pinjam = $('#tgl_pinjam');
-                    const $no_wa = $('#no_wa');
                     const $waktu_mulai = $('#waktu_mulai');
                     const $waktu_selesai = $('#waktu_selesai');
                     const $ket_keperluan = $('#ket_keperluan');
@@ -220,7 +211,6 @@
                     $('#id_ruangan').val(response.id_ruangan);
                     // $('#harga_sewa').val(response.harga_sewa);
                     $('#tgl_pinjam').val(response.tgl_pinjam);
-                    $('#no_wa').val(response.no_wa);
                     $("#waktu_mulai").val(response.waktu_mulai);
                     $("#waktu_selesai").val(response.waktu_selesai);
                     $("#ket_keperluan").val(response.ket_keperluan);
@@ -244,14 +234,12 @@
             const id_user = $('#id_user').val();
             const id_ruangan = $('#id_ruangan').val();
             const tgl_pinjam = $('#tgl_pinjam').val();
-            // const harga_sewa = $('#harga_sewa').val();
-            const no_wa = $('#no_wa').val();
             const waktu_mulai = $('#waktu_mulai').val();
             const waktu_selesai = $('#waktu_selesai').val();
             const ket_keperluan = $('#ket_keperluan').val();
             const img_jaminan = $('#img_jaminan')[0].files[0];
 
-            if (!id_ruangan || !no_wa || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
+            if (!id_ruangan || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
@@ -287,12 +275,10 @@
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
-                                // harga_sewa,
                                 tgl_pinjam,
                                 waktu_mulai,
                                 waktu_selesai,
                                 ket_keperluan,
-                                no_wa,
                                 img_jaminan
                             });
                         }
@@ -300,12 +286,10 @@
                         submitForm(action, id_pesanan_jadwal_studio, {
                             id_user,
                             id_ruangan,
-                            // harga_sewa,
                             tgl_pinjam,
                             waktu_mulai,
                             waktu_selesai,
                             ket_keperluan,
-                            no_wa,
                             img_jaminan
                         });
                     } else if (isAdd && isDateBooked) {
@@ -319,11 +303,18 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });
@@ -351,8 +342,7 @@
 
                     Swal.fire({
                         icon: "success",
-                        title: action === "add" ? "Data jadwal Berhasil Disimpan!" :
-                            "Data jadwal Berhasil Diubah!",
+                        title: action === "add" ? `${response.msg}` : `${response.msg}`,
                         toast: true,
                         position: "top-end",
                         showConfirmButton: false,
@@ -369,11 +359,18 @@
                     }, 1500);
                 },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });

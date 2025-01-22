@@ -1,7 +1,7 @@
 @extends('partials.main')
 @section('MainContent')
     <div class="page-heading">
-        <h3>Jadwal Studio</h3>
+        <h3>Jadwal Saya</h3>
     </div>
 
     <div class="mb-3">
@@ -33,7 +33,7 @@
                                 <th>Tanggal Peminjaman</th>
                                 <th>Waktu Mulai & Selesai</th>
                                 <th>Ruangan</th>
-                                <th>Nomor WA</th>
+                                {{-- <th>Nomor WA</th> --}}
                                 <th>Keperluan</th>
                                 <th>Status Persetujuan</th>
                                 <th>Aksi</th>
@@ -77,9 +77,9 @@
                         {
                             data: 'nama_ruangan',
                         },
-                        {
-                            data: 'no_wa',
-                        },
+                        // {
+                        //     data: 'no_wa',
+                        // },
                         {
                             data: 'ket_keperluan',
                         },

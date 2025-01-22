@@ -49,7 +49,7 @@
                                         <div class="carousel-item active">
                                             @if ($jenis_jasa)
                                                 <img src="{{ asset('storage/img_upload/jasa_musik/' . $jenis_jasa->gambar) }}"
-                                                    class="d-block w-100 h-100" alt="...">
+                                                    class="d-block w-100" alt="..." style="height: 650px">
                                             @else
                                                 <p class="text-center">Gambar sedang diperbarui</p>
                                             @endif
@@ -72,50 +72,52 @@
                                     <div class="row">
                                         @if ($rating !== null)
                                             @foreach ($rating as $rt)
-                                                <div class="my-2" style="width:100%; border: 1px solid red">
-                                                    <div class="p-2" style="font-size: 16px">
-                                                        {{ $rt->username }}
+                                                @if ($rt->rating != null)
+                                                    <div class="my-2" style="width:100%; border: 1px solid red">
+                                                        <div class="p-2" style="font-size: 16px">
+                                                            {{ $rt->username }}
 
-                                                        <div class="rating" style="font-size: 10px">
-                                                            <input type="radio"
-                                                                id="star5_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                name="rating_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                value="5" {{ $rt->rating == 5 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <label for="star5_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                title="5 stars">&#9733;</label>
-                                                            <input type="radio"
-                                                                id="star4_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                name="rating_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                value="4" {{ $rt->rating == 4 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <label for="star4_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                title="4 stars">&#9733;</label>
-                                                            <input type="radio"
-                                                                id="star3_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                name="rating_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                value="3" {{ $rt->rating == 3 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <label for="star3_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                title="3 stars">&#9733;</label>
-                                                            <input type="radio"
-                                                                id="star2_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                name="rating_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                value="2" {{ $rt->rating == 2 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <label for="star2_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                title="2 stars">&#9733;</label>
-                                                            <input type="radio"
-                                                                id="star1_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                name="rating_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                value="1" {{ $rt->rating == 1 ? 'checked' : '' }}
-                                                                disabled />
-                                                            <label for="star1_{{ $rt->id_pesanan_jasa_musik }}"
-                                                                title="1 star">&#9733;</label>
+                                                            <div class="rating" style="font-size: 10px">
+                                                                <input type="radio"
+                                                                    id="star5_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    name="rating_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    value="5" {{ $rt->rating == 5 ? 'checked' : '' }}
+                                                                    disabled />
+                                                                <label for="star5_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    title="5 stars">&#9733;</label>
+                                                                <input type="radio"
+                                                                    id="star4_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    name="rating_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    value="4" {{ $rt->rating == 4 ? 'checked' : '' }}
+                                                                    disabled />
+                                                                <label for="star4_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    title="4 stars">&#9733;</label>
+                                                                <input type="radio"
+                                                                    id="star3_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    name="rating_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    value="3" {{ $rt->rating == 3 ? 'checked' : '' }}
+                                                                    disabled />
+                                                                <label for="star3_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    title="3 stars">&#9733;</label>
+                                                                <input type="radio"
+                                                                    id="star2_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    name="rating_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    value="2" {{ $rt->rating == 2 ? 'checked' : '' }}
+                                                                    disabled />
+                                                                <label for="star2_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    title="2 stars">&#9733;</label>
+                                                                <input type="radio"
+                                                                    id="star1_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    name="rating_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    value="1" {{ $rt->rating == 1 ? 'checked' : '' }}
+                                                                    disabled />
+                                                                <label for="star1_{{ $rt->id_pesanan_jasa_musik }}"
+                                                                    title="1 star">&#9733;</label>
+                                                            </div>
+                                                            <p class="m-0 blockquote-footer">{{ $rt->review }}</p>
                                                         </div>
-                                                        <p class="m-0 blockquote-footer">{{ $rt->review }}</p>
                                                     </div>
-                                                </div>
+                                                @endif
                                             @endforeach
                                         @else
                                             <div>Belum ada penilain pengguna</div>

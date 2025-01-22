@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jasa_musik');
             $table->timestamp('tgl_produksi')->nullable();
             $table->timestamp('tenggat_produksi');
-            $table->bigInteger('no_wa');
             $table->longText('keterangan');
             $table->longText('keterangan_admin')->nullable();
             $table->enum('status_persetujuan', ['Y', 'N', 'P'])->default('P');

@@ -40,8 +40,9 @@ Route::get('/system_error_500', function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout']);
-    Route::get('/profile_user', [AuthController::class, 'profile_user']);
+    Route::get("/logout", [AuthController::class, 'logout']);
+    Route::get("/profile_user", [AuthController::class, 'profile_user']);
+    Route::post("/edit_profile/{id}", [AuthController::class, 'edit_profile']);
 
     Route::middleware('isAdmin')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'dashboard']);
@@ -103,10 +104,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/user_review_ruangan/{id}', [DataRuanganUserController::class, 'user_review_ruangan']);
 
         // JADWAL STUDIO SAYA
-        Route::get('/jadwal_studio_saya', [UserJadwalStudioController::class, 'index']);
-        Route::get('/fetch_jadwal_studio_saya', [UserJadwalStudioController::class, 'data_index']);
-        // Route::post("/add_pesanan_jadwal_studio_usr", [UserJadwalStudioController::class, 'store']);
-        // Route::post("/beri_rating_studio/{id}", [UserJadwalStudioController::class, 'beri_rating_studio']);
+        Route::get("/jadwal_studio_saya", [UserJadwalStudioController::class, 'index']);
+        Route::get("/fetch_jadwal_studio_saya", [UserJadwalStudioController::class, 'data_index']);
 
         // PESANAN JASA MUSIK SAYA
         Route::get('/pesanan_jasa_musik_saya', [UserPesananJasaMusikController::class, 'index']);

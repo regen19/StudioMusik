@@ -16,7 +16,6 @@ class PesananJasaMusikModel extends Model
         'tenggat_produksi',
         'id_jasa_musik',
         'id_user',
-        'no_wa',
         'keterangan',
         'keterangan_admin',
         'status_persetujuan',

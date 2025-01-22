@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id('id_pesanan_jadwal_studio');
             $table->unsignedBigInteger("id_user");
             $table->unsignedBigInteger("id_ruangan");
-            $table->bigInteger("no_wa");
             $table->date("tgl_pinjam");
             $table->time("waktu_mulai");
             $table->time("waktu_selesai");

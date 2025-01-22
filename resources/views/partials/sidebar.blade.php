@@ -4,7 +4,7 @@
             <div class="logo">
                 {{-- <a href="/"><img src="{{ asset('assets/img/logo-itera.png') }}" width="50px" height="500px"
                         alt="Logo Itera" /></a> --}}
-                <p class="fs-6 m-0">Sistem Informasi Peminjaman</p>
+                <p class="fs-6 m-0">Sistem Informasi Manajemen</p>
                 <p class="fs-6">Studio Musik ITERA</p>
                 <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -115,21 +115,21 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item {{ request()->is('data_ruangan_studio') ? 'active' : '' }}">
-                    <a href="{{ url('/data_ruangan_studio') }}" class="sidebar-link">
-                        <i class="bi bi-houses"></i>
-                        <span>Ruangan Studio</span>
-                    </a>
-                </li>
+
 
                 <li
-                    class="sidebar-item has-sub {{ request()->is('jadwal_studio_saya') || request()->is('tutorial_penggunaan_alat') ? 'active' : '' }}">
+                    class="sidebar-item has-sub {{ request()->is('data_ruangan_studio') || request()->is('jadwal_studio_saya') || request()->is('tutorial_penggunaan_alat') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-calendar2-week"></i>
-                        <span>Jadwal Studio</span>
+                        <span>Studio Musik</span>
                     </a>
 
                     <ul class="submenu">
+                        <li class="submenu-item {{ request()->is('data_ruangan_studio') ? 'active' : '' }}">
+                            <a href="{{ url('/data_ruangan_studio') }}" class="submenu-link">
+                                <span>Ruangan Studio</span>
+                            </a>
+                        </li>
                         <li class="submenu-item {{ request()->is('jadwal_studio_saya') ? 'active' : '' }}">
                             <a href="{{ url('/jadwal_studio_saya') }}" class="submenu-link">Jadwal Saya</a>
                         </li>

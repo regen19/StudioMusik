@@ -19,7 +19,6 @@ class PesananJadwalStudioModel extends Model
         'waktu_selesai',
         'img_jaminan',
         'ket_keperluan',
-        'no_wa',
         'ket_admin',
     ];
 }

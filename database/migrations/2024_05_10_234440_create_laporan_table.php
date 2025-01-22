@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('tgl_laporan');
             $table->string("jenis_laporan");
             $table->json('gambar');
-            $table->string("keterangan");
+            $table->longText("keterangan");
             $table->timestamps();
         });
     }
