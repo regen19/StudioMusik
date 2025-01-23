@@ -145,7 +145,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                {{-- <span id="BtnBayar"></span> --}}
+                <span id="btnProses"></span>
             </div>
         </div>
     </div>
@@ -207,6 +207,9 @@
                     $('input[type="radio"][name="rating2"][value="' + response.rating + '"]').prop('checked',
                         true);
                     $("#id_pesanan_jadwal_studio1").val(response.id_pesanan_jadwal_studio)
+
+                    $("#btnProses").html(`<button type="button" class="btn btn-success" onclick="data_status(${response.id_pesanan_jadwal_studio})"
+                    data-bs-toggle="modal" data-bs-target="#status_jadwal_studio">Proses</button>`)
 
 
                     if (response.review != null && response.rating != null) {
