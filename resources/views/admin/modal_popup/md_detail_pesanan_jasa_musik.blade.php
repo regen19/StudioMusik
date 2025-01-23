@@ -18,7 +18,6 @@
                                 <th>Tanggal & Jam Produksi</th>
                                 <th>Tenggat Produksi</th>
                                 <th>Keterangan</th>
-                                {{-- <th>Biaya Perawatan</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -28,7 +27,6 @@
                                 <td id="tanggal"></td>
                                 <td id="tenggat"></td>
                                 <td id="catatan"></td>
-                                {{-- <td id="biaya"></td> --}}
                             </tr>
                         </tbody>
                     </table>
@@ -37,11 +35,6 @@
                 <div class="table-responsive m-3">
                     <table>
                         <thead>
-                            {{-- <tr>
-                                <td>Metode Pembayaran</td>
-                                <td>:</td>
-                                <td>Qris</td>
-                            </tr> --}}
                             <tr>
                                 <td>Status Persetujuan</td>
                                 <td>:</td>
@@ -52,11 +45,6 @@
                                 <td>:</td>
                                 <td id="status_produksi"></td>
                             </tr>
-                            {{-- <tr>
-                                <td>Status Pembayaran</td>
-                                <td>:</td>
-                                <td id="status_bayar"></td>
-                            </tr> --}}
                         </thead>
                     </table>
                 </div>
@@ -75,23 +63,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-success" onclick="data_status(${data.id_pesanan_jasa_musik})"
-                    data-bs-toggle="modal" data-bs-target="#status_persetujuan">Proses</button>
-
-                {{-- <button type="button" class="btn btn-info btn-lg">Bayar </button> --}}
+                <span id="btnProses"></span>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // function formatRupiah(angka) {
-    //     var reverse = angka.toString().split('').reverse().join('');
-    //     var ribuan = reverse.match(/\d{1,3}/g);
-    //     var formatted = ribuan.join('.').split('').reverse().join('');
-    //     return 'Rp ' + formatted;
-    // }
-
     function show_byID(id_pesanan_jasa_musik) {
         $.ajax({
             url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
@@ -116,25 +94,13 @@
                     <div>`
                 )
                 $("#tenggat").html(response.tenggat_produksi.split(" ")[0])
-                // $("#biaya").text(formatRupiah(response.biaya_paket))
                 $("#komentar_rating").text(response.review)
                 $("#id_pesanan_jasa_musik").val(id_pesanan_jasa_musik)
                 $('input[type="radio"][name="rating"][value="' + response.rating + '"]').prop('checked',
                     true);
 
-                // STATUS PEMBAYARAN
-                // let status = "";
-                // let color = "";
-
-                // if (response.status_pembayaran === "Y") {
-                //     status = "Lunas"
-                //     color = "success"
-                // } else if (response.status_pembayaran === "N") {
-                //     status = "Belum Bayar"
-                //     color = "warning"
-                // }
-                // $("#status_bayar").html(`<span class="badge bg-${color}">${status}</span>`)
-
+                $("#btnProses").html(`<button type="button" class="btn btn-success" onclick="data_status(${response.id_pesanan_jasa_musik})"
+                    data-bs-toggle="modal" data-bs-target="#status_persetujuan">Proses</button>`)
                 // STATUS PERSETUJUAN
                 let status1 = "";
                 let color1 = "";
@@ -194,80 +160,8 @@
 
                     }
                 });
-                // btn bayar
-                // if (response.status_persetujuan === "Y" && response.status_pembayaran === "N") {
-                //     $("#BtnBayar").show().html(
-                //         ` <button type="button" class="btn btn-info btn-lg text-white" onclick=get_snap_token(${id_pesanan_jasa_musik})>Bayar </button>`
-                //     )
-                // } else {
-                //     $("#BtnBayar").hide()
-                // }
+
             }
         });
     }
-
-    // function show_byID(id_pesanan_jasa_musik) {
-    //     $.ajax({
-    //         url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
-    //         method: 'POST',
-    //         dataType: 'json',
-    //         data: {
-    //             "_token": "{{ csrf_token() }}"
-    //         },
-    //         success: function(response) {
-    //             $("#tgl_pengajuan").text("Pengajuan pada : " + response.tgl_produksi)
-    //             $("#nama_user").text(response.username)
-    //             $("#tanggal").text(response.tgl_produksi)
-    //             $("#tenggat").text(response.tenggat_produksi)
-    //             $("#biaya").text(formatRupiah(response.biaya_produksi))
-
-    //             // STATUS PEMBAYARAN
-    //             let status = "";
-    //             let color = "";
-
-    //             if (response.status_pembayaran === "Y") {
-    //                 status = "Lunas"
-    //                 color = "success"
-    //             } else if (response.status_pembayaran === "N") {
-    //                 status = "Belum Bayar"
-    //                 color = "warning"
-    //             }
-    //             $("#status_bayar").html(`<span class="badge bg-${color}">${status}</span>`)
-
-    //             // STATUS PERSETUJUAN
-    //             let status1 = "";
-    //             let color1 = "";
-    //             if (response.status_persetujuan === "P") {
-    //                 status1 = "Pengajuan"
-    //                 color1 = "warning"
-    //             } else if (response.status_persetujuan === "Y") {
-    //                 status1 = "Disetujui"
-    //                 color1 = "success"
-    //             } else if (response.status_persetujuan === "N") {
-    //                 status1 = "Ditolak"
-    //                 color1 = "danger"
-    //             }
-    //             $("#status_setuju").html(`<span class="badge bg-${color1}">${status1}</span>`)
-
-    //             // STATUS PRODUKSI
-    //             let status2 = "";
-    //             let color2 = "";
-    //             if (response.status_produksi === "P") {
-    //                 status2 = "Diproses"
-    //                 color2 = "primary"
-    //             } else if (response.status_produksi === "Y") {
-    //                 status2 = "Selesai"
-    //                 color2 = "success"
-    //             } else if (response.status_produksi === "N") {
-    //                 status2 = "Diajukan"
-    //                 color2 = "warning"
-    //             }
-    //             $("#status_produksi").html(`<span class="badge bg-${color2}">${status2}</span>`)
-
-
-    //             $("#catatan").text(response.keterangan)
-    //             $("#catatan_admin").text(response.keterangan_admin)
-    //         }
-    //     });
-    // }
 </script>

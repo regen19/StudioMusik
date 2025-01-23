@@ -35,7 +35,7 @@ class PesananJasaMusikController extends Controller
 
     public function download_file_pesanan_jasa_musik($filename)
     {
-        $filePath = public_path('storage/pesanan/jasa_musik_file/'.$filename);
+        $filePath = public_path('storage/pesanan/jasa_musik_file/' . $filename);
 
         if (file_exists($filePath)) {
             return response()->download($filePath, $filename);
@@ -70,7 +70,7 @@ class PesananJasaMusikController extends Controller
         foreach ($request->informasi as $index => $data) {
             if ($data['tipe_field'] == 'file') {
                 $file = $request->file("informasi.$index.file");
-                $nama_file = time().'-'.str_replace(' ', '_', $file->getClientOriginalName());
+                $nama_file = time() . '-' . str_replace(' ', '_', $file->getClientOriginalName());
                 $file->move(public_path('/storage/pesanan/jasa_musik_file'), $nama_file);
                 $value_field = $nama_file;
             } else {
