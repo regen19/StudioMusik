@@ -50,7 +50,7 @@ class MasterJasaMusikController extends Controller
 
         if ($request->hasFile('gambar')) {
             $img = $request->file('gambar');
-            $nama_img = time().'-'.str_replace(' ', '_', $request->nama_jenis_jasa).'.'.$img->getClientOriginalExtension();
+            $nama_img = time() . '-' . str_replace(' ', '_', $request->nama_jenis_jasa) . '.' . $img->getClientOriginalExtension();
             $img->move(public_path('/storage/img_upload/jasa_musik'), $nama_img);
             $data_jasa['gambar'] = $nama_img;
         }
@@ -105,14 +105,14 @@ class MasterJasaMusikController extends Controller
         if ($data) {
             // Menghapus dan mengganti gambar jika ada file gambar baru yang diunggah
             if ($request->hasFile('gambar')) {
-                $path = '/storage/img_upload/jasa_musik/'.$data->gambar;
+                $path = '/storage/img_upload/jasa_musik/' . $data->gambar;
                 if (File::exists(public_path($path))) {
                     File::delete(public_path($path));
                 }
 
                 $img = $request->file('gambar');
                 $extension = $img->getClientOriginalExtension();
-                $nama_img = time().'-'.str_replace(' ', '_', $request->nama_jenis_jasa).'.'.$extension;
+                $nama_img = time() . '-' . str_replace(' ', '_', $request->nama_jenis_jasa) . '.' . $extension;
                 $img->move(public_path('/storage/img_upload/jasa_musik'), $nama_img);
                 $data->gambar = $nama_img;
             }
@@ -149,7 +149,7 @@ class MasterJasaMusikController extends Controller
         $data = MasterJasaMusikModel::findOrFail($id_jasa_musik);
 
         if ($data) {
-            $path = '/storage/img_upload/jasa_musik/'.$data->gambar;
+            $path = '/storage/img_upload/jasa_musik/' . $data->gambar;
             if (File::exists(public_path($path))) {
                 File::delete(public_path($path));
             }

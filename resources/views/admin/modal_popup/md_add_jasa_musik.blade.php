@@ -15,7 +15,7 @@
 
                 <label for="data_jasa_musik">Informasi Jasa Musik</label>
                 <div id="inputContainer">
-                    
+
                 </div>
 
                 <button class="btn btn-success mb-4" id="addButton">Tambah Informasi</button>
@@ -62,7 +62,7 @@
                     </div>
                     <label for="data_jasa_musik">Informasi Jasa Musik</label>
                     <div id="up_inputContainer">
-                        
+
                     </div>
 
                     <button class="btn btn-success mb-4" id="up_addButton">Tambah Informasi</button>
@@ -177,8 +177,8 @@
             let informasi_jasa_musik = [];
             $('#inputContainer .inputWrapper').each(function() {
                 const jenisField = $(this).find('.jenis_form_jasa').val(); // Nilai dari select
-                const namaField = $(this).find('.form_jasa').val();       // Nilai dari input
-                
+                const namaField = $(this).find('.form_jasa').val(); // Nilai dari input
+
                 informasi_jasa_musik.push({
                     jenis_field: jenisField,
                     nama_field: namaField
@@ -249,7 +249,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    
+
                     $('#id_jasa_musik').val(id_jasa_musik)
                     $('#up_nama_jenis_jasa').val(response.nama_jenis_jasa);
                     $('#up_sk').val(response.sk);
@@ -259,9 +259,10 @@
                     $('#up_output').show();
                     $('#up_inputContainer').empty();
                     response.form_jasa.forEach((field) => {
-                      $('#up_addButton').trigger('click');
-                      $('#up_inputContainer .inputWrapper:last .form_jasa').val(field.nama_field);
-                      $('#up_inputContainer .inputWrapper:last .jenis_form_jasa').val(field.jenis_field);
+                        $('#up_addButton').trigger('click');
+                        $('#up_inputContainer .inputWrapper:last .form_jasa').val(field.nama_field);
+                        $('#up_inputContainer .inputWrapper:last .jenis_form_jasa').val(field
+                            .jenis_field);
                     });
                 }
             });
@@ -275,21 +276,19 @@
             let nama_jenis_jasa = $('#up_nama_jenis_jasa').val();
             let sk = $('#up_sk').val();
             let deskripsi = $('#up_deskripsi').val();
-            // let keterangan = $('#up_keterangan').val();
-            // let biaya_produksi = $('#up_biaya_produksi').val();
             let gambar = $("#up_gambar")[0].files[0];
             let informasi_jasa_musik = [];
             $('#up_inputContainer .inputWrapper').each(function() {
                 const jenisField = $(this).find('.jenis_form_jasa').val(); // Nilai dari select
-                const namaField = $(this).find('.form_jasa').val();       // Nilai dari input
-                
+                const namaField = $(this).find('.form_jasa').val(); // Nilai dari input
+
                 informasi_jasa_musik.push({
                     jenis_field: jenisField,
                     nama_field: namaField
                 });
             });
 
-            if (!nama_jenis_jasa || !sk || !deskripsi || !gambar || informasi_jasa_musik.length == 0) {
+            if (!nama_jenis_jasa || !sk || !deskripsi || informasi_jasa_musik.length == 0) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
@@ -304,8 +303,6 @@
             updateData.append('informasi_jasa_musik', JSON.stringify(informasi_jasa_musik));
             updateData.append('sk', sk);
             updateData.append('deskripsi', deskripsi);
-            // updateData.append('keterangan', keterangan);
-            // updateData.append('biaya_produksi', biaya_produksi);
             updateData.append('gambar', gambar);
             updateData.append('_token', '{{ csrf_token() }}');
 
@@ -339,196 +336,5 @@
                 }
             });
         })
-    </script>
-
-    {{-- MASTER JENIS JASA --}}
-    <script>
-        $(document).ready(function() {
-            $('#tableJenisJasa').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: {
-                    url: "{{ url('/fetch_master_jenis_jasa') }}",
-                    type: 'GET',
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                    },
-                    {
-                        data: 'nama_jenis_jasa',
-                    },
-                    {
-                        title: 'Menu',
-                        data: null,
-                        render: function(data) {
-                            return `
-                                    <td>
-                                        <div style="margin-rigth=20px;">
-                                            <button type="button" class="btn btn-info icon icon-left text-white" onclick="show_byId_jenisJasa(${data.id_jenis_jasa})">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-
-                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jenis(${data.id_jenis_jasa})">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                `;
-                        }
-                    }
-                ],
-
-                paging: true,
-                searching: true
-            });
-        })
-
-        function addJenisJasa() {
-            let nama_jenis_jasa = $('#nama_jenis_jasa').val();
-
-            if (!nama_jenis_jasa) {
-                Swal.fire({
-                    title: "Gagal simpan.",
-                    text: "Harap isi semua form!",
-                    icon: "error"
-                });
-                return
-            }
-
-            $.ajax({
-                url: "{{ url('/add_master_jenis_jasa') }}",
-                method: 'POST',
-                data: {
-                    "nama_jenis_jasa": nama_jenis_jasa,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    $('#tableJenisJasa').DataTable().ajax.reload()
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-
-                    Toast.fire({
-                        icon: "success",
-                        title: "Data Berhasil Disimpan!"
-                    });
-
-                    $('#nama_jenis_jasa').val("");
-                }
-            });
-        }
-
-        function editJenisJasa(id_jenis_jasa) {
-            let nama_jenis_jasa = $('#nama_jenis_jasa').val();
-
-            if (!nama_jenis_jasa) {
-                Swal.fire({
-                    title: "Gagal simpan.",
-                    text: "Harap isi semua form!",
-                    icon: "error"
-                });
-                return
-            }
-
-            $.ajax({
-                url: `{{ url('/edit_master_jenis_jasa/${id_jenis_jasa}') }}`,
-                method: 'put',
-                data: {
-                    "nama_jenis_jasa": nama_jenis_jasa,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    $('#tableJenisJasa').DataTable().ajax.reload()
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
-
-                    Toast.fire({
-                        icon: "success",
-                        title: "Data Berhasil Disimpan!"
-                    });
-
-                    $('#nama_jenis_jasa').val("");
-                    $("#addJenisJasa").show();
-                    $("#editJenisJasa").hide();
-                }
-            });
-        }
-
-        function show_byId_jenisJasa(id_jenis_jasa) {
-            $("#addJenisJasa").hide();
-            $("#editJenisJasa").show();
-
-            $("#editJenisJasa").off();
-            $("#editJenisJasa").on('click', function() {
-                editJenisJasa(id_jenis_jasa);
-            })
-
-            $.ajax({
-                url: `{{ url('/showById_master_jenis_jasa/${id_jenis_jasa}') }}`,
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    $('#nama_jenis_jasa').val(response.nama_jenis_jasa);
-                }
-            });
-        }
-
-        function hapus_jenis(id_jenis_jasa) {
-            Swal.fire({
-                title: "Apakah ada yakin hapus?",
-                text: "Data Jenis Jasa Musik akan terhapus.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, Hapus!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: `{{ url('/hapus_master_jenis_jasa/${id_jenis_jasa}') }}`,
-                        method: 'delete',
-                        data: {
-                            "_token": "{{ csrf_token() }}"
-                        },
-                        success: function(response) {
-                            console.log(response)
-                            Swal.fire({
-                                title: "Dihapus!",
-                                text: "Data jenis jasa musik telah dihapus.",
-                                icon: "success"
-                            });
-
-                            $('#tableJenisJasa').DataTable().ajax.reload()
-
-                            setTimeout(() => {
-                                swal.close()
-                            }, 1000);
-                        }
-                    })
-                }
-            });
-        }
     </script>
 @endpush
