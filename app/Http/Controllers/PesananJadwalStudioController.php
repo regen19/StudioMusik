@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
+use function Laravel\Prompts\select;
+
 class PesananJadwalStudioController extends Controller
 {
     public function index()
@@ -291,6 +293,31 @@ class PesananJadwalStudioController extends Controller
             ->where("detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
             ->select("detail_pesanan_jadwal_studio.id_detail_pesanan_jadwal_studio")
             ->first();
+
+        $id_user = DB::table("pesanan_jadwal_studio")
+            ->where("id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+            ->pluck("id_user")
+            ->first();
+
+        $email = DB::table("users")
+            ->where("id_user", $id_user)
+            ->pluck("email")
+            ->first();
+
+        $dataEmail = DB::table("pesanan_jadwal_studio")
+            ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+            ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+            ->select(
+                "pesanan_jadwal_studio.*",
+                "users.username",
+                "data_ruangan.nama_ruangan"
+            )
+            ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+            ->first();
+
+        $subject = "Persetujuan Peminjaman Studi Musik";
+        $view = "EmailNotif.PersetujuanStudioMusik";
+        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
         if (!$id_detail_pesanan_jadwal_studio) {
             return response()->json([

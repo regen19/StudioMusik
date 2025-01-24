@@ -180,6 +180,27 @@ class PesananJasaMusikController extends Controller
 
         PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($pesanan);
 
+        $id_user = DB::table("id_pesanan_jasa_musik")
+            ->where("id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
+            ->pluck("id_user")
+            ->first();
+
+        $email = DB::table("users")
+            ->where("id_user", $id_user)
+            ->pluck("email")
+            ->first();
+
+        $dataEmail = DB::table("pesanan_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
+            ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
+            ->first();
+
+        $subject = "Persetujuan Peminjaman Studi Musik";
+        $view = "EmailNotif.PersetujuanJasaMusik";
+        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+
         return response()->json([
             'msg' => 'Status persetujuan telah diubah',
         ], 200);
