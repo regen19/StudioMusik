@@ -24,7 +24,8 @@
                 <div class="form-group">
                     <label for="gambar">Gambar <small class="text-danger fst-italic">(max: 1
                             mb)</small></small></label>
-                    <input type="file" class="image-preview-filepond form-control" id="gambar" multiple>
+                    <input type="file" class="image-preview-filepond form-control" id="gambar" name="gambar[]"
+                        multiple>
 
                     <p class="my-3 output"><img id="output"
                             style="display: none; max-width: 200px; max-height: 200px;" />

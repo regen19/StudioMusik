@@ -437,8 +437,10 @@
 
     @push('script')
         <script>
-            let status_peminjaman
-            let status_pengajuan
+            let status_persetujuan1
+            let status_pengajuan1
+            let status_peminjaman1
+            let id_pesanan_jadwal_studio1
 
             function cek_setuju() {
                 let selectedValue = $('#status_persetujuan').val()
@@ -458,8 +460,11 @@
                         "_token": "{{ csrf_token() }}"
                     },
                     success: function(response) {
-                        status_peminjaman = response.status_peminjaman
-                        status_pengajuan = response.status_pengajuan
+                        status_persetujuan1 = response.status_peminjaman
+                        status_pengajuan1 = response.status_pengajuan
+                        status_peminjaman1 = response.status_peminjaman
+                        id_pesanan_jadwal_studio1 = id_pesanan_jadwal_studio
+
                         $(".id_pesanan_jadwal_studio").val(id_pesanan_jadwal_studio)
                         $('#status_persetujuan').val(response.status_persetujuan)
 
@@ -476,7 +481,7 @@
                 let keterangan_admin = $('#keterangan_admin').val()
                 let id_pesanan_jadwal_studio = $('#id_pesanan_jadwal_studio').val()
 
-                if (status_peminjaman == "Y") {
+                if (status_peminjaman1 == "Y" && status_persetujuan1 == "Y" && status_pengajuan1 == "Y") {
                     Swal.fire({
                         title: "Pesanan Telah Selesai!",
                         text: "Tidak dapat mengubah status persetujuan",
@@ -484,7 +489,7 @@
                     });
 
                     return 0;
-                } else if (status_pengajuan == "X") {
+                } else if (status_pengajuan1 == "X") {
                     Swal.fire({
                         title: "Pesanan Telah Dibatalkan!",
                         text: "Tidak dapat mengubah status persetujuan",
@@ -494,7 +499,7 @@
                     return 0;
                 } else {
                     $.ajax({
-                        url: `{{ url('/status_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
+                        url: `{{ url('/status_pesanan_jadwal_studio/${id_pesanan_jadwal_studio1}') }}`,
                         method: 'post',
                         data: {
                             "status_persetujuan": status_persetujuan,

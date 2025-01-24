@@ -132,16 +132,49 @@
                         {
                             data: null,
                             render: function(data) {
-                                return `
+                                let status = "";
+                                let color = "";
+                                if (data.status_persetujuan === "Y") {
+                                    status = "Detail"
+                                    color = "primary"
+                                } else if (data.status_persetujuan === "N") {
+                                    status = "Ditolak"
+                                    color = "danger"
+                                }
+
+                                if (data.status_produksi === "Y") {
+                                    status = "Selesai"
+                                    color = "success"
+                                }
+
+                                if (data.status_persetujuan === "Y" && data.status_produksi === "Y" &&
+                                    data.review !== null && data.rating !== null) {
+                                    return `
+                                        <td>
+                                            <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-success icon icon-left text-white"
+                                                    data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
+                                                    Selesai
+                                                </button>
+                                            </div>
+                                        </td>
+                                    `;
+                                } else if (data.status_pengajuan === "X") {
+                                    return `
+                                    <td><i class="text-danger">Dibatalkan</i></td>
+                                    `;
+                                } else {
+                                    return `
                                     <td>
                                         <div style="margin-rigth=20px;">
-                                            <button type="button" class="btn btn-primary icon icon-left text-white"
+                                            <button type="button" class="btn btn-${color} icon icon-left text-white"
                                                 data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
-                                                Detail
+                                                ${status}
                                             </button>
                                         </div>
                                     </td>
                                 `;
+                                }
                             }
                         }
                     ],
@@ -204,6 +237,10 @@
 
     @push('script')
         <script>
+            let status_produksi1
+            let status_pengajuan1
+            let status_persetujuan1
+
             function cek_setuju() {
                 let selectedValue = $('#stts_setuju').val()
 
@@ -214,7 +251,7 @@
                 }
             }
 
-            function data_status(id_pesanan_jasa_musik, data) {
+            function data_status(id_pesanan_jasa_musik) {
                 $.ajax({
                     url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
                     method: 'post',
@@ -222,6 +259,10 @@
                         "_token": "{{ csrf_token() }}"
                     },
                     success: function(response) {
+                        status_produksi1 = response.status_produksi
+                        status_pengajuan1 = response.status_pengajuan
+                        status_persetujuan1 = response.status_persetujuan
+
                         $("#id_pesanan_jasa_musik").val(id_pesanan_jasa_musik)
                         $('#stts_setuju').val(response.status_persetujuan)
                         $("#stts_produksi").val(response.status_produksi)
@@ -240,39 +281,58 @@
                 let tenggat_produksi = $("#tenggat_produksi").val()
                 let tgl_produksi = $("#tgl_produksi").val()
 
-                $.ajax({
-                    url: `{{ url('/status_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
-                    method: 'post',
-                    data: {
-                        "tenggat_produksi": tenggat_produksi,
-                        "tgl_produksi": tgl_produksi,
-                        "status_persetujuan": status_persetujuan,
-                        "keterangan_admin": keterangan_admin,
-                        "status_produksi": status_produksi,
-                        "_token": "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        $('#tbPesanan').DataTable().ajax.reload()
-                        $("#status_persetujuan").modal("hide")
+                if (status_produksi1 == "Y" && status_persetujuan1 == "Y" && status_pengajuan1 == "Y") {
+                    Swal.fire({
+                        title: "Pesanan Telah Selesai!",
+                        text: "Tidak dapat mengubah status persetujuan",
+                        icon: "warning"
+                    });
 
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.onmouseenter = Swal.stopTimer;
-                                toast.onmouseleave = Swal.resumeTimer;
-                            }
-                        });
+                    return 0;
+                } else if (status_pengajuan1 == "X") {
+                    Swal.fire({
+                        title: "Pesanan Telah Dibatalkan!",
+                        text: "Tidak dapat mengubah status persetujuan",
+                        icon: "warning"
+                    });
 
-                        Toast.fire({
-                            icon: "success",
-                            title: "Status persetujuan berhasil diubah!"
-                        });
-                    }
-                });
+                    return 0;
+                } else {
+
+                    $.ajax({
+                        url: `{{ url('/status_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
+                        method: 'post',
+                        data: {
+                            "tenggat_produksi": tenggat_produksi,
+                            "tgl_produksi": tgl_produksi,
+                            "status_persetujuan": status_persetujuan,
+                            "keterangan_admin": keterangan_admin,
+                            "status_produksi": status_produksi,
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            $('#tbPesanan').DataTable().ajax.reload()
+                            $("#status_persetujuan").modal("hide")
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+
+                            Toast.fire({
+                                icon: "success",
+                                title: "Status persetujuan berhasil diubah!"
+                            });
+                        }
+                    });
+                }
             }
         </script>
     @endpush

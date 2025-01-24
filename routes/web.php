@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
     // ALL ROLE
     Route::get('/lihat_harga_sewa_studio', [PesananJadwalStudioController::class, 'lihat_harga_studio']);
 
-    // RATING STUDIO
+    // RATING STUDIOSS
     Route::post('/beri_rating_studio/{id}', [UserJadwalStudioController::class, 'beri_rating_studio']);
 
     // JADWAL STUDIO

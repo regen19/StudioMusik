@@ -25,16 +25,20 @@ class LaporanController extends Controller
     public function data_index()
     {
         $laporans = LaporanModel::all();
-        return datatables()->of($laporans)->addIndexColumn()->addColumn('gambar', function ($row) {
+        $data = datatables()->of($laporans)->addIndexColumn()->addColumn('gambar', function ($row) {
             $img_html = '';
             $images = json_decode($row->gambar, true);
             if (is_array($images)) {
                 foreach ($images as $img) {
-                    $img_html .= '<a target="_blank" href="' . asset($img) . '"><img src="' . asset($img) . '" class="img-thumbnail" style="max-width: 50px; max-height: 50px;"></a> ';
+                    if (is_string($img)) {
+                        $img_html .= '<a target="_blank" href="' . asset($img) . '"><img src="' . asset($img) . '" class="img-thumbnail" style="max-width: 50px; max-height: 50px;"></a> ';
+                    }
                 }
             }
             return $img_html;
         })->rawColumns(['gambar'])->make(true);
+
+        return $data;
     }
 
     public function store(Request $request)
@@ -52,12 +56,21 @@ class LaporanController extends Controller
             ], 422);
         }
 
+        // $imagePaths = [];
+        // if ($request->hasfile('gambar')) {
+        //     foreach ($request->file('gambar') as $image) {
+        //         $name = time() . '-Laporan.' . $image->getClientOriginalExtension();
+        //         $path = $image->move(public_path('/storage/img_upload/laporan'), $name);
+        //         $imagePaths[] = $path;
+        //     }
+        // }
+
         $imagePaths = [];
-        if ($request->hasfile('gambar')) {
+        if ($request->hasFile('gambar')) {
             foreach ($request->file('gambar') as $image) {
                 $name = time() . '-Laporan.' . $image->getClientOriginalExtension();
-                $path = $image->move(public_path('/storage/img_upload/laporan'), $name);
-                $imagePaths[] = $path;
+                $image->move(public_path('/storage/img_upload/laporan'), $name);
+                $imagePaths[] = '/storage/img_upload/laporan/' . $name;
             }
         }
 
@@ -80,7 +93,9 @@ class LaporanController extends Controller
         $images = json_decode($data->gambar, true);
         if (is_array($images)) {
             foreach ($images as $img) {
-                Storage::delete($img);
+                if (file_exists(public_path($img))) {
+                    unlink(public_path($img));
+                }
             }
         }
 
