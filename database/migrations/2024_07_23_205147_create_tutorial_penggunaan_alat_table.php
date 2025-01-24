@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_tutorial');
             $table->string('nama_alat');
             $table->string('gambar_alat');
-            $table->string('deskripsi');
+            $table->longText('deskripsi');
             $table->timestamps();
         });
     }

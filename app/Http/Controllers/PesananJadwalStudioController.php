@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PengajuanUserEmail;
 use App\Models\Admin\DetailPesananJadwalStudioModel;
 use App\Models\HargaSewaStudioModel;
 use App\Models\PesananJadwalStudioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -106,6 +108,21 @@ class PesananJadwalStudioController extends Controller
 
             // Simpan detail pesanan ke dalam tabel DetailPesananJadwalStudioModel
             DetailPesananJadwalStudioModel::create($detailPesanan);
+
+            $dataEmail = DB::table("pesanan_jadwal_studio")
+                ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+                ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+                ->select(
+                    "pesanan_jadwal_studio.*",
+                    "users.username",
+                    "data_ruangan.nama_ruangan"
+                )
+                ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $jadwalStudio->id_pesanan_jadwal_studio)
+                ->first();
+
+            $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
+            $view = "EmailNotif.PengajuanStudioMusikMail";
+            Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
             // Commit transaksi
             DB::commit();
