@@ -179,7 +179,8 @@
                                             Download File
                                         </a>`
                                         :
-                                        value.value_field
+                                        `<p style="white-space: pre-wrap;" class = "mb-0 ">${value.value_field}</p>`
+
                                      }
                                 </td>
                             </tr>

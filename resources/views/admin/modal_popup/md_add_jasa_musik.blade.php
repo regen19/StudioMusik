@@ -15,7 +15,7 @@
 
                 <label for="data_jasa_musik">Informasi Jasa Musik</label>
                 <div id="inputContainer">
-                    
+
                 </div>
 
                 <button class="btn btn-success mb-4" id="addButton">Tambah Informasi</button>
@@ -62,7 +62,7 @@
                     </div>
                     <label for="data_jasa_musik">Informasi Jasa Musik</label>
                     <div id="up_inputContainer">
-                        
+
                     </div>
 
                     <button class="btn btn-success mb-4" id="up_addButton">Tambah Informasi</button>
@@ -178,7 +178,7 @@
             $('#inputContainer .inputWrapper').each(function() {
                 const jenisField = $(this).find('.jenis_form_jasa').val(); // Nilai dari select
                 const namaField = $(this).find('.form_jasa').val();       // Nilai dari input
-                
+
                 informasi_jasa_musik.push({
                     jenis_field: jenisField,
                     nama_field: namaField
@@ -249,7 +249,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    
+
                     $('#id_jasa_musik').val(id_jasa_musik)
                     $('#up_nama_jenis_jasa').val(response.nama_jenis_jasa);
                     $('#up_sk').val(response.sk);
@@ -282,7 +282,7 @@
             $('#up_inputContainer .inputWrapper').each(function() {
                 const jenisField = $(this).find('.jenis_form_jasa').val(); // Nilai dari select
                 const namaField = $(this).find('.form_jasa').val();       // Nilai dari input
-                
+
                 informasi_jasa_musik.push({
                     jenis_field: jenisField,
                     nama_field: namaField

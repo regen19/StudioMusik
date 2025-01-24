@@ -80,7 +80,12 @@
                                 `
                                 <div class="form-group">
                                     <label for="${value.nama_field}">${value.nama_field}</label>
-                                    <input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" >
+                                    ${value.jenis_field=="text"?
+                                    `<textarea type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}"></textarea>`
+                                    :
+                                    `<input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" >`
+                                    }
+
                                 </div>
                                 `
                             )

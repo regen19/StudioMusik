@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold">Users</h6>
+                                        <h6 class="text-muted font-semibold"><strong> Users </strong> <br> </h6>
                                         <h6 class="font-extrabold mb-0">{{ $jumlah_user }}</h6>
                                     </div>
                                 </div>
