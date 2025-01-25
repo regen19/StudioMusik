@@ -38,7 +38,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold"> <strong> Jasa Musik </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?>
+                                        <h6 class="text-muted font-semibold"> <strong> Jasa Musik </strong> <br>
+                                            <?php echo strftime('%B', strtotime(date('M'))); ?>
                                         </h6>
                                         <h6 class="font-extrabold mb-0">{{ $jasa_musik_approve }}</h6>
                                     </div>
@@ -56,7 +57,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                        <h6 class="text-muted font-semibold"> <strong> Laporan </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?></h6>
+                                        <h6 class="text-muted font-semibold"> <strong> Laporan </strong> <br>
+                                            <?php echo strftime('%B', strtotime(date('M'))); ?></h6>
                                         <h6 class="font-extrabold mb-0">{{ $laporan }}</h6>
                                     </div>
                                 </div>
@@ -85,7 +87,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Profile Visit</h4>
+                                <h4>DASHBOARD ADMIN</h4>
                             </div>
                             <div class="card-body">
                                 <div id="chart-profile-visit"></div>

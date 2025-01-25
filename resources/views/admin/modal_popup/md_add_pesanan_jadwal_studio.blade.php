@@ -38,11 +38,11 @@
                 <div class="form-group row">
                     <div class="col-6">
                         <label for="waktu_mulai">Waktu Mulai</label>
-                        <input type="time" class="form-control" id="waktu_mulai" required>
+                        <select class="form-control" id="waktu_mulai" required></select>
                     </div>
                     <div class="col-6">
                         <label for="waktu_selesai">Waktu Selesai</label>
-                        <input type="time" class="form-control" id="waktu_selesai" required>
+                        <select class="form-control" id="waktu_selesai" required></select>
                     </div>
                 </div>
 
@@ -95,6 +95,32 @@
                     })
                 },
             });
+
+            // setting waktu
+            function populateTimeOptions(elementId, startTime, endTime, intervalMinutes) {
+                var $selectElement = $('#' + elementId);
+                var currentTime = startTime;
+
+                while (currentTime <= endTime) {
+                    var option = $('<option></option>').val(currentTime).text(currentTime);
+                    $selectElement.append(option);
+
+                    var timeParts = currentTime.split(':');
+                    var hours = parseInt(timeParts[0]);
+                    var minutes = parseInt(timeParts[1]);
+
+                    minutes += intervalMinutes;
+                    if (minutes >= 60) {
+                        hours += 1;
+                        minutes = minutes - 60;
+                    }
+
+                    currentTime = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                }
+            }
+
+            populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
+            populateTimeOptions('waktu_selesai', '17:00', '20:00', 10);
         })
 
         function cek_tanggal_kosong() {

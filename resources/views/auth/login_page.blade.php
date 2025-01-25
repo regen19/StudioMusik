@@ -346,9 +346,19 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error(xhr);
-                    console.error(status);
-                    console.error(error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
+
+                    Toast.fire({
+                        icon: "error",
+                        title: errorMsg,
+                    });
                 }
             });
 

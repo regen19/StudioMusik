@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PengajuanUserEmail;
 use App\Models\Admin\DetailPesananJadwalStudioModel;
 use App\Models\PesananJadwalStudioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -50,34 +52,44 @@ class UserJadwalStudioController extends Controller
         return $datatable;
     }
 
-    public function store(Request $request)
-    {
-        $validate = Validator::make($request->all(), [
-            "tgl_pinjam" => "required",
-            "id_user" => "required|numeric",
-            "no_wa" => "required|numeric",
-            "keterangan" => "required",
-            // "harga_perawatan" => "required"
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validate = Validator::make($request->all(), [
+    //         "tgl_pinjam" => "required",
+    //         "id_user" => "required|numeric",
+    //         "no_wa" => "required|numeric",
+    //         "keterangan" => "required",
+    //     ]);
 
-        if ($validate->fails()) {
-            return response()->json([
-                "msg" => $validate->errors()
-            ], 422);
-        }
+    //     if ($validate->fails()) {
+    //         return response()->json([
+    //             "msg" => $validate->errors()
+    //         ], 422);
+    //     }
 
-        $pesanan = $request->only('tgl_pinjam', 'id_user', 'no_wa', 'keterangan');
-        $pesanan['status_persetujuan'] = "P";
-        $pesanan['status_pembayaran'] = "N";
+    //     $pesanan = $request->only('tgl_pinjam', 'id_user', 'no_wa', 'keterangan');
+    //     $pesanan['status_persetujuan'] = "P";
+    //     $pesanan['status_pembayaran'] = "N";
 
-        PesananJadwalStudioModel::create($pesanan);
+    //     $pesananModel = PesananJadwalStudioModel::create($pesanan);
 
-        return redirect('jadwal_studio_saya')->with('success', 'Pengajuan jadwal studio tersimpan!');
+    //     $dataEmail = DB::table("pesanan_jadwal_studio")
+    //         ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+    //         ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+    //         ->select("pesanan_jadwal_studio.*", "users.username", "data_ruangan.nama_ruangan")
+    //         ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $pesananModel->id_pesanan_jadwal_studio)
+    //         ->first();
 
-        // return response()->json([
-        //     "msg" => "Pesanan Anda berhasil disimpan",
-        // ], 200);
-    }
+    //     $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
+    //     $view = "EmailNotif.PengajuanStudioMusikMail";
+    //     Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+
+    //     return redirect('jadwal_studio_saya')->with('success', 'Pengajuan jadwal studio tersimpan!');
+
+    //     // return response()->json([
+    //     //     "msg" => "Pesanan Anda berhasil disimpan",
+    //     // ], 200);
+    // }
 
     // public function get_snap_token(Request $request)
     // {

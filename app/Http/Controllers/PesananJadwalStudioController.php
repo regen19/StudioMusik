@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PengajuanUserEmail;
 use App\Models\Admin\DetailPesananJadwalStudioModel;
 use App\Models\HargaSewaStudioModel;
 use App\Models\PesananJadwalStudioModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
+
+use function Laravel\Prompts\select;
 
 class PesananJadwalStudioController extends Controller
 {
@@ -23,6 +28,12 @@ class PesananJadwalStudioController extends Controller
 
         $tgl_pinjam = $request->input("tgl_pinjam");
         $id_ruangan = $request->input("id_ruangan");
+
+        // Cek apakah hari Sabtu atau Minggu
+        $dayOfWeek = \Carbon\Carbon::parse($tgl_pinjam)->dayOfWeek;
+        if (in_array($dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY])) {
+            return response()->json(["status" => "weekend"]);
+        }
 
         $cek_tanggal =
             DB::table('pesanan_jadwal_studio')
@@ -106,6 +117,21 @@ class PesananJadwalStudioController extends Controller
 
             // Simpan detail pesanan ke dalam tabel DetailPesananJadwalStudioModel
             DetailPesananJadwalStudioModel::create($detailPesanan);
+
+            $dataEmail = DB::table("pesanan_jadwal_studio")
+                ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+                ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+                ->select(
+                    "pesanan_jadwal_studio.*",
+                    "users.username",
+                    "data_ruangan.nama_ruangan"
+                )
+                ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $jadwalStudio->id_pesanan_jadwal_studio)
+                ->first();
+
+            $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
+            $view = "EmailNotif.PengajuanStudioMusikMail";
+            Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
             // Commit transaksi
             DB::commit();
@@ -274,6 +300,33 @@ class PesananJadwalStudioController extends Controller
             ->where("detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
             ->select("detail_pesanan_jadwal_studio.id_detail_pesanan_jadwal_studio")
             ->first();
+
+        $id_user = DB::table("pesanan_jadwal_studio")
+            ->where("id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+            ->pluck("id_user")
+            ->first();
+
+        $email = DB::table("users")
+            ->where("id_user", $id_user)
+            ->pluck("email")
+            ->first();
+
+        $dataEmail = DB::table("pesanan_jadwal_studio")
+            ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
+            ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+            ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+            ->select(
+                "pesanan_jadwal_studio.*",
+                "users.username",
+                "detail_pesanan_jadwal_studio.status_persetujuan",
+                "data_ruangan.nama_ruangan"
+            )
+            ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+            ->first();
+
+        $subject = "Persetujuan Peminjaman Studi Musik";
+        $view = "EmailNotif.PersetujuanStudioMusik";
+        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
         if (!$id_detail_pesanan_jadwal_studio) {
             return response()->json([

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PengajuanUserEmail;
 use App\Models\PesananJasaMusikInformasiModel;
 use App\Models\PesananJasaMusikModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -83,6 +85,17 @@ class PesananJasaMusikController extends Controller
                 'value_field' => $value_field,
             ]);
         }
+
+        $dataEmail = DB::table("pesanan_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
+            ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $pesananModel->id_pesanan_jasa_musik)
+            ->first();
+
+        $subject = "Pengajuan Jenis Jasa Baru Hari ini";
+        $view = "EmailNotif.PengajuanJasaMusikMail";
+        Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
         return response()->json([
             'msg' => 'Pesanan Anda berhasil disimpan',
@@ -166,6 +179,27 @@ class PesananJasaMusikController extends Controller
         $pesanan = $request->only('status_persetujuan', 'keterangan_admin', 'status_produksi', 'tenggat_produksi', 'tgl_produksi');
 
         PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($pesanan);
+
+        $id_user = DB::table("pesanan_jasa_musik")
+            ->where("id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
+            ->pluck("id_user")
+            ->first();
+
+        $email = DB::table("users")
+            ->where("id_user", $id_user)
+            ->pluck("email")
+            ->first();
+
+        $dataEmail = DB::table("pesanan_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
+            ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
+            ->first();
+
+        $subject = "Persetujuan Peminjaman Studi Musik";
+        $view = "EmailNotif.PersetujuanJasaMusik";
+        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
         return response()->json([
             'msg' => 'Status persetujuan telah diubah',

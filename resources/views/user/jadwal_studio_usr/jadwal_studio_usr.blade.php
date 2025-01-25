@@ -33,7 +33,6 @@
                                 <th>Tanggal Peminjaman</th>
                                 <th>Waktu Mulai & Selesai</th>
                                 <th>Ruangan</th>
-                                {{-- <th>Nomor WA</th> --}}
                                 <th>Keperluan</th>
                                 <th>Status Persetujuan</th>
                                 <th>Aksi</th>
@@ -58,6 +57,14 @@
                     serverSide: true,
                     paging: true,
                     searching: true,
+                    "columnDefs": [{
+                        "width": "100%",
+                    }],
+                    layout: {
+                        topStart: {
+                            buttons: ['excel', 'pdf']
+                        }
+                    },
                     ajax: {
                         url: "{{ url('/fetch_jadwal_studio_saya') }}",
                         type: 'GET',

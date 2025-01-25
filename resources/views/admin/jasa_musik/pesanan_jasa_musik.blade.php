@@ -45,6 +45,14 @@
                     serverSide: true,
                     paging: true,
                     searching: true,
+                    "columnDefs": [{
+                        "width": "100%",
+                    }],
+                    layout: {
+                        topStart: {
+                            buttons: ['excel', 'pdf']
+                        }
+                    },
                     ajax: {
                         url: "{{ url('/fetch_pesanan_jasa_musik') }}",
                         type: 'GET',
@@ -134,7 +142,8 @@
                             render: function(data) {
                                 let status = "";
                                 let color = "";
-                                if (data.status_persetujuan === "Y") {
+                                if (data.status_persetujuan === "Y" || data.status_persetujuan ===
+                                    "P") {
                                     status = "Detail"
                                     color = "primary"
                                 } else if (data.status_persetujuan === "N") {
@@ -229,7 +238,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="btnStatusSetuju()">Simpan</button>
+                    <button type="button" id="btnSimpanText" class="btn btn-primary"
+                        onclick="btnStatusSetuju()">Simpan</button>
+                    <span id="btnSimpanLoading" style="display:none;">
+                        <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
+                    </span>
                 </div>
             </div>
         </div>
@@ -274,6 +287,9 @@
             }
 
             function btnStatusSetuju() {
+                $("#btnSimpanText").hide();
+                $("#btnSimpanLoading").show();
+
                 let status_persetujuan = $('#stts_setuju').val()
                 let status_produksi = $('#stts_produksi').val()
                 let keterangan_admin = $('#keterangan_admin').val()
@@ -288,6 +304,9 @@
                         icon: "warning"
                     });
 
+                    $("#btnSimpanText").show();
+                    $("#btnSimpanLoading").hide();
+
                     return 0;
                 } else if (status_pengajuan1 == "X") {
                     Swal.fire({
@@ -296,6 +315,8 @@
                         icon: "warning"
                     });
 
+                    $("#btnSimpanText").show();
+                    $("#btnSimpanLoading").hide();
                     return 0;
                 } else {
 
@@ -330,6 +351,17 @@
                                 icon: "success",
                                 title: "Status persetujuan berhasil diubah!"
                             });
+                        },
+                        complete: function() {
+                            // Mengembalikan teks tombol dan menyembunyikan loading
+                            $("#btnSimpanText").show();
+                            $("#btnSimpanLoading").hide();
+                        },
+                        error: function(xhr, status, error) {
+                            // Tangani kesalahan jika terjadi
+                            console.error('Error:', error);
+                            $("#btnSimpanText").show();
+                            $("#btnSimpanLoading").hide();
                         }
                     });
                 }
