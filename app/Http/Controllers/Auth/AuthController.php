@@ -65,7 +65,9 @@ class AuthController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return response()->json($validator->errors());
+                return response()->json([
+                    "msg" => $validator->errors()
+                ], 422);
             }
 
             $user = User::create([
@@ -83,7 +85,7 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => 'Something went wrong',
-                'error' => $th->getMessage()
+                'msg' => $th->getMessage()
             ], 500);
         }
     }
