@@ -69,6 +69,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary" id="BtnJadwalStudio">Simpan</button>
+                <span id="btnSimpanLoading" style="display:none;">
+                    <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
+                </span>
             </div>
         </div>
     </div>
@@ -321,6 +324,9 @@
         }
 
         function submitForm(action, id_pesanan_jadwal_studio, formDataObj) {
+            $("#BtnJadwalStudio").hide();
+            $("#btnSimpanLoading").show();
+
             const formData = new FormData();
             for (const key in formDataObj) {
                 formData.append(key, formDataObj[key]);
@@ -358,7 +364,14 @@
                         location.reload()
                     }, 1500);
                 },
+                complete: function() {
+                    // Mengembalikan teks tombol dan menyembunyikan loading
+                    $("#BtnJadwalStudio").show();
+                    $("#btnSimpanLoading").hide();
+                },
                 error: function(xhr, status, error) {
+                    $("#BtnJadwalStudio").show();
+                    $("#btnSimpanLoading").hide();
                     var errorMsg = "";
                     if (xhr.responseJSON && xhr.responseJSON.msg) {
                         for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {

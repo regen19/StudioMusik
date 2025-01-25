@@ -50,7 +50,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="btnSimpan()">Simpan</button>
+                    <button type="button" class="btn btn-primary" id="btnSimpanText"
+                        onclick="btnSimpan()">Simpan</button>
+                    <span id="btnSimpanLoading" style="display:none;">
+                        <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
+                    </span>
                 </div>
             </form>
         </div>
@@ -122,6 +126,9 @@
         }
 
         function btnSimpan() {
+            $("#btnSimpanText").hide();
+            $("#btnSimpanLoading").show();
+
             let id_jasa_musik = $('#id_jasa_musik').val();
             let tgl_deadline = $('#tgl_deadline').val();
             let id_user = "{{ Auth::user()->id_user }}";
@@ -199,7 +206,14 @@
                     $('#no_wa').val("");
                     $('#keterangan').val("");
                 },
+                complete: function() {
+                    // Mengembalikan teks tombol dan menyembunyikan loading
+                    $("#btnSimpanText").show();
+                    $("#btnSimpanLoading").hide();
+                },
                 error: function(xhr, status, error) {
+                    $("#btnSimpanText").show();
+                    $("#btnSimpanLoading").hide();
                     var errorMsg = "";
                     if (xhr.responseJSON && xhr.responseJSON.msg) {
                         for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {

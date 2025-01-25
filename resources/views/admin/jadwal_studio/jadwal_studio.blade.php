@@ -392,7 +392,11 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="btnStatusSetuju()">Simpan</button>
+                    <button type="button" id="btnSimpanText" class="btn btn-primary"
+                        onclick="btnStatusSetuju()">Simpan</button>
+                    <span id="btnSimpanLoading" style="display:none;">
+                        <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
+                    </span>
                 </div>
             </div>
         </div>
@@ -485,6 +489,9 @@
             }
 
             function btnStatusSetuju() {
+                $("#btnSimpanText").hide();
+                $("#btnSimpanLoading").show();
+
                 let status_persetujuan = $('#status_persetujuan').val()
                 let keterangan_admin = $('#keterangan_admin').val()
                 let id_pesanan_jadwal_studio = $('#id_pesanan_jadwal_studio').val()
@@ -534,6 +541,17 @@
                                 icon: "success",
                                 title: "Status persetujuan berhasil diubah!"
                             });
+                        },
+                        complete: function() {
+                            // Mengembalikan teks tombol dan menyembunyikan loading
+                            $("#btnSimpanText").show();
+                            $("#btnSimpanLoading").hide();
+                        },
+                        error: function(xhr, status, error) {
+                            // Tangani kesalahan jika terjadi
+                            console.error('Error:', error);
+                            $("#btnSimpanText").show();
+                            $("#btnSimpanLoading").hide();
                         }
                     });
                 }
