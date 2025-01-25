@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ $ruangan->nama_alat }}</h5>
 
-                        <p class="card-text">Cara penggunaan = {{ $ruangan->deskripsi }}</p>
+                        <p class="card-text">{!! $desc !!} ..........</p>
                         <a href="{{ url('/detail_penggunaan_alat/' . $ruangan->id_tutorial) }}" class="btn btn-primary"><i
                                 class="bi bi-eye"></i>
                             Pelajari...</a>

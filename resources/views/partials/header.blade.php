@@ -40,6 +40,9 @@
     {{-- <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
         data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script> --}}
 
+    {{-- CK EDITOR --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+
     <style>
         .loader-container {
             display: none;

@@ -23,23 +23,14 @@
                     </p>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="deskripsi">Deskripsi Alat</label>
                     <textarea class="form-control" name="deskripsi" id="deskripsi" cols="30" rows="15"></textarea>
-                </div>
-                {{-- <div class="form-group">
-                    <section class="section">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title">Deskripsi Penggunaan Alat</h4>
-                            </div>
-                            <div class="card-body">
-                                <div id="snow">
-                                </div>
-                            </div>
-                        </div>
-                    </section>
                 </div> --}}
+                <div class="form-group">
+                    <label for="deskripsi">Deskripsi Alat</label>
+                    <textarea class="form-control" id="deskripsi" placeholder="Enter the Description" rows="10" name="deskripsi"></textarea>
+                </div>
 
             </div>
             <div class="modal-footer">
@@ -52,6 +43,17 @@
 
 @push('script')
     <script>
+        let editorInstance;
+        ClassicEditor
+            .create(document.querySelector('#deskripsi'))
+            .then(editor => {
+                editorInstance = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
         $("#gambar").on("change", function() {
             previewImg(this, '#output');
         });
@@ -71,7 +73,7 @@
 
         function btnTutorial() {
             let nama_alat = $('#nama_alat').val();
-            let deskripsi = $('#deskripsi').val();
+            let deskripsi = editorInstance.getData();
             let gambar = $('#gambar')[0].files[0];
 
             if (!nama_alat || !deskripsi || !gambar) {

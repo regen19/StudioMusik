@@ -19,8 +19,13 @@ class TutorialPenggunaanAlatController extends Controller
         $data = DB::table("tutorial_penggunaan_alat")
             ->get();
 
+        foreach ($data as $item) {
+            $desc = $item->desc = implode(' ', array_slice(explode(' ', html_entity_decode($item->deskripsi)), 0, 20));
+        }
+
         return view('user.jadwal_studio_usr.tutorial_alat', compact([
-            'data'
+            'data',
+            'desc'
         ]));
     }
 
