@@ -304,6 +304,9 @@
                         icon: "warning"
                     });
 
+                    $("#btnSimpanText").show();
+                    $("#btnSimpanLoading").hide();
+
                     return 0;
                 } else if (status_pengajuan1 == "X") {
                     Swal.fire({
@@ -312,6 +315,8 @@
                         icon: "warning"
                     });
 
+                    $("#btnSimpanText").show();
+                    $("#btnSimpanLoading").hide();
                     return 0;
                 } else {
 
