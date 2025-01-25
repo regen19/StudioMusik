@@ -119,7 +119,7 @@
                     });
 
                     $('#nama_alat').val("");
-                    $('#deskripsi').val("");
+                    editorInstance.val("");
                     $('#gambar').val("");
                     $('#output').hide();
                 },
