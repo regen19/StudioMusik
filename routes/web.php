@@ -13,6 +13,7 @@ use App\Http\Controllers\User\DataRuanganUserController;
 use App\Http\Controllers\User\DisplayJasaMusikController;
 use App\Http\Controllers\User\UserJadwalStudioController;
 use App\Http\Controllers\User\UserPesananJasaMusikController;
+use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('send-mail', [MailController::class, 'index']);
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
 Route::post('/authenticate', [AuthController::class, 'login']);
