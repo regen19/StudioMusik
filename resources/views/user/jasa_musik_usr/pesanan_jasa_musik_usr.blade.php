@@ -203,14 +203,15 @@
                                     return `
                                         <td>
                                             <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})">
+                                                    Batalkan
+                                                </button>
+                                                
                                                 <button type="button" class="btn btn-primary icon icon-left text-white"
                                                     data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
                                                     Detail
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})">
-                                                    Batalkan
-                                                </button>
                                             </div>
                                         </td>
                                     `;

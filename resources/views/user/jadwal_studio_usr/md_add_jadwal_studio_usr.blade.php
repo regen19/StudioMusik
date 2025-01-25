@@ -43,11 +43,11 @@
                 <div class="form-group row">
                     <div class="col-6">
                         <label for="waktu_mulai">Waktu Mulai</label>
-                        <input type="time" class="form-control" id="waktu_mulai" required>
+                        <select class="form-control" id="waktu_mulai" required></select>
                     </div>
                     <div class="col-6">
                         <label for="waktu_selesai">Waktu Selesai</label>
-                        <input type="time" class="form-control" id="waktu_selesai" required>
+                        <select class="form-control" id="waktu_selesai" required></select>
                     </div>
                 </div>
 
@@ -96,6 +96,32 @@
                     })
                 },
             });
+
+            // setting waktu
+            function populateTimeOptions(elementId, startTime, endTime, intervalMinutes) {
+                var $selectElement = $('#' + elementId);
+                var currentTime = startTime;
+
+                while (currentTime <= endTime) {
+                    var option = $('<option></option>').val(currentTime).text(currentTime);
+                    $selectElement.append(option);
+
+                    var timeParts = currentTime.split(':');
+                    var hours = parseInt(timeParts[0]);
+                    var minutes = parseInt(timeParts[1]);
+
+                    minutes += intervalMinutes;
+                    if (minutes >= 60) {
+                        hours += 1;
+                        minutes = minutes - 60;
+                    }
+
+                    currentTime = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                }
+            }
+
+            populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
+            populateTimeOptions('waktu_selesai', '17:00', '20:00', 10);
         })
 
         function cek_tanggal_kosong() {
@@ -115,9 +141,13 @@
                     if (response.length === 0) {
                         $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
                         !</small>`);
-                    } else {
+                    } else if (response.status == "ada" || response.status == "ada2") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
                             class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+                        !</small>`);
+                    } else if (response.status == "weekend") {
+                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+                            class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
                         !</small>`);
                     }
                 },
@@ -261,7 +291,7 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    const isDateBooked = response.length !== 0;
+                    const isDateBooked = response.length === 0;
                     const isEdit = action === "edit";
                     const isAdd = action === "add";
 
@@ -274,7 +304,15 @@
                             });
 
                             return 0;
-                        } else if (!isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
+                        } else if (response.status === "weekend") {
+                            Swal.fire({
+                                title: "Gagal simpan.",
+                                text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
+                                icon: "error"
+                            });
+
+                            return 0;
+                        } else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
@@ -285,7 +323,7 @@
                                 img_jaminan
                             });
                         }
-                    } else if (isAdd && !isDateBooked) {
+                    } else if (isAdd && isDateBooked) {
                         submitForm(action, id_pesanan_jadwal_studio, {
                             id_user,
                             id_ruangan,
@@ -295,10 +333,18 @@
                             ket_keperluan,
                             img_jaminan
                         });
-                    } else if (isAdd && isDateBooked) {
+                    } else if (isAdd && response.status === "ada" || response.status === "ada2") {
                         Swal.fire({
                             title: "Gagal simpan.",
                             text: "Tanggal tersebut telah di BOOKING!",
+                            icon: "error"
+                        });
+
+                        return 0;
+                    } else if (isAdd && response.status === "weekend") {
+                        Swal.fire({
+                            title: "Gagal simpan.",
+                            text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
                             icon: "error"
                         });
 

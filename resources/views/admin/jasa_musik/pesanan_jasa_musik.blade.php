@@ -142,7 +142,8 @@
                             render: function(data) {
                                 let status = "";
                                 let color = "";
-                                if (data.status_persetujuan === "Y") {
+                                if (data.status_persetujuan === "Y" || data.status_persetujuan ===
+                                    "P") {
                                     status = "Detail"
                                     color = "primary"
                                 } else if (data.status_persetujuan === "N") {

@@ -6,6 +6,7 @@ use App\Mail\PengajuanUserEmail;
 use App\Models\Admin\DetailPesananJadwalStudioModel;
 use App\Models\HargaSewaStudioModel;
 use App\Models\PesananJadwalStudioModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -27,6 +28,12 @@ class PesananJadwalStudioController extends Controller
 
         $tgl_pinjam = $request->input("tgl_pinjam");
         $id_ruangan = $request->input("id_ruangan");
+
+        // Cek apakah hari Sabtu atau Minggu
+        $dayOfWeek = \Carbon\Carbon::parse($tgl_pinjam)->dayOfWeek;
+        if (in_array($dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY])) {
+            return response()->json(["status" => "weekend"]);
+        }
 
         $cek_tanggal =
             DB::table('pesanan_jadwal_studio')
