@@ -17,7 +17,9 @@
     {{-- dataTable --}}
     <link rel="stylesheet" href="{{ asset('assets/dataTable/dataTables.bootstrap5.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/dataTable/table-datatable-jquery.css') }}" />
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"> --}}
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
 
     {{-- DatePicker --}}
     <link rel="stylesheet" href="{{ asset('assets/flatpickr/flatpickr.min.css') }}">
@@ -35,8 +37,8 @@
     <link rel="stylesheet" href="{{ asset('assets/choices/choices.css') }}">
 
     {{-- MIDTRANS --}}
-    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    {{-- <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script> --}}
 
     <style>
         .loader-container {

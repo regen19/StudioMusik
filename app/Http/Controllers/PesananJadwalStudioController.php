@@ -305,11 +305,13 @@ class PesananJadwalStudioController extends Controller
             ->first();
 
         $dataEmail = DB::table("pesanan_jadwal_studio")
+            ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
             ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
             ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
             ->select(
                 "pesanan_jadwal_studio.*",
                 "users.username",
+                "detail_pesanan_jadwal_studio.status_persetujuan",
                 "data_ruangan.nama_ruangan"
             )
             ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)

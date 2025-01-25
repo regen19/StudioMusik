@@ -27,9 +27,6 @@ class PengajuanUserEmail extends Mailable
     public function build()
     {
         return $this->subject($this->subject)
-            ->view($this->view)
-            ->view('EmailNotif.PersetujuanJasaMusik')
-            
-            ->view('EmailNotif.PersetujuanStudioMusik');
+            ->view($this->view);
     }
 }

@@ -180,7 +180,7 @@ class PesananJasaMusikController extends Controller
 
         PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($pesanan);
 
-        $id_user = DB::table("id_pesanan_jasa_musik")
+        $id_user = DB::table("pesanan_jasa_musik")
             ->where("id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
             ->pluck("id_user")
             ->first();

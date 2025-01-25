@@ -45,6 +45,14 @@
                     serverSide: true,
                     paging: true,
                     searching: true,
+                    "columnDefs": [{
+                        "width": "100%",
+                    }],
+                    layout: {
+                        topStart: {
+                            buttons: ['excel', 'pdf']
+                        }
+                    },
                     ajax: {
                         url: "{{ url('/fetch_pesanan_jasa_musik') }}",
                         type: 'GET',

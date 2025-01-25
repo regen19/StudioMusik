@@ -6,7 +6,25 @@
 </head>
 
 <body>
-    <h1>Pengajuan peminjaman studio musik telah disetujui, silahkan cek website ukmbs itera.</h1>
+    <h1>Pengajuan pembuatan jasa musik telah <b>
+            @if ($pesanan->status_persetujuan == 'N')
+                DITOLAK
+            @elseif($pesanan->status_persetujuan == 'Y')
+                DISETUJUI
+            @endif
+        </b>, status produksi sedang dalam
+        <b>
+            @if ($pesanan->status_produksi == 'N')
+                PENGAJUAN
+            @elseif($pesanan->status_produksi == 'P')
+                PROSES
+            @elseif($pesanan->status_produksi == 'Y')
+                SELESAI
+            @endif
+        </b>,
+        silahkan cek
+        website.
+    </h1>
 </body>
 
 </html>
