@@ -52,6 +52,7 @@
                         type: 'GET',
                     },
                     columns: [{
+                            className: 'text-center',
                             data: 'DT_RowIndex',
                         },
                         {
@@ -65,6 +66,11 @@
                         },
                         {
                             data: 'deskripsi',
+                            render: function(data) {
+                                var div = document.createElement("div");
+                                div.innerHTML = data;
+                                return div.textContent || div.innerText || "";
+                            }
                         },
                         {
                             data: null,
@@ -72,7 +78,7 @@
                                 return `
                                     <td>
                                         <div style="margin-rigth=20px;">
-                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_tutorial(${data.id_tutorial})"> 
+                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_tutorial(${data.id_tutorial})">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>

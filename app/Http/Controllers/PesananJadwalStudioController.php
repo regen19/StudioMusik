@@ -28,6 +28,8 @@ class PesananJadwalStudioController extends Controller
 
         $tgl_pinjam = $request->input("tgl_pinjam");
         $id_ruangan = $request->input("id_ruangan");
+        $waktu_mulai = $request->input("waktu_mulai");
+        $waktu_selesai = $request->input("waktu_selesai");
 
         // Cek apakah hari Sabtu atau Minggu
         $dayOfWeek = \Carbon\Carbon::parse($tgl_pinjam)->dayOfWeek;
@@ -40,6 +42,14 @@ class PesananJadwalStudioController extends Controller
             ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
             ->where('pesanan_jadwal_studio.tgl_pinjam', $tgl_pinjam)
             ->where("pesanan_jadwal_studio.id_ruangan", $id_ruangan)
+            ->where(function ($query) use ($waktu_mulai, $waktu_selesai) {
+                $query->whereBetween('pesanan_jadwal_studio.waktu_mulai', [$waktu_mulai, $waktu_selesai])
+                    ->orWhereBetween('pesanan_jadwal_studio.waktu_selesai', [$waktu_mulai, $waktu_selesai])
+                    ->orWhere(function ($query) use ($waktu_mulai, $waktu_selesai) {
+                        $query->where('pesanan_jadwal_studio.waktu_mulai', '<', $waktu_selesai)
+                            ->where('pesanan_jadwal_studio.waktu_selesai', '>', $waktu_mulai);
+                    });
+            })
             ->get();
 
         if ($cek_tanggal->isEmpty()) {

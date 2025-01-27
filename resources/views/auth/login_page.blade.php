@@ -245,7 +245,7 @@
 
                         Toast.fire({
                             icon: "success",
-                            title: "Login berhasil",
+                            title: "Login berhasil! Segera Masuk..",
                         });
 
                         setTimeout(() => {

@@ -12,12 +12,12 @@
         @if ($cek_pesanan)
             <button type="button" class="btn btn-primary icon icon-left" onclick="btnJadwalGagal()"><i
                     class="bi bi-plus-lg"></i>
-                Ajukan Sewa Studio
+                Ajukan Peminjaman
             </button>
         @else
             <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i
                     class="bi bi-plus-lg"></i>
-                Ajukan Sewa Studio
+                Ajukan Peminjaman
             </button>
         @endif
     </div>

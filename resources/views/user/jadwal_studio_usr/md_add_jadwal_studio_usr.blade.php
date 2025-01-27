@@ -127,6 +127,8 @@
         function cek_tanggal_kosong() {
             let tgl_pinjam = $("#tgl_pinjam").val();
             let id_ruangan = $("#id_ruangan").val();
+            let waktu_mulai = $("#waktu_mulai").val();
+            let waktu_selesai = $("#waktu_selesai").val();
 
             $.ajax({
                 url: `{{ url('cek_tanggal_kosong') }}`,
@@ -134,6 +136,8 @@
                 data: {
                     "tgl_pinjam": tgl_pinjam,
                     "id_ruangan": id_ruangan,
+                    "waktu_mulai": waktu_mulai,
+                    "waktu_selesai": waktu_selesai,
                     "_token": "{{ csrf_token() }}"
                 },
                 dataType: 'json',
@@ -287,6 +291,8 @@
                 data: {
                     id_ruangan,
                     tgl_pinjam,
+                    waktu_mulai: waktu_mulai,
+                    waktu_selesai: waktu_selesai,
                     _token: "{{ csrf_token() }}"
                 },
                 dataType: 'json',
