@@ -103,7 +103,7 @@
                                                     onclick="login()">Masuk</button>
                                             </div>
                                         </form>
-                                        <a href="#" onclick="ShowForm('registrasi')"><small>belum punya
+                                        <a href="#" onclick="ShowForm('registrasi')"><small>Belum punya
                                                 akun?</small></a>
                                     </div>
                                 </div>

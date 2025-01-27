@@ -72,6 +72,13 @@
                         },
                         {
                             data: 'sk',
+                            render: function(data) {
+                                return `
+                                <div style="white-space: pre-wrap;">
+                                    ${data}
+                                </div>
+                                `
+                            }
                         },
                         {
                             data: 'deskripsi',
@@ -92,7 +99,9 @@
                             orderable: false,
                             searchable: false,
                             render: function(data) {
-                                return `<a target="_blank" href="{{ asset('storage/img_upload/jasa_musik') }}/${data.gambar}"><img src="{{ asset('storage/img_upload/jasa_musik') }}/${data.gambar}" class="img-thumbnail" max-width="100px" max-height="120px"></a>`;
+                                return `<a target="_blank" href="{{ asset('storage/img_upload/jasa_musik') }}/${data.gambar}">
+                                    <img src="{{ asset('storage/img_upload/jasa_musik') }}/${data.gambar}" class="" style="width: 250px; height: auto;">
+                                    </a>`;
                             }
                         },
                         {
