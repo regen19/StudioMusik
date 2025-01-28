@@ -14,6 +14,7 @@ use App\Http\Controllers\User\DisplayJasaMusikController;
 use App\Http\Controllers\User\UserJadwalStudioController;
 use App\Http\Controllers\User\UserPesananJasaMusikController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\HomepageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +27,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//  Homepage
+Route::get('/homepage', [HomepageController::class, 'index'])->name('homepage');
 
+//  Notifikasi email
 Route::get('send-mail', [MailController::class, 'index']);
 
 Route::get('/', [AuthController::class, 'index'])->name('login');
