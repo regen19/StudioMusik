@@ -108,8 +108,7 @@
 
                                 return `
                                     <div>
-                                        <a type="button" class="badge bg-${color}" onclick="data_status(${data.id_pesanan_jadwal_studio})"
-                                            data-bs-toggle="modal" data-bs-target="#status_jadwal_studio">
+                                        <a type="button" class="badge bg-${color}">
                                             ${status}
                                         </a>
                                     </div>

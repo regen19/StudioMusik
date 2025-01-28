@@ -208,8 +208,7 @@
                         true);
                     $("#id_pesanan_jadwal_studio1").val(response.id_pesanan_jadwal_studio)
 
-                    $("#btnProses").html(`<button type="button" class="btn btn-success" onclick="data_status(${response.id_pesanan_jadwal_studio})"
-                    data-bs-toggle="modal" data-bs-target="#status_jadwal_studio">Proses</button>`)
+
 
 
                     if (response.review != null && response.rating != null) {
@@ -221,6 +220,8 @@
                     let status1 = "";
                     let color1 = "";
                     if (response.status_persetujuan === "P") {
+                        $("#btnProses").html(`<button type="button" class="btn btn-success" onclick="data_status(${response.id_pesanan_jadwal_studio})"
+                    data-bs-toggle="modal" data-bs-target="#status_jadwal_studio">Proses</button>`)
                         status1 = "Pengajuan"
                         color1 = "warning"
                     } else if (response.status_persetujuan === "Y") {

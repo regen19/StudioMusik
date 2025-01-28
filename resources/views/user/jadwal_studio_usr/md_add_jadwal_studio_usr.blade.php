@@ -1,4 +1,4 @@
-{{-- TAMBAH JASA MUSIK --}}
+{{-- TAMBAH JADWAL STUDIO --}}
 <div class="modal fade" id="add_jadwal_studio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
