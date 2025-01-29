@@ -23,10 +23,6 @@
                     </p>
                 </div>
 
-                {{-- <div class="form-group">
-                    <label for="deskripsi">Deskripsi Alat</label>
-                    <textarea class="form-control" name="deskripsi" id="deskripsi" cols="30" rows="15"></textarea>
-                </div> --}}
                 <div class="form-group">
                     <label for="deskripsi">Deskripsi Alat</label>
                     <textarea class="form-control" id="deskripsi" placeholder="Enter the Description" rows="10" name="deskripsi"></textarea>

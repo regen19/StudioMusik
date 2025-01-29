@@ -80,7 +80,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => 200,
-                'redirect' => url('/'),
+                'redirect' => url('/login'),
             ]);
         } catch (\Throwable $th) {
             return response()->json([
