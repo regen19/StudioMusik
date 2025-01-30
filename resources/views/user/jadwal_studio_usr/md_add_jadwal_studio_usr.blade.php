@@ -121,7 +121,7 @@
             }
 
             populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
-            populateTimeOptions('waktu_selesai', '17:00', '20:00', 10);
+            populateTimeOptions('waktu_selesai', '17:00', '21:00', 10);
         })
 
         function cek_tanggal_kosong() {
