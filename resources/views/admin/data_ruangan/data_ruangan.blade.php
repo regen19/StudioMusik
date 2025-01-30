@@ -80,6 +80,9 @@
                         // },
                         {
                             data: 'kapasitas',
+                            render: function(data) {
+                                return `<span>${data}</span>`;
+                            }
                         },
                         {
                             data: 'lokasi',

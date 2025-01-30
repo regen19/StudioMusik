@@ -19,9 +19,6 @@
     <title>Sistem Informasi Manajemen Studio Musik ITERA</title>
     <link rel="icon" href="{{ asset('assets/img/logo-itera.png') }}" type="png" />
 
-    <!-- For favicon png -->
-    <link rel="shortcut icon" type="image/icon" href="assets/logo/favicon.png" />
-
     <!--font-awesome.min.css-->
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
 
@@ -91,7 +88,7 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
                             <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                                <li class=" scroll active"><a href="#home">home</a></li>
+                                <li class=" scroll active"><a href="#home">Home</a></li>
                                 <li class="scroll"><a href="#new-cars">Fitur</a></li>
                                 <li class="scroll"><a href="#clients-say">Review</a></li>
                                 <li class="scroll"><a href="#contact">Contact</a></li>
@@ -125,7 +122,7 @@
     <section id="new-cars" class="new-cars">
         <div class="container">
             <div class="section-header">
-                <h2>Fitur</h2>
+                <h2>FITUR</h2>
             </div><!--/.section-header-->
             <div class="new-cars-content">
                 <div class="owl-carousel owl-theme" id="new-cars-carousel">
@@ -189,7 +186,7 @@
     <section id="clients-say" class="clients-say">
         <div class="container">
             <div class="section-header">
-                <h2>what our clients say</h2>
+                <h2>Review Studio & Jasa Musik</h2>
             </div><!--/.section-header-->
             <div class="row">
                 <div class="owl-carousel testimonial-carousel">
@@ -302,7 +299,7 @@
                             </div>
                             <div class="hm-foot-email">
                                 <div class="foot-email-box">
-                                    <input type="text" class="form-control" placeholder="Add Email">
+                                    <input type="text" class="form-control" placeholder="musikitera@gmail.com">
                                 </div><!--/.foot-email-box-->
                                 <div class="foot-email-subscribe">
                                     <span><i class="fa fa-arrow-right"></i></span>
@@ -316,17 +313,14 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <p>
-                            &copy; copyright.designed and developed by <a
-                                href="https://www.themesine.com/">themesine</a>.
+                            &copy; 2025. Studio Musik ITERA
                         </p><!--/p-->
                     </div>
                     <div class="col-sm-6">
                         <div class="footer-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                            <a href="#"><i class="fa fa-behance"></i></a>
+                            <a href="#"><i class="fab fa-tiktok"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
