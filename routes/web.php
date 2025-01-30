@@ -28,12 +28,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //  Homepage
-Route::get('/homepage', [HomepageController::class, 'index'])->name('homepage');
+Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
-//  Notifikasi email
-Route::get('send-mail', [MailController::class, 'index']);
-
-Route::get('/', [AuthController::class, 'index'])->name('login');
+Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/authenticate', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 // Route::post("/register", [AuthController::class, 'register']);

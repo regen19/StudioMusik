@@ -101,7 +101,6 @@
             $('#add_jasa_musik').on('hidden.bs.modal', function() {
                 $('#id_jasa_musik').val("");
                 $('#tgl_deadline').val("");
-                $('#no_wa').val("");
                 $('#keterangan').val("");
                 $("#containerInputJasaMusik").empty();
             });
@@ -171,6 +170,9 @@
                     text: "Harap isi semua form!",
                     icon: "error"
                 });
+
+                $("#btnSimpanText").show();
+                $("#btnSimpanLoading").hide();
                 return
             }
 
@@ -203,7 +205,6 @@
 
                     $('#id_jasa_musik').val("");
                     $('#tgl_produksi').val("");
-                    $('#no_wa').val("");
                     $('#keterangan').val("");
                 },
                 complete: function() {
