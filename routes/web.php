@@ -135,6 +135,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/hapus_pesanan_jadwal_studio/{id}', [PesananJadwalStudioController::class, 'destroy']);
     Route::post('/bayar_studio_musik', [PesananJadwalStudioController::class, 'bayar_studio_musik']);
     Route::post('/cek_tanggal_kosong', [PesananJadwalStudioController::class, 'cek_tanggal_kosong']);
+    Route::post('/data_cek_tanggal_kosong', [PesananJadwalStudioController::class, 'data_cek_tanggal_kosong']);
     // Upload kondisi ruangan
     Route::post('/upload_img_kondisi_awal', [PesananJadwalStudioController::class, 'upload_img_kondisi_awal']);
     Route::post('/simpan_img_kondisi_ruangan/{id}', [PesananJadwalStudioController::class, 'simpan_img_kondisi_ruangan']);
