@@ -70,12 +70,15 @@
                             <div class="card-body">
                                 <div class="list_review overflow-auto" style="height: 600px;">
                                     <div class="row">
-                                        @if ($rating !== null)
+                                        @if ($rating != null)
                                             @foreach ($rating as $rt)
                                                 @if ($rt->rating != null)
                                                     <div class="my-2" style="width:100%; border: 1px solid red">
                                                         <div class="p-2" style="font-size: 16px">
                                                             {{ $rt->username }}
+
+                                                            <small
+                                                                style="font-size: 12px;"><i>{{ \Carbon\Carbon::parse($rt->updated_at)->diffForHumans() }}</i></small>
 
                                                             <div class="rating" style="font-size: 10px">
                                                                 <input type="radio"

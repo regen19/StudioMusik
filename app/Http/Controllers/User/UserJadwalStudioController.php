@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
+use function Laravel\Prompts\table;
+
 class UserJadwalStudioController extends Controller
 {
     public function index()
@@ -51,45 +53,6 @@ class UserJadwalStudioController extends Controller
 
         return $datatable;
     }
-
-    // public function store(Request $request)
-    // {
-    //     $validate = Validator::make($request->all(), [
-    //         "tgl_pinjam" => "required",
-    //         "id_user" => "required|numeric",
-    //         "no_wa" => "required|numeric",
-    //         "keterangan" => "required",
-    //     ]);
-
-    //     if ($validate->fails()) {
-    //         return response()->json([
-    //             "msg" => $validate->errors()
-    //         ], 422);
-    //     }
-
-    //     $pesanan = $request->only('tgl_pinjam', 'id_user', 'no_wa', 'keterangan');
-    //     $pesanan['status_persetujuan'] = "P";
-    //     $pesanan['status_pembayaran'] = "N";
-
-    //     $pesananModel = PesananJadwalStudioModel::create($pesanan);
-
-    //     $dataEmail = DB::table("pesanan_jadwal_studio")
-    //         ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
-    //         ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
-    //         ->select("pesanan_jadwal_studio.*", "users.username", "data_ruangan.nama_ruangan")
-    //         ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $pesananModel->id_pesanan_jadwal_studio)
-    //         ->first();
-
-    //     $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
-    //     $view = "EmailNotif.PengajuanStudioMusikMail";
-    //     Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
-
-    //     return redirect('jadwal_studio_saya')->with('success', 'Pengajuan jadwal studio tersimpan!');
-
-    //     // return response()->json([
-    //     //     "msg" => "Pesanan Anda berhasil disimpan",
-    //     // ], 200);
-    // }
 
     // public function get_snap_token(Request $request)
     // {
@@ -132,15 +95,22 @@ class UserJadwalStudioController extends Controller
 
     public function pengembalian_ruangan(Request $request)
     {
-
         $id_pesanan_jadwal_studio = $request->input('id_pesanan_jadwal_studio');
 
-        $data['status_peminjaman'] = "Y";
+        $cek = DB::table("detail_pesanan_jadwal_studio")
+            ->where("id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+            ->first();
 
-        DetailPesananJadwalStudioModel::where("id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)->update($data);
+        if ($cek && $cek->img_kondisi_awal != null && $cek->img_kondisi_akhir != null) {
+            DetailPesananJadwalStudioModel::where("id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+                ->update(['status_peminjaman' => "Y"]);
 
-        return response()->json(["status" => "sukses"]);
+            return response()->json(["status" => "sukses"]);
+        } else {
+            return response()->json(["status" => "gagal"]);
+        }
     }
+
 
     function beri_rating_studio(Request $request, string $id_pesanan_jadwal_studio)
     {

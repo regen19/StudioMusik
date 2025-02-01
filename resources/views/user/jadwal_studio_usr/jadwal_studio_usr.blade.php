@@ -272,17 +272,26 @@
                             },
                             method: 'post',
                             success: function(response) {
-                                Swal.fire({
-                                    title: "Berhasil!",
-                                    text: "Peminjaman Ruangan telah selesai.",
-                                    icon: "success"
-                                });
+                                if (response.status == "sukses") {
+                                    Swal.fire({
+                                        title: "Berhasil!",
+                                        text: "Peminjaman Ruangan telah selesai.",
+                                        icon: "success"
+                                    });
 
-                                $('#tableJadwalStudio').DataTable().ajax.reload()
+                                    $('#tableJadwalStudio').DataTable().ajax.reload()
 
-                                setTimeout(() => {
-                                    location.reload()
-                                }, 1000);
+                                    setTimeout(() => {
+                                        location.reload()
+                                    }, 1000);
+                                } else if (response.status == "gagal") {
+                                    Swal.fire({
+                                        title: "Gagal Pengembalian!",
+                                        text: "Mohon upload kondisi ruangan sebelum pengembalian.",
+                                        icon: "error"
+                                    });
+                                }
+
                             }
                         })
                     }
