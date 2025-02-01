@@ -20,7 +20,7 @@ class PesananJadwalStudioController extends Controller
 {
     public function index()
     {
-        return view('admin.jadwal_studio.jadwal_studio');
+        return view('admin.jadwal_studio.jadwal_studio'); 
     }
 
     public function cek_tanggal_kosong(Request $request)

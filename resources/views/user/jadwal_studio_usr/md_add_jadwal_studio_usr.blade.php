@@ -205,8 +205,6 @@
                 data: {
                     "tgl_pinjam": tgl_pinjam,
                     "id_ruangan": id_ruangan,
-                    "waktu_mulai": waktu_mulai,
-                    "waktu_selesai": waktu_selesai,
                     "_token": "{{ csrf_token() }}"
                 },
                 dataType: 'json',
@@ -225,6 +223,8 @@
                                     </tr>
                                 `);
                         });
+                    } else {
+                        $("#pengajuanBody").empty()
                     }
                 },
                 error: function(err) {
@@ -236,8 +236,6 @@
         function selectRuangan() {
             let selectedOption = $("#id_ruangan option:selected");
             let harga_sewa = selectedOption.data('harga');
-
-            // $("#harga_sewa").val(harga_sewa);
         }
 
         $("#img_jaminan").on("change", function() {

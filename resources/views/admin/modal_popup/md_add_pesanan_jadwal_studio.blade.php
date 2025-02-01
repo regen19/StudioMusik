@@ -1,3 +1,4 @@
+{{-- TAMBAH JADWAL STUDIO --}}
 <div class="modal fade" id="add_jadwal_studio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -7,10 +8,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="id_user">Nama Peminjam</label>
-                    <input type="text" class="form-control" name="nama_user" id="nama_user"
-                        value="{{ Auth::user()->username }}" readonly required>
+                <div class="form-group row">
+                    <div class="col-7">
+                        <label for="id_user">Nama Peminjam</label>
+                        <input type="text" class="form-control" name="nama_user" id="nama_user"
+                            value="{{ Auth::user()->username }}" readonly required>
+                    </div>
+                    <div class="col-5">
+                        <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic"></label>
+                        <input type="number" class="form-control" name="no_wa" id="no_wa"
+                            value="{{ Auth::user()->no_wa }}" readonly required>
+                    </div>
+
 
                     <input type="hidden" value="{{ Auth::user()->id_user }}" name="id_user" id="id_user">
                 </div>
@@ -18,38 +27,44 @@
                 <div class="form-group row">
                     <div class="col-12">
                         <label for="id_ruangan">Ruangan Yang Dipinjam</label>
-                        <select name="id_ruangan" id="id_ruangan" class="form-control">
+                        <select name="id_ruangan" id="id_ruangan" class="form-control" onchange="selectRuangan()">
                             <option value="">Pilih Ruangan</option>
                         </select>
                     </div>
-                    {{-- <div class="col-4">
-                        <label for="harga_sewa">Biaya Perawatan</label>
-                        <input type="text" class="form-control" name="harga_sewa" id="harga_sewa" readonly>
-                    </div> --}}
                 </div>
 
                 <div class="form-group">
                     <label for="tgl_pinjam">Tanggal Peminjaman <small class="text-danger fst-italic">*harap pilih
                             ruangan dahulu</small></label>
                     <input type="date" class="form-control" id="tgl_pinjam" required onchange="cek_tanggal_kosong()">
-                    <span id="alert_tgl"></span>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-6">
                         <label for="waktu_mulai">Waktu Mulai</label>
-                        <select class="form-control" id="waktu_mulai" required></select>
+                        <select class="form-control" id="waktu_mulai" required onchange="cek_tanggal_kosong()"></select>
                     </div>
                     <div class="col-6">
                         <label for="waktu_selesai">Waktu Selesai</label>
-                        <select class="form-control" id="waktu_selesai" required></select>
+                        <select class="form-control" id="waktu_selesai" required
+                            onchange="cek_tanggal_kosong()"></select>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic">(ex :
-                            0821234*****)</small></label>
-                    <input type="number" class="form-control" name="no_wa" id="no_wa" required>
+                <span id="alert_tgl"></span>
+
+                <div id="list_pengajuan_tudey" style="display: none">
+                    <label for="nomor_urut">List Pengajuan Hari ini</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>NO</th>
+                            <th>Pengguna</th>
+                            <th>Waktu</th>
+                        </thead>
+
+                        <tbody id="pengajuanBody">
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="form-group">
@@ -70,11 +85,13 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary" id="BtnJadwalStudio">Simpan</button>
+                <span id="btnSimpanLoading" style="display:none;">
+                    <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
+                </span>
             </div>
         </div>
     </div>
 </div>
-
 
 @push('script')
     <script>
@@ -95,6 +112,9 @@
                     })
                 },
             });
+
+            var today = new Date().toISOString().split('T')[0];
+            $('#tgl_pinjam').attr('min', today);
 
             // setting waktu
             function populateTimeOptions(elementId, startTime, endTime, intervalMinutes) {
@@ -120,15 +140,67 @@
             }
 
             populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
-            populateTimeOptions('waktu_selesai', '17:00', '20:00', 10);
+            populateTimeOptions('waktu_selesai', '17:00', '21:00', 10);
+
+            $('#waktu_mulai').on('change', function() {
+                var waktuMulai = $('#waktu_mulai').val();
+
+                // Nonaktifkan semua opsi di bawah waktu_mulai di waktu_selesai
+                if (waktuMulai) {
+                    $('#waktu_selesai option').each(function() {
+                        if ($(this).val() < waktuMulai) {
+                            $(this).attr('disabled', 'disabled');
+                        } else {
+                            $(this).removeAttr('disabled');
+                        }
+                    });
+                } else {
+                    $('#waktu_selesai option').removeAttr('disabled');
+                }
+            });
         })
 
         function cek_tanggal_kosong() {
             let tgl_pinjam = $("#tgl_pinjam").val();
             let id_ruangan = $("#id_ruangan").val();
+            let waktu_mulai = $("#waktu_mulai").val();
+            let waktu_selesai = $("#waktu_selesai").val();
 
+            // ALERT TANGGAL
             $.ajax({
                 url: `{{ url('cek_tanggal_kosong') }}`,
+                method: 'post',
+                data: {
+                    "tgl_pinjam": tgl_pinjam,
+                    "id_ruangan": id_ruangan,
+                    "waktu_mulai": waktu_mulai,
+                    "waktu_selesai": waktu_selesai,
+                    "_token": "{{ csrf_token() }}"
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.length === 0) {
+                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
+                    !</small>`);
+                    } else if (response.status == "ada" || response.status == "ada2") {
+                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+                        class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+                    !</small>`);
+
+                    } else if (response.status == "weekend") {
+                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+                        class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
+                    !</small>`);
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+
+            // DATA TABLE LIST PENGAJUAN
+            $.ajax({
+                url: `{{ url('data_cek_tanggal_kosong') }}`,
                 method: 'post',
                 data: {
                     "tgl_pinjam": tgl_pinjam,
@@ -137,20 +209,33 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response)
-                    if (response.length === 0) {
-                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
-                        !</small>`);
+                    if (response.length > 0) {
+                        $('#list_pengajuan_tudey').show();
+                        var pengajuanBody = $('#pengajuanBody');
+                        pengajuanBody.empty();
+
+                        $.each(response, function(index, value) {
+                            pengajuanBody.append(`
+                                    <tr>
+                                        <td>${index + 1}</td>
+                                        <td>${value.username}</td>
+                                        <td>${value.waktu_mulai} - ${value.waktu_selesai}</td>
+                                    </tr>
+                                `);
+                        });
                     } else {
-                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                            class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
-                        !</small>`);
+                        $("#pengajuanBody").empty()
                     }
                 },
                 error: function(err) {
-                    reject(err);
+                    console.log(err);
                 }
             });
+        }
+
+        function selectRuangan() {
+            let selectedOption = $("#id_ruangan option:selected");
+            let harga_sewa = selectedOption.data('harga');
         }
 
         $("#img_jaminan").on("change", function() {
@@ -178,9 +263,7 @@
 
             const $id_user = $('#id_user');
             const $id_ruangan = $('#id_ruangan');
-            // const $harga_sewa = $('#harga_sewa');
             const $tgl_pinjam = $('#tgl_pinjam');
-            const $no_wa = $('#no_wa');
             const $waktu_mulai = $('#waktu_mulai');
             const $waktu_selesai = $('#waktu_selesai');
             const $ket_keperluan = $('#ket_keperluan');
@@ -196,7 +279,6 @@
                 $waktu_mulai.val("");
                 $waktu_selesai.val("");
                 $ket_keperluan.val("");
-                $no_wa.val("");
                 $img_jaminan.val("");
                 $output.hide();
 
@@ -228,7 +310,6 @@
                     const $id_ruangan = $('#id_ruangan');
                     // const $harga_sewa = $('#harga_sewa');
                     const $tgl_pinjam = $('#tgl_pinjam');
-                    const $no_wa = $('#no_wa');
                     const $waktu_mulai = $('#waktu_mulai');
                     const $waktu_selesai = $('#waktu_selesai');
                     const $ket_keperluan = $('#ket_keperluan');
@@ -237,7 +318,6 @@
                     $('#id_ruangan').val(response.id_ruangan);
                     // $('#harga_sewa').val(response.harga_sewa);
                     $('#tgl_pinjam').val(response.tgl_pinjam);
-                    $('#no_wa').val(response.no_wa);
                     $("#waktu_mulai").val(response.waktu_mulai);
                     $("#waktu_selesai").val(response.waktu_selesai);
                     $("#ket_keperluan").val(response.ket_keperluan);
@@ -261,14 +341,12 @@
             const id_user = $('#id_user').val();
             const id_ruangan = $('#id_ruangan').val();
             const tgl_pinjam = $('#tgl_pinjam').val();
-            // const harga_sewa = $('#harga_sewa').val();
-            const no_wa = $('#no_wa').val();
             const waktu_mulai = $('#waktu_mulai').val();
             const waktu_selesai = $('#waktu_selesai').val();
             const ket_keperluan = $('#ket_keperluan').val();
             const img_jaminan = $('#img_jaminan')[0].files[0];
 
-            if (!id_ruangan || !no_wa || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
+            if (!id_ruangan || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
@@ -283,11 +361,13 @@
                 data: {
                     id_ruangan,
                     tgl_pinjam,
+                    waktu_mulai: waktu_mulai,
+                    waktu_selesai: waktu_selesai,
                     _token: "{{ csrf_token() }}"
                 },
                 dataType: 'json',
                 success: function(response) {
-                    const isDateBooked = response.length !== 0;
+                    const isDateBooked = response.length === 0;
                     const isEdit = action === "edit";
                     const isAdd = action === "add";
 
@@ -298,51 +378,77 @@
                                 text: "Tanggal tersebut telah di BOOKING!!",
                                 icon: "error"
                             });
-                        } else if (!isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
+
+                            return 0;
+                        } else if (response.status === "weekend") {
+                            Swal.fire({
+                                title: "Gagal simpan.",
+                                text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
+                                icon: "error"
+                            });
+
+                            return 0;
+                        } else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
-                                // harga_sewa,
                                 tgl_pinjam,
                                 waktu_mulai,
                                 waktu_selesai,
                                 ket_keperluan,
-                                no_wa,
                                 img_jaminan
                             });
                         }
-                    } else if (isAdd && !isDateBooked) {
+                    } else if (isAdd && isDateBooked) {
                         submitForm(action, id_pesanan_jadwal_studio, {
                             id_user,
                             id_ruangan,
-                            // harga_sewa,
                             tgl_pinjam,
                             waktu_mulai,
                             waktu_selesai,
                             ket_keperluan,
-                            no_wa,
                             img_jaminan
                         });
-                    } else if (isAdd && isDateBooked) {
+                    } else if (isAdd && response.status === "ada" || response.status === "ada2") {
                         Swal.fire({
                             title: "Gagal simpan.",
                             text: "Tanggal tersebut telah di BOOKING!",
                             icon: "error"
                         });
+
+                        return 0;
+                    } else if (isAdd && response.status === "weekend") {
+                        Swal.fire({
+                            title: "Gagal simpan.",
+                            text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
+                            icon: "error"
+                        });
+
+                        return 0;
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });
         }
 
         function submitForm(action, id_pesanan_jadwal_studio, formDataObj) {
+            $("#BtnJadwalStudio").hide();
+            $("#btnSimpanLoading").show();
+
             const formData = new FormData();
             for (const key in formDataObj) {
                 formData.append(key, formDataObj[key]);
@@ -364,8 +470,7 @@
 
                     Swal.fire({
                         icon: "success",
-                        title: action === "add" ? "Data jadwal Berhasil Disimpan!" :
-                            "Data jadwal Berhasil Diubah!",
+                        title: action === "add" ? `${response.msg}` : `${response.msg}`,
                         toast: true,
                         position: "top-end",
                         showConfirmButton: false,
@@ -381,12 +486,26 @@
                         location.reload()
                     }, 1500);
                 },
+                complete: function() {
+                    // Mengembalikan teks tombol dan menyembunyikan loading
+                    $("#BtnJadwalStudio").show();
+                    $("#btnSimpanLoading").hide();
+                },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    $("#BtnJadwalStudio").show();
+                    $("#btnSimpanLoading").hide();
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });
