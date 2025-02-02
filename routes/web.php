@@ -99,6 +99,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/data_tutorial_alat', [TutorialPenggunaanAlatController::class, 'index_adm']);
         Route::get('/fetch_tutorial_alat', [TutorialPenggunaanAlatController::class, 'data_index']);
         Route::post('/add_tutorial_alat', [TutorialPenggunaanAlatController::class, 'store']);
+        Route::post('/edit_tutorial_alat/{id}', [TutorialPenggunaanAlatController::class, 'update']);
+        Route::post('/show_byId_tutorial_alat/{id}', [TutorialPenggunaanAlatController::class, 'show']);
         Route::delete('/hapus_tutorial_alat/{id}', [TutorialPenggunaanAlatController::class, 'destroy']);
     });
 

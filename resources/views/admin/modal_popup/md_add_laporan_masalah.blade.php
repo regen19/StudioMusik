@@ -97,7 +97,7 @@
                     saveLaporan("add", id_laporan);
                 });
             } else if (action === 'edit') {
-                $title_header.text("Edit Pengajuan Jadwal Studio");
+                $title_header.text("Edit Laporan");
                 $BtnLaporan.text("Ubah");
 
                 show_byId_laporan(id_laporan);
