@@ -274,73 +274,62 @@
                             "{{ asset('storage/img_upload/kondisi/akhir') }}/" + response.img_kondisi_akhir);
                         $('#show_kondisi_akhir').show();
                     }
-
-
-
-                    // btn bayar
-                    // if (response.status_persetujuan === "Y" && response.status_pembayaran === "N") {
-                    //     $("#BtnBayar").show().html(
-                    //         ` <button type="button" class="btn btn-info btn-lg text-white" onclick=get_snap_token(${id_pesanan_jadwal_studio})>Bayar </button>`
-                    //     )
-                    // } else {
-                    //     $("#BtnBayar").hide()
-                    // }
                 }
             });
         }
 
-        function get_snap_token(id_pesanan_jadwal_studio) {
-            let nama_user = $("#nama_user1").val()
+        // function get_snap_token(id_pesanan_jadwal_studio) {
+        //     let nama_user = $("#nama_user1").val()
 
 
-            $.ajax({
-                url: `{{ url('/get_snap_token') }}`,
-                method: 'get',
-                dataType: 'json',
-                data: {
-                    'no_wa': no_wa,
-                    'harga_perawatan': harga,
-                    "nama_user": nama_user,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    window.snap.pay(response, {
-                        onSuccess: function(result) {
-                            alert("payment success!");
+        //     $.ajax({
+        //         url: `{{ url('/get_snap_token') }}`,
+        //         method: 'get',
+        //         dataType: 'json',
+        //         data: {
+        //             'no_wa': no_wa,
+        //             'harga_perawatan': harga,
+        //             "nama_user": nama_user,
+        //             "_token": "{{ csrf_token() }}"
+        //         },
+        //         success: function(response) {
+        //             window.snap.pay(response, {
+        //                 onSuccess: function(result) {
+        //                     alert("payment success!");
 
-                            location.href = '/jadwal_studio_saya'
+        //                     location.href = '/jadwal_studio_saya'
 
-                            $.ajax({
-                                url: `{{ url('/pembayaran_studio_sukses') }}`,
-                                method: 'post',
-                                dataType: 'json',
-                                data: {
-                                    'id_pesanan_jadwal_studio': id_pesanan_jadwal_studio,
-                                    "_token": "{{ csrf_token() }}"
-                                },
-                                success: function(response) {}
-                            })
+        //                     $.ajax({
+        //                         url: `{{ url('/pembayaran_studio_sukses') }}`,
+        //                         method: 'post',
+        //                         dataType: 'json',
+        //                         data: {
+        //                             'id_pesanan_jadwal_studio': id_pesanan_jadwal_studio,
+        //                             "_token": "{{ csrf_token() }}"
+        //                         },
+        //                         success: function(response) {}
+        //                     })
 
-                        },
-                        onPending: function(result) {
-                            /* You may add your own implementation here */
-                            alert("wating your payment!");
-                            console.log(result);
-                        },
-                        onError: function(result) {
-                            /* You may add your own implementation here */
-                            alert("payment failed!");
-                            console.log(result);
-                        },
-                        onClose: function() {
-                            /* You may add your own implementation here */
-                            alert('you closed the popup without finishing the payment');
-                            return
-                        }
-                    })
-                }
-            })
-        }
+        //                 },
+        //                 onPending: function(result) {
+        //                     /* You may add your own implementation here */
+        //                     alert("wating your payment!");
+        //                     console.log(result);
+        //                 },
+        //                 onError: function(result) {
+        //                     /* You may add your own implementation here */
+        //                     alert("payment failed!");
+        //                     console.log(result);
+        //                 },
+        //                 onClose: function() {
+        //                     /* You may add your own implementation here */
+        //                     alert('you closed the popup without finishing the payment');
+        //                     return
+        //                 }
+        //             })
+        //         }
+        //     })
+        // }
 
         $(document).ready(function() {
             $('#form_kondisi_awal').on('submit', function(e) {

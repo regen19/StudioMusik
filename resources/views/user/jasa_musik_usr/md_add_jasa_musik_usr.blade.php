@@ -61,6 +61,67 @@
     </div>
 </div>
 
+{{-- EDIT JASA MUSIK --}}
+<div class="modal fade" id="edit_jasa_musik" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Pesanan Jasa Musik</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="post">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit_tgl_deadline">Tanggal Deadline Pesanan</label>
+                        <input type="date" class="form-control" name="edit_tgl_deadline" id="edit_tgl_deadline"
+                            required>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-7">
+                            <label for="edit_nama_peminjam">Nama Peminjam</label>
+                            <input type="text" class="form-control" name="edit_nama_peminjam"
+                                id="edit_nama_peminjam" value="{{ Auth::user()->username }}" readonly required>
+                        </div>
+                        <div class="col-5">
+                            <label for="edit_no_wa">Nomor WhatsApp</label>
+                            <input type="number" class="form-control" name="edit_no_wa" id="edit_no_wa"
+                                value="{{ Auth::user()->no_wa }}" readonly required>
+                        </div>
+                        <input type="hidden" class="form-control" name="edit_id_user" id="edit_id_user"
+                            value="{{ Auth::user()->id_user }}" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_id_jasa_musik">Jenis Jasa Musik</label>
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <select class="form-select" id="edit_id_jasa_musik">
+                                    <option selected disabled>Pilih Jasa Musik</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="edit_containerInputJasaMusik">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_keterangan">Keterangan</label>
+                        <textarea class="form-control" name="edit_keterangan" id="edit_keterangan" cols="30" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="edit_btnSimpanText"
+                        onclick="edit_btnSimpan()">Simpan</button>
+                    <span id="edit_btnSimpanLoading" style="display:none;">
+                        <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('script')
     <script>
         $(document).ready(function() {
@@ -70,6 +131,8 @@
             var today = new Date().toISOString().split('T')[0];
             $('#tgl_deadline').attr('min', today);
         })
+
+
         async function event_list_jasa_musik() {
             $("#id_jasa_musik").on('change', function() {
                 $("#containerInputJasaMusik").empty();
@@ -233,6 +296,59 @@
                     });
                 }
 
+            });
+        }
+
+        // FORM EDIT
+        function openModal(id_pesanan_jasa_musik) {
+            $("#edit_jasa_musik").modal("show");
+
+            $.ajax({
+                url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
+                method: 'post',
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response)
+                    $("#edit_tgl_deadline").val(response.tenggat_produksi)
+                    $("#edit_keterangan").val(response.keterangan)
+
+                    // LIST JASA MUSIK
+                    $.ajax({
+                        url: `{{ url('/list_data_jasa_musik') }}`,
+                        method: 'get',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        dataType: 'json',
+                        success: function(listResponse) {
+                            $("#edit_id_jasa_musik").empty()
+                            $.each(listResponse, function(key, value) {
+                                var selected = response.id_jasa_musik === value
+                                    .id_jasa_musik ? 'selected' : '';
+                                $("#edit_id_jasa_musik").append(
+                                    `<option value="${value.id_jasa_musik}" ${selected}>${value.nama_jenis_jasa}</option>`
+                                );
+                            });
+
+                            $("#edit_id_jasa_musik").val(response.id_jasa_musik).change();
+                        }
+                    });
+
+                    // INFORMASI 
+                    // $("#edit_containerInputJasaMusik").empty();
+                    $("#edit_containerInputJasaMusik").append(
+                        `<div class="form-group">
+                                            <label for="${response.nama_field}">${response.nama_field}</label>
+                                                ${response.jenis_field == "text" ? `<textarea type="${response.jenis_field}" class="form-control informasi" name="${response.nama_field}" id="${response.nama_field}"></textarea>`
+                                     :
+                                        `<input type="${response.jenis_field}" class="form-control informasi" name="${response.nama_field}" id="${response.nama_field}" >`
+                                        }
+                                     </div>`
+                    );
+                }
             });
         }
     </script>

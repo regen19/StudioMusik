@@ -107,8 +107,9 @@ class PesananJasaMusikController extends Controller
         $data = DB::table('pesanan_jasa_musik')
             ->join('users', 'users.id_user', '=', 'pesanan_jasa_musik.id_user')
             ->join('master_jasa_musik', 'master_jasa_musik.id_jasa_musik', '=', 'pesanan_jasa_musik.id_jasa_musik')
+            ->join("pesanan_jasa_musik_informasi", "pesanan_jasa_musik_informasi.pesanan_jasa_musik_id", "=", "pesanan_jasa_musik.id_pesanan_jasa_musik")
             ->where('pesanan_jasa_musik.id_pesanan_jasa_musik', $id_pesanan_jasa_musik)
-            ->select('users.username', 'pesanan_jasa_musik.*', 'master_jasa_musik.nama_jenis_jasa')
+            ->select('users.username', 'pesanan_jasa_musik.*', 'master_jasa_musik.nama_jenis_jasa', "pesanan_jasa_musik_informasi.*")
             ->first();
 
         if (empty($data)) {

@@ -157,6 +157,7 @@
                                     `;
                                 }
 
+                                // 
                                 // <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_studio}')">
                                 //                     <i class="bi bi-pencil-square"></i>
                                 //                 </button>
@@ -165,7 +166,10 @@
                                     return `
                                         <td>
                                             <div style="margin-right: 20px;">
-                                            
+                                                <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_studio}')">
+                                                     <i class="bi bi-pencil-square"></i>
+                                                 </button>
+
                                                 <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})">
                                                     Batalkan
                                                 </button>

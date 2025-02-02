@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('nama_field');
             $table->text('value_field');
             $table->timestamps();
+
+            $table->foreign('pesanan_jasa_musik_id')->references('id_pesanan_jasa_musik')->on('pesanan_jasa_musik')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 

@@ -71,9 +71,9 @@
                             render: function(data) {
 
                                 return data ? data.split(" ")[0] : `<div>
-                                        <a type="button" class="badge bg-warning">
-                                            Diajukan
-                                        </a> <div>`
+                                <a type="button" class="badge bg-warning">
+                                    Diajukan
+                            </a> <div>`
                             }
                         },
                         {
@@ -200,9 +200,14 @@
                                     <td><i class="text-danger">Dibatalkan</i></td>
                                     `;
                                 } else {
+                                    
                                     return `
                                         <td>
                                             <div style="margin-rigth=20px;">
+                                                <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal(${data.id_pesanan_jasa_musik})">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
+
                                                 <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_pesanan(${data.id_pesanan_jasa_musik})">
                                                     Batalkan
                                                 </button>

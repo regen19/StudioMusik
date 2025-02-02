@@ -27,7 +27,7 @@
                 <div class="form-group row">
                     <div class="col-12">
                         <label for="id_ruangan">Ruangan Yang Dipinjam</label>
-                        <select name="id_ruangan" id="id_ruangan" class="form-control" onchange="selectRuangan()">
+                        <select name="id_ruangan" id="id_ruangan" class="form-control">
                             <option value="">Pilih Ruangan</option>
                         </select>
                     </div>
@@ -104,12 +104,12 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-
                     $.each(response, function(key, val) {
                         $("#id_ruangan").append(
                             `<option value="${val.id_ruangan}">${val.nama_ruangan}</option>`
-                        )
-                    })
+                        );
+                    });
+
                 },
             });
 
@@ -167,36 +167,36 @@
             let waktu_selesai = $("#waktu_selesai").val();
 
             // ALERT TANGGAL
-            $.ajax({
-                url: `{{ url('cek_tanggal_kosong') }}`,
-                method: 'post',
-                data: {
-                    "tgl_pinjam": tgl_pinjam,
-                    "id_ruangan": id_ruangan,
-                    "waktu_mulai": waktu_mulai,
-                    "waktu_selesai": waktu_selesai,
-                    "_token": "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.length === 0) {
-                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
-                    !</small>`);
-                    } else if (response.status == "ada" || response.status == "ada2") {
-                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                        class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
-                    !</small>`);
+            // $.ajax({
+            //     url: `{{ url('cek_tanggal_kosong') }}`,
+            //     method: 'post',
+            //     data: {
+            //         "tgl_pinjam": tgl_pinjam,
+            //         "id_ruangan": id_ruangan,
+            //         "waktu_mulai": waktu_mulai,
+            //         "waktu_selesai": waktu_selesai,
+            //         "_token": "{{ csrf_token() }}"
+            //     },
+            //     dataType: 'json',
+            //     success: function(response) {
+            //         if (response.length === 0) {
+            //             $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
+        //         !</small>`);
+            //         } else if (response.status == "ada" || response.status == "ada2") {
+            //             $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+        //             class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+        //         !</small>`);
 
-                    } else if (response.status == "weekend") {
-                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                        class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
-                    !</small>`);
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
+            //         } else if (response.status == "weekend") {
+            //             $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+        //             class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
+        //         !</small>`);
+            //         }
+            //     },
+            //     error: function(err) {
+            //         console.log(err);
+            //     }
+            // });
 
             // DATA TABLE LIST PENGAJUAN
             $.ajax({
@@ -231,11 +231,6 @@
                     console.log(err);
                 }
             });
-        }
-
-        function selectRuangan() {
-            let selectedOption = $("#id_ruangan option:selected");
-            let harga_sewa = selectedOption.data('harga');
         }
 
         $("#img_jaminan").on("change", function() {
@@ -318,8 +313,8 @@
                     $('#id_ruangan').val(response.id_ruangan);
                     // $('#harga_sewa').val(response.harga_sewa);
                     $('#tgl_pinjam').val(response.tgl_pinjam);
-                    $("#waktu_mulai").val(response.waktu_mulai);
-                    $("#waktu_selesai").val(response.waktu_selesai);
+                    $('#waktu_mulai').val(response.waktu_mulai);
+                    $('#waktu_selesai').val(response.waktu_selesai);
                     $("#ket_keperluan").val(response.ket_keperluan);
 
                     $('#output').attr('src', '{{ asset('storage/img_upload/pesanan_jadwal') }}/' + response
@@ -327,11 +322,18 @@
                     $('#output').show();
                 },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });
@@ -359,17 +361,21 @@
                 url: "{{ url('cek_tanggal_kosong') }}",
                 method: 'post',
                 data: {
-                    id_ruangan,
-                    tgl_pinjam,
+                    id_pesanan_jadwal_studio: id_pesanan_jadwal_studio,
+                    id_ruangan: id_ruangan,
+                    tgl_pinjam: tgl_pinjam,
+                    action: action,
                     waktu_mulai: waktu_mulai,
                     waktu_selesai: waktu_selesai,
                     _token: "{{ csrf_token() }}"
                 },
                 dataType: 'json',
                 success: function(response) {
-                    const isDateBooked = response.length === 0;
+                    console.log(response)
+
                     const isEdit = action === "edit";
                     const isAdd = action === "add";
+                    const isDateBooked = response.length === 0;
 
                     if (isEdit) {
                         if (response.status === "ada" || response.status === "ada2") {
@@ -388,7 +394,7 @@
                             });
 
                             return 0;
-                        } else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
+                        } else {
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
@@ -399,6 +405,17 @@
                                 img_jaminan
                             });
                         }
+                        //  else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
+                        //     submitForm(action, id_pesanan_jadwal_studio, {
+                        //         id_user,
+                        //         id_ruangan,
+                        //         tgl_pinjam,
+                        //         waktu_mulai,
+                        //         waktu_selesai,
+                        //         ket_keperluan,
+                        //         img_jaminan
+                        //     });
+                        // }
                     } else if (isAdd && isDateBooked) {
                         submitForm(action, id_pesanan_jadwal_studio, {
                             id_user,
@@ -454,6 +471,7 @@
                 formData.append(key, formDataObj[key]);
             }
             formData.append('_token', "{{ csrf_token() }}");
+            formData.append('action', action);
 
             const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
                 `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;

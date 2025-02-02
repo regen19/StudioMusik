@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('id_pesanan_jasa_musik');
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_jasa_musik');
-            $table->timestamp('tgl_produksi')->nullable();
-            $table->timestamp('tenggat_produksi');
+            $table->date('tgl_produksi')->nullable();
+            $table->date('tenggat_produksi');
             $table->longText('keterangan');
             $table->longText('keterangan_admin')->nullable();
             $table->enum('status_persetujuan', ['Y', 'N', 'P'])->default('P');
