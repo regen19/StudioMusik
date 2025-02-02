@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Persetujuan Peminjaman Studio Musik</title>
+    <title>Persetujuan Jasa Musik</title>
 </head>
 
 <body>
@@ -22,8 +22,7 @@
                 SELESAI
             @endif
         </b>,
-        silahkan cek
-        website.
+        silahkan cek website Studio Musik ITERA.
     </h1>
 </body>
 

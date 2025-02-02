@@ -95,7 +95,7 @@ class PesananJasaMusikController extends Controller
 
         $subject = "Pengajuan Jenis Jasa Baru Hari ini";
         $view = "EmailNotif.PengajuanJasaMusikMail";
-        Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+        Mail::to('musikitera@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
         return response()->json([
             'msg' => 'Pesanan Anda berhasil disimpan',

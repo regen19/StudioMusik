@@ -141,7 +141,7 @@ class PesananJadwalStudioController extends Controller
 
             $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
             $view = "EmailNotif.PengajuanStudioMusikMail";
-            Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+            Mail::to('musikitera@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
             // Commit transaksi
             DB::commit();
@@ -321,23 +321,6 @@ class PesananJadwalStudioController extends Controller
             ->pluck("email")
             ->first();
 
-        $dataEmail = DB::table("pesanan_jadwal_studio")
-            ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
-            ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
-            ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
-            ->select(
-                "pesanan_jadwal_studio.*",
-                "users.username",
-                "detail_pesanan_jadwal_studio.status_persetujuan",
-                "data_ruangan.nama_ruangan"
-            )
-            ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
-            ->first();
-
-        $subject = "Persetujuan Peminjaman Studi Musik";
-        $view = "EmailNotif.PersetujuanStudioMusik";
-        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
-
         if (!$id_detail_pesanan_jadwal_studio) {
             return response()->json([
                 "msg" => "Detail pesanan jadwal studio tidak ditemukan"
@@ -353,6 +336,23 @@ class PesananJadwalStudioController extends Controller
         DetailPesananJadwalStudioModel::findOrFail($id_detail_pesanan_jadwal_studio->id_detail_pesanan_jadwal_studio)->update([
             'status_persetujuan' => $request->input('status_persetujuan')
         ]);
+        //kirim email
+        $dataEmail = DB::table("pesanan_jadwal_studio")
+            ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
+            ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+            ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+            ->select(
+                "pesanan_jadwal_studio.*",
+                "users.username",
+                "detail_pesanan_jadwal_studio.status_persetujuan",
+                "data_ruangan.nama_ruangan"
+            )
+            ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $id_pesanan_jadwal_studio)
+            ->first();
+
+        $subject = "Persetujuan Peminjaman Studio Musik";
+        $view = "EmailNotif.PersetujuanStudioMusik";
+        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
         return response()->json([
             "msg" => "Status persetujuan telah diubah",

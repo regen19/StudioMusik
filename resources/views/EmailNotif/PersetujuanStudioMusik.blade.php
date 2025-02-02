@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Persetujuan Pesanan Jasa Musik</title>
+    <title>Persetujuan Peminjaman Studio Musik</title>
 </head>
 
 <body>
@@ -12,8 +12,7 @@
             @elseif($pesanan->status_persetujuan == 'Y')
                 DISETUJUI
             @endif
-        </b>, silahkan cek website ukmbs
-        itera.
+        </b>, silahkan cek website Studio Musik ITERA
     </h1>
 </body>
 

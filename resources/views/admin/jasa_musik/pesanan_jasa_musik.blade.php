@@ -102,8 +102,7 @@
 
                                 return `
                                    <div>
-                                        <a type="button" class="badge bg-${color}" onclick="data_status(${data.id_pesanan_jasa_musik})"
-                                            data-bs-toggle="modal" data-bs-target="#status_persetujuan">
+                                        <a type="button" class="badge bg-${color}">
                                             ${status}
                                         </a>
                                     </div>
@@ -129,8 +128,7 @@
 
                                 return `
                                    <div>
-                                       <a type="button" class="badge bg-${color}" onclick="data_status(${data.id_pesanan_jasa_musik})"
-                                            data-bs-toggle="modal" data-bs-target="#status_persetujuan">
+                                       <a type="button" class="badge bg-${color}">
                                             ${status}
                                         </a>
                                     </div>

@@ -224,6 +224,8 @@ nav.navbar.bootsnav .navbar-toggle i{color: #4e4ffa;}
 /*.welcome-hero-txt*/
 .welcome-hero-txt{text-align: center;padding:290px 0 372px;}
 .welcome-hero-txt h2 {
+    display: inline-block;
+    padding: 10px 15px;
     font-size: 42px;
     color: #fff;
     font-weight: 700;
