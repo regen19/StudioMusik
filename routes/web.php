@@ -83,6 +83,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/laporan_admin', [LaporanController::class, 'index']);
         Route::get('/fetch_laporan_masalah', [LaporanController::class, 'data_index']);
         Route::post('/add_laporan_masalah', [LaporanController::class, 'store']);
+        Route::post('/edit_laporan_masalah/{id}', [LaporanController::class, 'update']);
+        Route::post('/show_byId_laporan_masalah/{id}', [LaporanController::class, 'show']);
         Route::delete('/hapus_laporan_masalah/{id}', [LaporanController::class, 'destroy']);
 
         // PAKET HARGA JASA MUSIK

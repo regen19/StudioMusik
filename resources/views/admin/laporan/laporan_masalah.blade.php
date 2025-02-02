@@ -9,8 +9,7 @@
                 Refresh</button>
         </a>
 
-        <button type="button" class="btn btn-primary icon icon-left" data-bs-toggle="modal" data-bs-target="#add_laporan"><i
-                class="bi bi-plus-lg"></i>
+        <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
             Tambah Laporan
         </button>
     </div>
@@ -80,18 +79,16 @@
                                 return data;
                             }
                         },
-                        // {
-                        //     data: null,
-                        //     render: function(data) {
-                        //         return `<a target="_blank" href="{{ asset('storage/img_upload') }}/${data.gambar}"><img src="{{ asset('storage/img_upload') }}/${data.gambar}" class="img-thumbnail" max-width="50px" max-height="50px"></a>`;
-                        //     }
-                        // },
                         {
                             data: null,
                             render: function(data) {
                                 return `
                                     <td>
                                         <div style="margin-rigth=20px;">
+                                            <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_laporan}')">
+                                                    <i class="bi bi-pencil-square"></i>
+                                            </button>
+
                                             <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_laporan(${data.id_laporan})"> 
                                                 <i class="bi bi-trash"></i>
                                             </button>

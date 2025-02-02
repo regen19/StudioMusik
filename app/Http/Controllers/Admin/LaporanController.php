@@ -56,19 +56,10 @@ class LaporanController extends Controller
             ], 422);
         }
 
-        // $imagePaths = [];
-        // if ($request->hasfile('gambar')) {
-        //     foreach ($request->file('gambar') as $image) {
-        //         $name = time() . '-Laporan.' . $image->getClientOriginalExtension();
-        //         $path = $image->move(public_path('/storage/img_upload/laporan'), $name);
-        //         $imagePaths[] = $path;
-        //     }
-        // }
-
         $imagePaths = [];
         if ($request->hasFile('gambar')) {
             foreach ($request->file('gambar') as $image) {
-                $name = time() . '-Laporan.' . $image->getClientOriginalExtension();
+                $name =  uniqid() . '-Laporan-' . $request->jenis_laporan . "." . $image->getClientOriginalExtension();
                 $image->move(public_path('/storage/img_upload/laporan'), $name);
                 $imagePaths[] = '/storage/img_upload/laporan/' . $name;
             }
@@ -84,6 +75,77 @@ class LaporanController extends Controller
         return response()->json([
             "msg" => "Jasa musik berhasil disimpan",
         ], 200);
+    }
+
+    public function update(Request $request, string $id_laporan)
+    {
+        $validate = Validator::make($request->all(), [
+            "jenis_laporan" => "required",
+            "tgl_laporan" => "required",
+            "gambar.*" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
+            "keterangan" => "required",
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                "msg" => $validate->errors()
+            ], 422);
+        }
+
+        $data = LaporanModel::findOrFail($id_laporan);
+
+        if ($data) {
+            // Menghapus dan mengganti gambar jika ada file gambar baru yang diunggah
+            if ($request->hasFile('gambar')) {
+                // Hapus semua gambar lama
+                foreach (json_decode($data->gambar) as $old_gambar) {
+                    $path = public_path($old_gambar);
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                }
+
+                // Simpan gambar baru
+                $gambar_baru = [];
+                foreach ($request->file('gambar') as $img) {
+                    $extension = $img->getClientOriginalExtension();
+                    $nama_img = uniqid() . "-Laporan-" . $request->jenis_laporan . "." . $extension;
+                    $img->move(public_path('/storage/img_upload/laporan/'), $nama_img);
+                    $gambar_baru[] = '/storage/img_upload/laporan/' . $nama_img;
+                }
+                $data->gambar = json_encode($gambar_baru, JSON_UNESCAPED_SLASHES);
+            }
+
+            $data->jenis_laporan = $request->input('jenis_laporan');
+            $data->tgl_laporan = $request->input('tgl_laporan');
+            $data->keterangan = $request->input('keterangan');
+
+            $data->save();
+
+            return response()->json([
+                'msg' => 'Data laporan berhasil diperbarui',
+            ], 200);
+        }
+
+        return response()->json([
+            'msg' => 'Data laporan tidak ditemukan',
+        ], 404);
+    }
+
+
+    public function show(string $id_laporan)
+    {
+        $data = DB::table('laporan')
+            ->where("id_laporan", $id_laporan)
+            ->first();
+
+        if (empty($data)) {
+            return response()->json([
+                "msg" => "Data tidak ditemukan...",
+            ], 404);
+        } else {
+            return response()->json($data);
+        }
     }
 
     public function destroy(string $id_laporan)
@@ -104,14 +166,3 @@ class LaporanController extends Controller
         return response()->json(['msg' => 'Data berhasil dihapus'], 200);
     }
 }
-
-        // if ($data) {
-        //     $path = 'storage/img_upload/' . $data->gambar;
-        //     if (File::exists(public_path($path))) {
-        //         File::delete(public_path($path));
-        //     }
-
-        //     $data->delete();
-
-        //     return response()->json(['msg' => 'Data berhasil dihapus'], 200);
-        // }

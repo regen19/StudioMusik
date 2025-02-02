@@ -305,10 +305,9 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 dataType: 'json',
-                success: function(response) {
+                success: function(response) { 
                     const $id_user = $('#id_user');
                     const $id_ruangan = $('#id_ruangan');
-                    // const $harga_sewa = $('#harga_sewa');
                     const $tgl_pinjam = $('#tgl_pinjam');
                     const $waktu_mulai = $('#waktu_mulai');
                     const $waktu_selesai = $('#waktu_selesai');
@@ -316,7 +315,6 @@
                     const $img_jaminan = $('#img_jaminan');
 
                     $('#id_ruangan').val(response.id_ruangan);
-                    // $('#harga_sewa').val(response.harga_sewa);
                     $('#tgl_pinjam').val(response.tgl_pinjam);
                     $("#waktu_mulai").val(response.waktu_mulai);
                     $("#waktu_selesai").val(response.waktu_selesai);
