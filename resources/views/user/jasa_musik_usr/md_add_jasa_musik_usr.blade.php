@@ -60,72 +60,10 @@
     </div>
 </div>
 
-{{-- EDIT JASA MUSIK --}}
-{{-- <div class="modal fade" id="edit_jasa_musik" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Pesanan Jasa Musik</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="" method="post">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="edit_tgl_deadline">Tanggal Deadline Pesanan</label>
-                        <input type="date" class="form-control" name="edit_tgl_deadline" id="edit_tgl_deadline"
-                            required>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-7">
-                            <label for="edit_nama_peminjam">Nama Peminjam</label>
-                            <input type="text" class="form-control" name="edit_nama_peminjam"
-                                id="edit_nama_peminjam" value="{{ Auth::user()->username }}" readonly required>
-                        </div>
-                        <div class="col-5">
-                            <label for="edit_no_wa">Nomor WhatsApp</label>
-                            <input type="number" class="form-control" name="edit_no_wa" id="edit_no_wa"
-                                value="{{ Auth::user()->no_wa }}" readonly required>
-                        </div>
-                        <input type="hidden" class="form-control" name="edit_id_user" id="edit_id_user"
-                            value="{{ Auth::user()->id_user }}" readonly required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_id_jasa_musik">Jenis Jasa Musik</label>
-                        <div class="form-group row">
-                            <div class="col-lg-12">
-                                <select class="form-select" id="edit_id_jasa_musik">
-                                    <option selected disabled>Pilih Jasa Musik</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="edit_containerInputJasaMusik">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_keterangan">Keterangan</label>
-                        <textarea class="form-control" name="edit_keterangan" id="edit_keterangan" cols="30" rows="5" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="edit_btnSimpanText"
-                        onclick="edit_btnSimpan()">Simpan</button>
-                    <span id="edit_btnSimpanLoading" style="display:none;">
-                        <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
-                    </span>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> --}}
-
 @push('script')
     <script>
         $(document).ready(function() {
             list_jasa_musik();
-            event_list_jasa_musik();
 
             var today = new Date().toISOString().split('T')[0];
             $('#tgl_deadline').attr('min', today);
@@ -309,6 +247,9 @@
                 $title_header.text("Tambah Pesanan Jasa Musik");
                 $btnSimpanText.text("Simpan");
 
+                $("#containerInputJasaMusik").empty();
+                event_list_jasa_musik();
+
                 $btnSimpanText.off('click').on("click", function() {
                     saveJasaMusik("add", id_pesanan_jasa_musik);
                 });
@@ -360,21 +301,35 @@
                     });
 
                     // INFORMASI 
+                    $("#containerInputJasaMusik").empty(); // Kosongkan container sebelum menambah elemen baru
+                    console.log(response.jasa_informasi);
                     $.each(response.jasa_informasi, function(key, value) {
-                        console.log(value)
+                        console.log(value);
                         $("#containerInputJasaMusik").append(
                             `
-                                <div class="form-group">
-                                    <label for="${value.nama_field}">${value.nama_field}</label>
-                                    ${value.tipe_field=="text"?
-                                    `<textarea type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="${value.nama_field}"></textarea>`
-                                    :
-                                    `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="${value.nama_field}" >`
-                                    }
-                                </div>
-                            `
-                        )
+                            <div class="form-group">
+                                <label for="input_${value.id}">${value.nama_field}</label>
+                                ${value.tipe_field == "text" ? 
+                                `<textarea class="form-control informasi" name="${value.nama_field}" id="input_${value.id}">${value.value_field}</textarea>` 
+                                : value.tipe_field == "number" ? 
+                                `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="input_${value.id}" >`
+                                : value.tipe_field == "file" ? 
+                                `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}">`
+                                : ""
+                                }
+                            </div>
+                    `
+                        );
+
+                        if (value.tipe_field == "file") {
+                            // Menambahkan tautan untuk file yang di-upload
+                            var fileUrl = value.value_field;
+                            $("#containerInputJasaMusik").append(
+                                `<a href="${fileUrl}" target="_blank">Lihat File</a>`
+                            );
+                        }
                     });
+
 
                 }
             });
