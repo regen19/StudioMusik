@@ -20,7 +20,7 @@ class PesananJadwalStudioController extends Controller
 {
     public function index()
     {
-        return view('admin.jadwal_studio.jadwal_studio');
+        return view('admin.jadwal_studio.jadwal_studio'); 
     }
 
     public function cek_tanggal_kosong(Request $request)
@@ -37,8 +37,7 @@ class PesananJadwalStudioController extends Controller
             return response()->json(["status" => "weekend"]);
         }
 
-        $cek_tanggal =
-            DB::table('pesanan_jadwal_studio')
+        $cek_tanggal = DB::table('pesanan_jadwal_studio')
             ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
             ->where('pesanan_jadwal_studio.tgl_pinjam', $tgl_pinjam)
             ->where("pesanan_jadwal_studio.id_ruangan", $id_ruangan)
@@ -65,6 +64,26 @@ class PesananJadwalStudioController extends Controller
             }
             return response()->json([]);
         }
+    }
+
+    public function data_cek_tanggal_kosong(Request $request)
+    {
+
+        $tgl_pinjam = $request->input("tgl_pinjam");
+        $id_ruangan = $request->input("id_ruangan");
+
+        $cek_tanggal = DB::table('pesanan_jadwal_studio')
+            ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+            ->join("detail_pesanan_jadwal_studio", "detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio", "=", "pesanan_jadwal_studio.id_pesanan_jadwal_studio")
+            ->where('pesanan_jadwal_studio.tgl_pinjam', $tgl_pinjam)
+            ->where("pesanan_jadwal_studio.id_ruangan", $id_ruangan)
+            ->where(function ($query) {
+                $query->where("detail_pesanan_jadwal_studio.status_pengajuan", "Y")
+                    ->where("detail_pesanan_jadwal_studio.status_persetujuan", "!=", "N");
+            })
+            ->get();
+
+        return response()->json($cek_tanggal);
     }
 
     public function data_index()

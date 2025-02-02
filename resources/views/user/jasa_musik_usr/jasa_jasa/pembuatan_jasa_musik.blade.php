@@ -20,7 +20,7 @@
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show"
                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body p-0" style="white-space: pre-line;">
+                                        <div class="accordion-body m-0" style="white-space: pre-line;">
                                             @if ($jenis_jasa)
                                                 {{ $jenis_jasa->sk }}
                                             @else
@@ -65,17 +65,34 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+                                <h5>Deskripsi</h5>
+                            </div>
+                            <div class="card-body">
+                                {{ $jenis_jasa->deskripsi }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
                                 <h5>Review Pengguna</h5>
                             </div>
                             <div class="card-body">
-                                <div class="list_review overflow-auto" style="height: 600px;">
+                                <div class="list_review">
                                     <div class="row">
-                                        @if ($rating !== null)
+                                        @if ($rating != null)
                                             @foreach ($rating as $rt)
                                                 @if ($rt->rating != null)
-                                                    <div class="my-2" style="width:100%; border: 1px solid red">
+                                                    <div style="width:100%; border: 1px solid red">
                                                         <div class="p-2" style="font-size: 16px">
                                                             {{ $rt->username }}
+
+                                                            <small
+                                                                style="font-size: 12px;"><i>{{ \Carbon\Carbon::parse($rt->updated_at)->diffForHumans() }}</i></small>
 
                                                             <div class="rating" style="font-size: 10px">
                                                                 <input type="radio"

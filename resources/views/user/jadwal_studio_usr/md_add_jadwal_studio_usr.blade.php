@@ -37,18 +37,34 @@
                     <label for="tgl_pinjam">Tanggal Peminjaman <small class="text-danger fst-italic">*harap pilih
                             ruangan dahulu</small></label>
                     <input type="date" class="form-control" id="tgl_pinjam" required onchange="cek_tanggal_kosong()">
-                    <span id="alert_tgl"></span>
                 </div>
 
                 <div class="form-group row">
                     <div class="col-6">
                         <label for="waktu_mulai">Waktu Mulai</label>
-                        <select class="form-control" id="waktu_mulai" required></select>
+                        <select class="form-control" id="waktu_mulai" required onchange="cek_tanggal_kosong()"></select>
                     </div>
                     <div class="col-6">
                         <label for="waktu_selesai">Waktu Selesai</label>
-                        <select class="form-control" id="waktu_selesai" required></select>
+                        <select class="form-control" id="waktu_selesai" required
+                            onchange="cek_tanggal_kosong()"></select>
                     </div>
+                </div>
+
+                <span id="alert_tgl"></span>
+
+                <div id="list_pengajuan_tudey" style="display: none">
+                    <label for="nomor_urut">List Pengajuan Hari ini</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>NO</th>
+                            <th>Pengguna</th>
+                            <th>Waktu</th>
+                        </thead>
+
+                        <tbody id="pengajuanBody">
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="form-group">
@@ -97,6 +113,9 @@
                 },
             });
 
+            var today = new Date().toISOString().split('T')[0];
+            $('#tgl_pinjam').attr('min', today);
+
             // setting waktu
             function populateTimeOptions(elementId, startTime, endTime, intervalMinutes) {
                 var $selectElement = $('#' + elementId);
@@ -122,6 +141,23 @@
 
             populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
             populateTimeOptions('waktu_selesai', '17:00', '21:00', 10);
+
+            $('#waktu_mulai').on('change', function() {
+                var waktuMulai = $('#waktu_mulai').val();
+
+                // Nonaktifkan semua opsi di bawah waktu_mulai di waktu_selesai
+                if (waktuMulai) {
+                    $('#waktu_selesai option').each(function() {
+                        if ($(this).val() < waktuMulai) {
+                            $(this).attr('disabled', 'disabled');
+                        } else {
+                            $(this).removeAttr('disabled');
+                        }
+                    });
+                } else {
+                    $('#waktu_selesai option').removeAttr('disabled');
+                }
+            });
         })
 
         function cek_tanggal_kosong() {
@@ -130,6 +166,7 @@
             let waktu_mulai = $("#waktu_mulai").val();
             let waktu_selesai = $("#waktu_selesai").val();
 
+            // ALERT TANGGAL
             $.ajax({
                 url: `{{ url('cek_tanggal_kosong') }}`,
                 method: 'post',
@@ -144,19 +181,54 @@
                 success: function(response) {
                     if (response.length === 0) {
                         $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
-                        !</small>`);
+                    !</small>`);
                     } else if (response.status == "ada" || response.status == "ada2") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                            class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
-                        !</small>`);
+                        class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+                    !</small>`);
+
                     } else if (response.status == "weekend") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                            class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
-                        !</small>`);
+                        class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
+                    !</small>`);
                     }
                 },
                 error: function(err) {
-                    reject(err);
+                    console.log(err);
+                }
+            });
+
+            // DATA TABLE LIST PENGAJUAN
+            $.ajax({
+                url: `{{ url('data_cek_tanggal_kosong') }}`,
+                method: 'post',
+                data: {
+                    "tgl_pinjam": tgl_pinjam,
+                    "id_ruangan": id_ruangan,
+                    "_token": "{{ csrf_token() }}"
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.length > 0) {
+                        $('#list_pengajuan_tudey').show();
+                        var pengajuanBody = $('#pengajuanBody');
+                        pengajuanBody.empty();
+
+                        $.each(response, function(index, value) {
+                            pengajuanBody.append(`
+                                    <tr>
+                                        <td>${index + 1}</td>
+                                        <td>${value.username}</td>
+                                        <td>${value.waktu_mulai} - ${value.waktu_selesai}</td>
+                                    </tr>
+                                `);
+                        });
+                    } else {
+                        $("#pengajuanBody").empty()
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
                 }
             });
         }
@@ -164,8 +236,6 @@
         function selectRuangan() {
             let selectedOption = $("#id_ruangan option:selected");
             let harga_sewa = selectedOption.data('harga');
-
-            // $("#harga_sewa").val(harga_sewa);
         }
 
         $("#img_jaminan").on("change", function() {

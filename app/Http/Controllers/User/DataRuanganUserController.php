@@ -32,6 +32,8 @@ class DataRuanganUserController extends Controller
             ->leftJoin("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
             ->leftJoin('users', 'users.id_user', "=", "pesanan_jadwal_studio.id_user")
             ->where("pesanan_jadwal_studio.id_ruangan", $id_ruangan)
+            ->where("detail_pesanan_jadwal_studio.rating", "!=", null)
+            ->select("users.username", "detail_pesanan_jadwal_studio.*")
             ->get();
 
         // dd($review_user);

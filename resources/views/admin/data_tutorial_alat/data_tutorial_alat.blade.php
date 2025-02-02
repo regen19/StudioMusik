@@ -9,8 +9,7 @@
                 Refresh</button>
         </a>
 
-        <button type="button" class="btn btn-primary icon icon-left" data-bs-toggle="modal" data-bs-target="#add_tutorial"><i
-                class="bi bi-plus-lg"></i>
+        <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
             Tambah Alat
         </button>
     </div>
@@ -78,6 +77,10 @@
                                 return `
                                     <td>
                                         <div style="margin-rigth=20px;">
+                                            <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_tutorial}')">
+                                                    <i class="bi bi-pencil-square"></i>
+                                            </button>
+
                                             <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_tutorial(${data.id_tutorial})">
                                                 <i class="bi bi-trash"></i>
                                             </button>

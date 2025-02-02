@@ -16,8 +16,7 @@ class DisplayJasaMusikController extends Controller
             ->first();
 
         if ($jenis_jasa === null) {
-
-            return redirect('/system_error_500');
+            return redirect('/forbidden_403');
         }
 
         $rating =

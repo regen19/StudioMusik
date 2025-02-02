@@ -66,6 +66,9 @@
         $(document).ready(function() {
             list_jasa_musik();
             event_list_jasa_musik();
+
+            var today = new Date().toISOString().split('T')[0];
+            $('#tgl_deadline').attr('min', today);
         })
         async function event_list_jasa_musik() {
             $("#id_jasa_musik").on('change', function() {
