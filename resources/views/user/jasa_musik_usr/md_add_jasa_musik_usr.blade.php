@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Pesanan Jasa Musik</h1>
+                <h1 class="modal-title fs-5" id="title_header"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="" method="post">
@@ -50,8 +50,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="btnSimpanText"
-                        onclick="btnSimpan()">Simpan</button>
+                    <button type="button" class="btn btn-primary" id="btnSimpanText">Simpan</button>
                     <span id="btnSimpanLoading" style="display:none;">
                         <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
                     </span>
@@ -65,11 +64,12 @@
     <script>
         $(document).ready(function() {
             list_jasa_musik();
-            event_list_jasa_musik();
 
             var today = new Date().toISOString().split('T')[0];
             $('#tgl_deadline').attr('min', today);
         })
+
+
         async function event_list_jasa_musik() {
             $("#id_jasa_musik").on('change', function() {
                 $("#containerInputJasaMusik").empty();
@@ -235,5 +235,191 @@
 
             });
         }
+
+        // FORM EDIT
+        function openModal(action, id_pesanan_jasa_musik) {
+            $("#add_jasa_musik").modal("show");
+
+            const $title_header = $("#title_header");
+            const $btnSimpanText = $("#btnSimpanText");
+
+            if (action === 'add') {
+                $title_header.text("Tambah Pesanan Jasa Musik");
+                $btnSimpanText.text("Simpan");
+
+                $("#containerInputJasaMusik").empty();
+                event_list_jasa_musik();
+
+                $btnSimpanText.off('click').on("click", function() {
+                    saveJasaMusik("add", id_pesanan_jasa_musik);
+                });
+            } else if (action === 'edit') {
+                $title_header.text("Edit Pesanan Jasa Musik");
+                $btnSimpanText.text("Ubah");
+
+                show_byid_jasa_musik(id_pesanan_jasa_musik);
+
+                $btnSimpanText.off('click').on("click", function() {
+                    saveJasaMusik("edit", id_pesanan_jasa_musik);
+                });
+            }
+        }
+
+        function show_byid_jasa_musik(id_pesanan_jasa_musik) {
+            $.ajax({
+                url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
+                method: 'post',
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                dataType: 'json',
+                success: function(response) {
+                    // console.log(response)
+                    $("#tgl_deadline").val(response.tenggat_produksi)
+                    $("#keterangan").val(response.keterangan)
+
+                    // LIST JASA MUSIK
+                    $.ajax({
+                        url: `{{ url('/list_data_jasa_musik') }}`,
+                        method: 'get',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        dataType: 'json',
+                        success: function(listResponse) {
+                            $("#id_jasa_musik").empty()
+                            $.each(listResponse, function(key, value) {
+                                var selected = response.id_jasa_musik === value
+                                    .id_jasa_musik ? 'selected' : '';
+                                $("#id_jasa_musik").append(
+                                    `<option value="${value.id_jasa_musik}" ${selected}>${value.nama_jenis_jasa}</option>`
+                                );
+                            });
+
+                            $("#id_jasa_musik").val(response.id_jasa_musik).change();
+                        }
+                    });
+
+                    // INFORMASI 
+                    $("#containerInputJasaMusik").empty(); // Kosongkan container sebelum menambah elemen baru
+                    console.log(response.jasa_informasi);
+                    $.each(response.jasa_informasi, function(key, value) {
+                        console.log(value);
+                        $("#containerInputJasaMusik").append(
+                            `
+                            <div class="form-group">
+                                <label for="input_${value.id}">${value.nama_field}</label>
+                                ${value.tipe_field == "text" ? 
+                                `<textarea class="form-control informasi" name="${value.nama_field}" id="input_${value.id}">${value.value_field}</textarea>` 
+                                : value.tipe_field == "number" ? 
+                                `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="input_${value.id}" >`
+                                : value.tipe_field == "file" ? 
+                                `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}">`
+                                : ""
+                                }
+                            </div>
+                    `
+                        );
+
+                        if (value.tipe_field == "file") {
+                            // Menambahkan tautan untuk file yang di-upload
+                            var fileUrl = value.value_field;
+                            $("#containerInputJasaMusik").append(
+                                `<a href="${fileUrl}" target="_blank">Lihat File</a>`
+                            );
+                        }
+                    });
+
+
+                }
+            });
+        }
+
+        // function saveLaporan(action, id_laporan) {
+        //     const tgl_laporan = $('#tgl_laporan').val();
+        //     const jenis_laporan = $('#jenis_laporan').val();
+        //     const keterangan = $('#keterangan').val();
+        //     const gambarFiles = $('#gambar')[0].files;
+
+        //     if (!tgl_laporan || !jenis_laporan || !keterangan) {
+        //         Swal.fire({
+        //             title: "Gagal simpan.",
+        //             text: "Harap isi semua form!",
+        //             icon: "error"
+        //         });
+        //         return;
+        //     }
+
+        //     for (let i = 0; i < gambarFiles.length; i++) {
+        //         if (gambarFiles[i].size > 1048576) { // 1MB = 1048576 bytes
+        //             Swal.fire({
+        //                 title: "Gagal simpan.",
+        //                 text: `File ${gambarFiles[i].name} terlalu besar! Maksimal 1MB.`,
+        //                 icon: "error"
+        //             });
+        //             return;
+        //         }
+        //     }
+
+        //     const formData = new FormData();
+        //     formData.append('tgl_laporan', tgl_laporan);
+        //     formData.append('jenis_laporan', jenis_laporan);
+        //     formData.append('keterangan', keterangan);
+
+        //     // Tambahkan Semua Gambar ke FormData
+        //     for (let i = 0; i < gambarFiles.length; i++) {
+        //         formData.append('gambar[]', gambarFiles[i]);
+        //     }
+
+        //     formData.append('_token', "{{ csrf_token() }}");
+
+        //     const ajaxUrl = action === "add" ? "{{ url('/add_laporan_masalah') }}" :
+        //         `{{ url('/edit_laporan_masalah/${id_laporan}') }}`;
+
+        //     $.ajax({
+        //         url: ajaxUrl,
+        //         method: 'POST',
+        //         data: formData,
+        //         contentType: false,
+        //         processData: false,
+        //         success: function(response) {
+        //             $('#tbLaporan').DataTable().ajax.reload();
+        //             $("#add_laporan").modal("hide");
+
+        //             Swal.fire({
+        //                 icon: "success",
+        //                 title: `${response.msg}`,
+        //                 toast: true,
+        //                 position: "top-end",
+        //                 showConfirmButton: false,
+        //                 timer: 1500,
+        //                 timerProgressBar: true,
+        //                 didOpen: (toast) => {
+        //                     toast.onmouseenter = Swal.stopTimer;
+        //                     toast.onmouseleave = Swal.resumeTimer;
+        //                 }
+        //             });
+
+        //             setTimeout(() => {
+        //                 location.reload()
+        //             }, 1500);
+        //         },
+        //         error: function(xhr, status, error) {
+        //             let errorMsg = "";
+        //             if (xhr.responseJSON && xhr.responseJSON.msg) {
+        //                 for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+        //                     errorMsg += `${value.join(', ')}\n`;
+        //                 }
+        //             } else {
+        //                 errorMsg = "Terjadi kesalahan saat menghubungi server.";
+        //             }
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Oops...',
+        //                 text: errorMsg,
+        //             });
+        //         }
+        //     });
+        // }
     </script>
 @endpush

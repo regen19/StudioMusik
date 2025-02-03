@@ -104,12 +104,7 @@ class PesananJasaMusikController extends Controller
 
     public function show(string $id_pesanan_jasa_musik)
     {
-        $data = DB::table('pesanan_jasa_musik')
-            ->join('users', 'users.id_user', '=', 'pesanan_jasa_musik.id_user')
-            ->join('master_jasa_musik', 'master_jasa_musik.id_jasa_musik', '=', 'pesanan_jasa_musik.id_jasa_musik')
-            ->where('pesanan_jasa_musik.id_pesanan_jasa_musik', $id_pesanan_jasa_musik)
-            ->select('users.username', 'pesanan_jasa_musik.*', 'master_jasa_musik.nama_jenis_jasa')
-            ->first();
+        $data = PesananJasaMusikModel::with(['jasaInformasi', 'masterJasaMusik', 'users'])->find($id_pesanan_jasa_musik);
 
         if (empty($data)) {
             return response()->json([

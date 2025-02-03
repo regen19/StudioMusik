@@ -20,12 +20,14 @@ class PesananJadwalStudioController extends Controller
 {
     public function index()
     {
-        return view('admin.jadwal_studio.jadwal_studio'); 
+        return view('admin.jadwal_studio.jadwal_studio');
     }
 
     public function cek_tanggal_kosong(Request $request)
     {
 
+        $action = $request->input("action");
+        $id_pesanan_jadwal_studio = $request->input("id_pesanan_jadwal_studio");
         $tgl_pinjam = $request->input("tgl_pinjam");
         $id_ruangan = $request->input("id_ruangan");
         $waktu_mulai = $request->input("waktu_mulai");
@@ -48,8 +50,12 @@ class PesananJadwalStudioController extends Controller
                         $query->where('pesanan_jadwal_studio.waktu_mulai', '<', $waktu_selesai)
                             ->where('pesanan_jadwal_studio.waktu_selesai', '>', $waktu_mulai);
                     });
-            })
-            ->get();
+            });
+
+        if ($action == "edit") {
+            $cek_tanggal = $cek_tanggal->where('pesanan_jadwal_studio.id_pesanan_jadwal_studio', '!=', $id_pesanan_jadwal_studio);
+        }
+        $cek_tanggal = $cek_tanggal->get();
 
         if ($cek_tanggal->isEmpty()) {
             return response()->json([]);
@@ -202,7 +208,6 @@ class PesananJadwalStudioController extends Controller
             "id_user" => "required",
             "id_ruangan" => "required",
             'tgl_pinjam' => "nullable",
-            'no_wa' => "nullable",
             'waktu_mulai' => "nullable",
             'waktu_selesai' => "nullable",
             'ket_keperluan' => "nullable",
@@ -234,7 +239,6 @@ class PesananJadwalStudioController extends Controller
 
             $data->id_ruangan = $request->input('id_ruangan');
             $data->tgl_pinjam = $request->input('tgl_pinjam');
-            $data->no_wa = $request->input('no_wa');
             $data->waktu_mulai = $request->input('waktu_mulai');
             $data->waktu_selesai = $request->input('waktu_selesai');
             $data->ket_keperluan = $request->input('ket_keperluan');
