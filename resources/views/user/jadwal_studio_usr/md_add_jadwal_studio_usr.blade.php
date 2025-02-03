@@ -139,8 +139,8 @@
                 }
             }
 
-            populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
-            populateTimeOptions('waktu_selesai', '17:00', '21:00', 10);
+            populateTimeOptions('waktu_mulai', '17:00', '20:00', 15);
+            populateTimeOptions('waktu_selesai', '17:00', '21:00', 15);
 
             $('#waktu_mulai').on('change', function() {
                 var waktuMulai = $('#waktu_mulai').val();
@@ -180,11 +180,11 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.length === 0) {
-                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
+                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal dan jam tersebut kosong
                     !</small>`);
                     } else if (response.status == "ada" || response.status == "ada2") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                        class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+                        class="bi bi-exclamation-triangle-fill"></i> Tanggal dan jam tersebut sudah di BOOKING
                     !</small>`);
 
                     } else if (response.status == "weekend") {
