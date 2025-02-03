@@ -327,7 +327,7 @@
                                             var errorMsg = "";
                                             if (xhr.responseJSON && xhr.responseJSON.msg) {
                                                 for (const [key, value] of Object.entries(xhr.responseJSON
-                                                    .msg)) {
+                                                        .msg)) {
                                                     errorMsg += `${value.join(', ')}\n`;
                                                 }
                                             } else {
@@ -452,7 +452,7 @@
                                             var errorMsg = "";
                                             if (xhr.responseJSON && xhr.responseJSON.msg) {
                                                 for (const [key, value] of Object.entries(xhr.responseJSON
-                                                    .msg)) {
+                                                        .msg)) {
                                                     errorMsg += `${value.join(', ')}\n`;
                                                 }
                                             } else {
@@ -521,7 +521,7 @@
                                             var errorMsg = "";
                                             if (xhr.responseJSON && xhr.responseJSON.msg) {
                                                 for (const [key, value] of Object.entries(xhr.responseJSON
-                                                    .msg)) {
+                                                        .msg)) {
                                                     errorMsg += `${value.join(', ')}\n`;
                                                 }
                                             } else {
