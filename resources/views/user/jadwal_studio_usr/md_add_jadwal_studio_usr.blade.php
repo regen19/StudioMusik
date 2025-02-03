@@ -168,365 +168,372 @@
 
             // ALERT TANGGAL
             $.ajax({
-                url: `{{ url('cek_tanggal_kosong') }}`,
-                method: 'post',
-                data: {
-                    "tgl_pinjam": tgl_pinjam,
-                    "id_ruangan": id_ruangan,
-                    "waktu_mulai": waktu_mulai,
-                    "waktu_selesai": waktu_selesai,
-                    "_token": "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.length === 0) {
-                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
+                        url: `{{ url('cek_tanggal_kosong') }}`,
+                        method: 'post',
+                        data: {
+                            "tgl_pinjam": tgl_pinjam,
+                            "id_ruangan": id_ruangan,
+                            "waktu_mulai": waktu_mulai,
+                            "waktu_selesai": waktu_selesai,
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                                if (response.length === 0) {
+                                    $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
                     !</small>`);
-                    } else if (response.status == "ada" || response.status == "ada2") {
-                        $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+                                } else if (response.status == "ada" || response.status == "ada2") {
+                                    $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
                         class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
                     !</small>`);
 
-            //         } else if (response.status == "weekend") {
-            //             $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-        //             class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
-        //         !</small>`);
-            //         }
-            //     },
-            //     error: function(err) {
-            //         console.log(err);
-            //     }
-            // });
+                                    //         } else if (response.status == "weekend") {
+                                    //             $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
+                                //             class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
+                                //         !</small>`);
+                                    //         }
+                                    //     },
+                                    //     error: function(err) {
+                                    //         console.log(err);
+                                    //     }
+                                    // });
 
-            // DATA TABLE LIST PENGAJUAN
-            $.ajax({
-                url: `{{ url('data_cek_tanggal_kosong') }}`,
-                method: 'post',
-                data: {
-                    "tgl_pinjam": tgl_pinjam,
-                    "id_ruangan": id_ruangan,
-                    "_token": "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.length > 0) {
-                        $('#list_pengajuan_tudey').show();
-                        var pengajuanBody = $('#pengajuanBody');
-                        pengajuanBody.empty();
+                                    // DATA TABLE LIST PENGAJUAN
+                                    $.ajax({
+                                        url: `{{ url('data_cek_tanggal_kosong') }}`,
+                                        method: 'post',
+                                        data: {
+                                            "tgl_pinjam": tgl_pinjam,
+                                            "id_ruangan": id_ruangan,
+                                            "_token": "{{ csrf_token() }}"
+                                        },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            if (response.length > 0) {
+                                                $('#list_pengajuan_tudey').show();
+                                                var pengajuanBody = $('#pengajuanBody');
+                                                pengajuanBody.empty();
 
-                        $.each(response, function(index, value) {
-                            pengajuanBody.append(`
+                                                $.each(response, function(index, value) {
+                                                    pengajuanBody.append(`
                                     <tr>
                                         <td>${index + 1}</td>
                                         <td>${value.username}</td>
                                         <td>${value.waktu_mulai} - ${value.waktu_selesai}</td>
                                     </tr>
                                 `);
-                        });
-                    } else {
-                        $("#pengajuanBody").empty()
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
-        }
+                                                });
+                                            } else {
+                                                $("#pengajuanBody").empty()
+                                            }
+                                        },
+                                        error: function(err) {
+                                            console.log(err);
+                                        }
+                                    });
+                                }
 
-        $("#img_jaminan").on("change", function() {
-            previewImg(this, '#output');
-        });
+                                $("#img_jaminan").on("change", function() {
+                                    previewImg(this, '#output');
+                                });
 
-        function previewImg(input, outputId) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+                                function previewImg(input, outputId) {
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
 
-                reader.onload = function(e) {
-                    $(outputId).attr('src', e.target.result);
-                    $(outputId).css('display', 'block');
-                }
+                                        reader.onload = function(e) {
+                                            $(outputId).attr('src', e.target.result);
+                                            $(outputId).css('display', 'block');
+                                        }
 
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
 
-        function openModal(action, id_pesanan_jadwal_studio = null) {
-            $("#add_jadwal_studio").modal("show");
+                                function openModal(action, id_pesanan_jadwal_studio = null) {
+                                    $("#add_jadwal_studio").modal("show");
 
-            const $title_header = $("#title_header");
-            const $BtnJadwalStudio = $("#BtnJadwalStudio");
+                                    const $title_header = $("#title_header");
+                                    const $BtnJadwalStudio = $("#BtnJadwalStudio");
 
-            const $id_user = $('#id_user');
-            const $id_ruangan = $('#id_ruangan');
-            const $tgl_pinjam = $('#tgl_pinjam');
-            const $waktu_mulai = $('#waktu_mulai');
-            const $waktu_selesai = $('#waktu_selesai');
-            const $ket_keperluan = $('#ket_keperluan');
-            const $img_jaminan = $('#img_jaminan');
-            const $output = $('#output');
+                                    const $id_user = $('#id_user');
+                                    const $id_ruangan = $('#id_ruangan');
+                                    const $tgl_pinjam = $('#tgl_pinjam');
+                                    const $waktu_mulai = $('#waktu_mulai');
+                                    const $waktu_selesai = $('#waktu_selesai');
+                                    const $ket_keperluan = $('#ket_keperluan');
+                                    const $img_jaminan = $('#img_jaminan');
+                                    const $output = $('#output');
 
-            if (action === 'add') {
-                $title_header.text("Tambah Pengajuan Jadwal Studio");
-                $BtnJadwalStudio.text("Simpan");
+                                    if (action === 'add') {
+                                        $title_header.text("Tambah Pengajuan Jadwal Studio");
+                                        $BtnJadwalStudio.text("Simpan");
 
-                $id_ruangan.val("");
-                $tgl_pinjam.val("");
-                $waktu_mulai.val("");
-                $waktu_selesai.val("");
-                $ket_keperluan.val("");
-                $img_jaminan.val("");
-                $output.hide();
+                                        $id_ruangan.val("");
+                                        $tgl_pinjam.val("");
+                                        $waktu_mulai.val("");
+                                        $waktu_selesai.val("");
+                                        $ket_keperluan.val("");
+                                        $img_jaminan.val("");
+                                        $output.hide();
 
-                $BtnJadwalStudio.off('click').on("click", function() {
-                    saveJadwalStudio("add", id_pesanan_jadwal_studio);
-                });
-            } else if (action === 'edit') {
-                $title_header.text("Edit Pengajuan Jadwal Studio");
-                $BtnJadwalStudio.text("Ubah");
+                                        $BtnJadwalStudio.off('click').on("click", function() {
+                                            saveJadwalStudio("add", id_pesanan_jadwal_studio);
+                                        });
+                                    } else if (action === 'edit') {
+                                        $title_header.text("Edit Pengajuan Jadwal Studio");
+                                        $BtnJadwalStudio.text("Ubah");
 
-                show_byId_jadwalPesanan(id_pesanan_jadwal_studio);
+                                        show_byId_jadwalPesanan(id_pesanan_jadwal_studio);
 
-                $BtnJadwalStudio.off('click').on("click", function() {
-                    saveJadwalStudio("edit", id_pesanan_jadwal_studio);
-                });
-            }
-        }
+                                        $BtnJadwalStudio.off('click').on("click", function() {
+                                            saveJadwalStudio("edit", id_pesanan_jadwal_studio);
+                                        });
+                                    }
+                                }
 
-        function show_byId_jadwalPesanan(id_pesanan_jadwal_studio) {
-            $.ajax({
-                url: `{{ url('/showById_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
-                method: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    const $id_user = $('#id_user');
-                    const $id_ruangan = $('#id_ruangan');
-                    // const $harga_sewa = $('#harga_sewa');
-                    const $tgl_pinjam = $('#tgl_pinjam');
-                    const $waktu_mulai = $('#waktu_mulai');
-                    const $waktu_selesai = $('#waktu_selesai');
-                    const $ket_keperluan = $('#ket_keperluan');
-                    const $img_jaminan = $('#img_jaminan');
+                                function show_byId_jadwalPesanan(id_pesanan_jadwal_studio) {
+                                    $.ajax({
+                                        url: `{{ url('/showById_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
+                                        method: 'POST',
+                                        data: {
+                                            "_token": "{{ csrf_token() }}"
+                                        },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            const $id_user = $('#id_user');
+                                            const $id_ruangan = $('#id_ruangan');
+                                            // const $harga_sewa = $('#harga_sewa');
+                                            const $tgl_pinjam = $('#tgl_pinjam');
+                                            const $waktu_mulai = $('#waktu_mulai');
+                                            const $waktu_selesai = $('#waktu_selesai');
+                                            const $ket_keperluan = $('#ket_keperluan');
+                                            const $img_jaminan = $('#img_jaminan');
 
-                    $('#id_ruangan').val(response.id_ruangan);
-                    // $('#harga_sewa').val(response.harga_sewa);
-                    $('#tgl_pinjam').val(response.tgl_pinjam);
-                    $('#waktu_mulai').val(response.waktu_mulai);
-                    $('#waktu_selesai').val(response.waktu_selesai);
-                    $("#ket_keperluan").val(response.ket_keperluan);
+                                            $('#id_ruangan').val(response.id_ruangan);
+                                            // $('#harga_sewa').val(response.harga_sewa);
+                                            $('#tgl_pinjam').val(response.tgl_pinjam);
+                                            $('#waktu_mulai').val(response.waktu_mulai);
+                                            $('#waktu_selesai').val(response.waktu_selesai);
+                                            $("#ket_keperluan").val(response.ket_keperluan);
 
-                    $('#output').attr('src', '{{ asset('storage/img_upload/pesanan_jadwal') }}/' + response
-                        .img_jaminan);
-                    $('#output').show();
-                },
-                error: function(xhr, status, error) {
-                    var errorMsg = "";
-                    if (xhr.responseJSON && xhr.responseJSON.msg) {
-                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
-                            errorMsg += `${value.join(', ')}\n`;
-                        }
-                    } else {
-                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: errorMsg,
-                    });
-                }
-            });
-        }
+                                            $('#output').attr('src',
+                                                '{{ asset('storage/img_upload/pesanan_jadwal') }}/' +
+                                                response
+                                                .img_jaminan);
+                                            $('#output').show();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            var errorMsg = "";
+                                            if (xhr.responseJSON && xhr.responseJSON.msg) {
+                                                for (const [key, value] of Object.entries(xhr.responseJSON
+                                                    .msg)) {
+                                                    errorMsg += `${value.join(', ')}\n`;
+                                                }
+                                            } else {
+                                                errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                                            }
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Oops...',
+                                                text: errorMsg,
+                                            });
+                                        }
+                                    });
+                                }
 
-        function saveJadwalStudio(action, id_pesanan_jadwal_studio) {
-            const id_user = $('#id_user').val();
-            const id_ruangan = $('#id_ruangan').val();
-            const tgl_pinjam = $('#tgl_pinjam').val();
-            const waktu_mulai = $('#waktu_mulai').val();
-            const waktu_selesai = $('#waktu_selesai').val();
-            const ket_keperluan = $('#ket_keperluan').val();
-            const img_jaminan = $('#img_jaminan')[0].files[0];
+                                function saveJadwalStudio(action, id_pesanan_jadwal_studio) {
+                                    const id_user = $('#id_user').val();
+                                    const id_ruangan = $('#id_ruangan').val();
+                                    const tgl_pinjam = $('#tgl_pinjam').val();
+                                    const waktu_mulai = $('#waktu_mulai').val();
+                                    const waktu_selesai = $('#waktu_selesai').val();
+                                    const ket_keperluan = $('#ket_keperluan').val();
+                                    const img_jaminan = $('#img_jaminan')[0].files[0];
 
-            if (!id_ruangan || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
-                Swal.fire({
-                    title: "Gagal simpan.",
-                    text: "Harap isi semua form!",
-                    icon: "error"
-                });
-                return;
-            }
+                                    if (!id_ruangan || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
+                                        Swal.fire({
+                                            title: "Gagal simpan.",
+                                            text: "Harap isi semua form!",
+                                            icon: "error"
+                                        });
+                                        return;
+                                    }
 
-            $.ajax({
-                url: "{{ url('cek_tanggal_kosong') }}",
-                method: 'post',
-                data: {
-                    id_pesanan_jadwal_studio: id_pesanan_jadwal_studio,
-                    id_ruangan: id_ruangan,
-                    tgl_pinjam: tgl_pinjam,
-                    action: action,
-                    waktu_mulai: waktu_mulai,
-                    waktu_selesai: waktu_selesai,
-                    _token: "{{ csrf_token() }}"
-                },
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response)
+                                    $.ajax({
+                                        url: "{{ url('cek_tanggal_kosong') }}",
+                                        method: 'post',
+                                        data: {
+                                            id_pesanan_jadwal_studio: id_pesanan_jadwal_studio,
+                                            id_ruangan: id_ruangan,
+                                            tgl_pinjam: tgl_pinjam,
+                                            action: action,
+                                            waktu_mulai: waktu_mulai,
+                                            waktu_selesai: waktu_selesai,
+                                            _token: "{{ csrf_token() }}"
+                                        },
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            console.log(response)
 
-                    const isEdit = action === "edit";
-                    const isAdd = action === "add";
-                    const isDateBooked = response.length === 0;
+                                            const isEdit = action === "edit";
+                                            const isAdd = action === "add";
+                                            const isDateBooked = response.length === 0;
 
-                    if (isEdit) {
-                        if (response.status === "ada" || response.status === "ada2") {
-                            Swal.fire({
-                                title: "Gagal simpan.",
-                                text: "Tanggal tersebut telah di BOOKING!!",
-                                icon: "error"
-                            });
+                                            if (isEdit) {
+                                                if (response.status === "ada" || response.status === "ada2") {
+                                                    Swal.fire({
+                                                        title: "Gagal simpan.",
+                                                        text: "Tanggal tersebut telah di BOOKING!!",
+                                                        icon: "error"
+                                                    });
 
-                            return 0;
-                        } else if (response.status === "weekend") {
-                            Swal.fire({
-                                title: "Gagal simpan.",
-                                text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
-                                icon: "error"
-                            });
+                                                    return 0;
+                                                } else if (response.status === "weekend") {
+                                                    Swal.fire({
+                                                        title: "Gagal simpan.",
+                                                        text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
+                                                        icon: "error"
+                                                    });
 
-                            return 0;
-                        } else {
-                            submitForm(action, id_pesanan_jadwal_studio, {
-                                id_user,
-                                id_ruangan,
-                                tgl_pinjam,
-                                waktu_mulai,
-                                waktu_selesai,
-                                ket_keperluan,
-                                img_jaminan
-                            });
-                        }
-                        //  else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
-                        //     submitForm(action, id_pesanan_jadwal_studio, {
-                        //         id_user,
-                        //         id_ruangan,
-                        //         tgl_pinjam,
-                        //         waktu_mulai,
-                        //         waktu_selesai,
-                        //         ket_keperluan,
-                        //         img_jaminan
-                        //     });
-                        // }
-                    } else if (isAdd && isDateBooked) {
-                        submitForm(action, id_pesanan_jadwal_studio, {
-                            id_user,
-                            id_ruangan,
-                            tgl_pinjam,
-                            waktu_mulai,
-                            waktu_selesai,
-                            ket_keperluan,
-                            img_jaminan
-                        });
-                    } else if (isAdd && response.status === "ada" || response.status === "ada2") {
-                        Swal.fire({
-                            title: "Gagal simpan.",
-                            text: "Tanggal tersebut telah di BOOKING!",
-                            icon: "error"
-                        });
+                                                    return 0;
+                                                } else {
+                                                    submitForm(action, id_pesanan_jadwal_studio, {
+                                                        id_user,
+                                                        id_ruangan,
+                                                        tgl_pinjam,
+                                                        waktu_mulai,
+                                                        waktu_selesai,
+                                                        ket_keperluan,
+                                                        img_jaminan
+                                                    });
+                                                }
+                                                //  else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
+                                                //     submitForm(action, id_pesanan_jadwal_studio, {
+                                                //         id_user,
+                                                //         id_ruangan,
+                                                //         tgl_pinjam,
+                                                //         waktu_mulai,
+                                                //         waktu_selesai,
+                                                //         ket_keperluan,
+                                                //         img_jaminan
+                                                //     });
+                                                // }
+                                            } else if (isAdd && isDateBooked) {
+                                                submitForm(action, id_pesanan_jadwal_studio, {
+                                                    id_user,
+                                                    id_ruangan,
+                                                    tgl_pinjam,
+                                                    waktu_mulai,
+                                                    waktu_selesai,
+                                                    ket_keperluan,
+                                                    img_jaminan
+                                                });
+                                            } else if (isAdd && response.status === "ada" || response.status ===
+                                                "ada2") {
+                                                Swal.fire({
+                                                    title: "Gagal simpan.",
+                                                    text: "Tanggal tersebut telah di BOOKING!",
+                                                    icon: "error"
+                                                });
 
-                        return 0;
-                    } else if (isAdd && response.status === "weekend") {
-                        Swal.fire({
-                            title: "Gagal simpan.",
-                            text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
-                            icon: "error"
-                        });
+                                                return 0;
+                                            } else if (isAdd && response.status === "weekend") {
+                                                Swal.fire({
+                                                    title: "Gagal simpan.",
+                                                    text: "Tidak bisa memilih hari SABTU dan MINGGU...!",
+                                                    icon: "error"
+                                                });
 
-                        return 0;
-                    }
-                },
-                error: function(xhr, status, error) {
-                    var errorMsg = "";
-                    if (xhr.responseJSON && xhr.responseJSON.msg) {
-                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
-                            errorMsg += `${value.join(', ')}\n`;
-                        }
-                    } else {
-                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: errorMsg,
-                    });
-                }
-            });
-        }
+                                                return 0;
+                                            }
+                                        },
+                                        error: function(xhr, status, error) {
+                                            var errorMsg = "";
+                                            if (xhr.responseJSON && xhr.responseJSON.msg) {
+                                                for (const [key, value] of Object.entries(xhr.responseJSON
+                                                    .msg)) {
+                                                    errorMsg += `${value.join(', ')}\n`;
+                                                }
+                                            } else {
+                                                errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                                            }
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Oops...',
+                                                text: errorMsg,
+                                            });
+                                        }
+                                    });
+                                }
 
-        function submitForm(action, id_pesanan_jadwal_studio, formDataObj) {
-            $("#BtnJadwalStudio").hide();
-            $("#btnSimpanLoading").show();
+                                function submitForm(action, id_pesanan_jadwal_studio, formDataObj) {
+                                    $("#BtnJadwalStudio").hide();
+                                    $("#btnSimpanLoading").show();
 
-            const formData = new FormData();
-            for (const key in formDataObj) {
-                formData.append(key, formDataObj[key]);
-            }
-            formData.append('_token', "{{ csrf_token() }}");
-            formData.append('action', action);
+                                    const formData = new FormData();
+                                    for (const key in formDataObj) {
+                                        formData.append(key, formDataObj[key]);
+                                    }
+                                    formData.append('_token', "{{ csrf_token() }}");
+                                    formData.append('action', action);
 
-            const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
-                `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;
+                                    const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
+                                        `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;
 
-            $.ajax({
-                url: ajaxUrl,
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    $('#tableJadwalStudio').DataTable().ajax.reload();
-                    $("#add_jadwal_studio").modal("hide");
+                                    $.ajax({
+                                        url: ajaxUrl,
+                                        method: 'POST',
+                                        data: formData,
+                                        contentType: false,
+                                        processData: false,
+                                        success: function(response) {
+                                            $('#tableJadwalStudio').DataTable().ajax.reload();
+                                            $("#add_jadwal_studio").modal("hide");
 
-                    Swal.fire({
-                        icon: "success",
-                        title: action === "add" ? `${response.msg}` : `${response.msg}`,
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
+                                            Swal.fire({
+                                                icon: "success",
+                                                title: action === "add" ? `${response.msg}` :
+                                                    `${response.msg}`,
+                                                toast: true,
+                                                position: "top-end",
+                                                showConfirmButton: false,
+                                                timer: 1500,
+                                                timerProgressBar: true,
+                                                didOpen: (toast) => {
+                                                    toast.onmouseenter = Swal.stopTimer;
+                                                    toast.onmouseleave = Swal.resumeTimer;
+                                                }
+                                            });
 
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1500);
-                },
-                complete: function() {
-                    // Mengembalikan teks tombol dan menyembunyikan loading
-                    $("#BtnJadwalStudio").show();
-                    $("#btnSimpanLoading").hide();
-                },
-                error: function(xhr, status, error) {
-                    $("#BtnJadwalStudio").show();
-                    $("#btnSimpanLoading").hide();
-                    var errorMsg = "";
-                    if (xhr.responseJSON && xhr.responseJSON.msg) {
-                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
-                            errorMsg += `${value.join(', ')}\n`;
-                        }
-                    } else {
-                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: errorMsg,
-                    });
-                }
-            });
-        }
+                                            setTimeout(() => {
+                                                location.reload()
+                                            }, 1500);
+                                        },
+                                        complete: function() {
+                                            // Mengembalikan teks tombol dan menyembunyikan loading
+                                            $("#BtnJadwalStudio").show();
+                                            $("#btnSimpanLoading").hide();
+                                        },
+                                        error: function(xhr, status, error) {
+                                            $("#BtnJadwalStudio").show();
+                                            $("#btnSimpanLoading").hide();
+                                            var errorMsg = "";
+                                            if (xhr.responseJSON && xhr.responseJSON.msg) {
+                                                for (const [key, value] of Object.entries(xhr.responseJSON
+                                                    .msg)) {
+                                                    errorMsg += `${value.join(', ')}\n`;
+                                                }
+                                            } else {
+                                                errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                                            }
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Oops...',
+                                                text: errorMsg,
+                                            });
+                                        }
+                                    });
+                                }
     </script>
 @endpush
