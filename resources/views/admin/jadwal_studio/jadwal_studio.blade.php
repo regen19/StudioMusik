@@ -383,7 +383,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="tgl_pinjam">Status</label>
-                        <select name="status_persetujuan" id="status_persetujuan" class="form-control"
+                        <select name="status_persetujuan" id="status_persetujuan" class="form-select"
                             onchange="cek_setuju()">
                             <option value="P">Pengajuan</option>
                             <option value="Y">Disetujui</option>
