@@ -157,7 +157,7 @@
                                     `;
                                 }
 
-                                // 
+                                //
                                 // <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_studio}')">
                                 //                     <i class="bi bi-pencil-square"></i>
                                 //                 </button>
@@ -223,13 +223,13 @@
 
             function hapus_jadwal(id_pesanan_jadwal_studio) {
                 Swal.fire({
-                    title: "Batalkan Pesanan Studio?",
-                    text: "Data Jadwal akan dibatalkan.",
+                    title: "Batalkan Pengajuan?",
+                    text: "Pengajuan peminjaman akan dibatalkan.",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, Batalkan!"
+                    confirmButtonText: "Ya, Batalkan!"
                 }).then((result) => {
                     if (result.isConfirmed) {
 
@@ -242,7 +242,7 @@
                             success: function(response) {
                                 Swal.fire({
                                     title: "Dibatalkan!",
-                                    text: "Data jadwal telah dibatalkan.",
+                                    text: "Pengajuan telah dibatalkan.",
                                     icon: "success"
                                 });
 
@@ -265,7 +265,7 @@
                     showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     cancelButtonColor: "#d33",
-                    confirmButtonText: "Yaa, selesaikan!"
+                    confirmButtonText: "Ya, selesaikan!"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
@@ -279,7 +279,7 @@
                                 if (response.status == "sukses") {
                                     Swal.fire({
                                         title: "Berhasil!",
-                                        text: "Peminjaman Ruangan telah selesai.",
+                                        text: "Peminjaman studio telah selesai.",
                                         icon: "success"
                                     });
 

@@ -20,7 +20,6 @@
                             value="{{ Auth::user()->no_wa }}" readonly required>
                     </div>
 
-
                     <input type="hidden" value="{{ Auth::user()->id_user }}" name="id_user" id="id_user">
                 </div>
 
@@ -34,27 +33,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tgl_pinjam">Tanggal Peminjaman <small class="text-danger fst-italic">*harap pilih
-                            ruangan dahulu</small></label>
+                    <label for="tgl_pinjam">Tanggal Peminjaman <small class="text-danger fst-italic">*</small></label>
                     <input type="date" class="form-control" id="tgl_pinjam" required onchange="cek_tanggal_kosong()">
                 </div>
 
-                <div class="form-group row">
-                    <div class="col-6">
-                        <label for="waktu_mulai">Waktu Mulai</label>
-                        <select class="form-control" id="waktu_mulai" required onchange="cek_tanggal_kosong()"></select>
-                    </div>
-                    <div class="col-6">
-                        <label for="waktu_selesai">Waktu Selesai</label>
-                        <select class="form-control" id="waktu_selesai" required
-                            onchange="cek_tanggal_kosong()"></select>
-                    </div>
-                </div>
-
-                <span id="alert_tgl"></span>
-
                 <div id="list_pengajuan_tudey" style="display: none">
-                    <label for="nomor_urut">List Pengajuan Hari ini</label>
+                    <label for="nomor_urut">List Pengajuan Tanggal Ini</label>
                     <table class="table table-bordered">
                         <thead>
                             <th>NO</th>
@@ -67,13 +51,28 @@
                     </table>
                 </div>
 
+                <div class="form-group row">
+                    <div class="col-6">
+                        <label for="waktu_mulai">Waktu Mulai <small class="text-danger fst-italic">*</small></label>
+                        <select class="form-control" id="waktu_mulai" required onchange="cek_tanggal_kosong()"></select>
+                    </div>
+                    <div class="col-6">
+                        <label for="waktu_selesai">Waktu Selesai <small class="text-danger fst-italic">*</small></label>
+                        <select class="form-control" id="waktu_selesai" required
+                            onchange="cek_tanggal_kosong()"></select>
+                    </div>
+                </div>
+
+                <span id="alert_tgl"></span>
+
                 <div class="form-group">
-                    <label for="ket_keperluan">Keperluan Peminjaman</label>
+                    <label for="ket_keperluan">Keperluan Peminjaman <small
+                            class="text-danger fst-italic">*</small></label>
                     <textarea class="form-control" name="ket_keperluan" id="ket_keperluan" cols="30" rows="5" required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="img_jaminan">Jaminan (KTP/KTM) <small class="text-danger fst-italic">(max: 1
+                    <label for="img_jaminan">Jaminan (KTP/KTM) <small class="text-danger fst-italic">*(max: 1
                             mb)</small></label>
                     <input type="file" class="image-preview-filepond form-control" id="img_jaminan" required>
 
@@ -189,11 +188,11 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.length === 0) {
-                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
-                    !</small>`);
+                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal dan jam tersebut kosong
+                    ! Silahkan ajukan peminjaman</small>`);
                     } else if (response.status == "ada" || response.status == "ada2") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                        class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+                        class="bi bi-exclamation-triangle-fill"></i> Tanggal dan jam tersebut sudah ada peminjaman
                     !</small>`);
 
                     } else if (response.status == "weekend") {

@@ -118,7 +118,7 @@
     </section><!--/.welcome-hero-->
     <!--welcome-hero end -->
 
-    <!--new-cars start -->
+
     <section id="new-cars" class="new-cars">
         <div class="container">
             <div class="section-header">
@@ -132,54 +132,55 @@
                                 <div class="col-md-7 col-sm-12">
                                     <div class="new-cars-img">
                                         <img src="assets/img/lobby-studio.jpg" alt="img" />
-                                    </div><!--/.new-cars-img-->
+                                    </div>
                                 </div>
                                 <div class="col-md-5 col-sm-12">
                                     <div class="new-cars-txt">
                                         <h2><a>Peminjaman Studio</a></h2>
                                         <p>
-                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                            sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                        </p>
-                                        <p class="new-cars-para2">
-                                            Sed ut pers unde omnis iste natus error sit voluptatem accusantium
-                                            doloremque laudantium.
+                                            Nikmati fasilitas studio musik untuk mendukung kegiatan non-akademik
+                                            para civitas dengan peralatan musik full band lengkap di Studio Musik
+                                            ITERA. Menyediakan ruang yang ideal bagi seluruh civitas yang memiliki
+                                            minat musik untuk berlatih, merekam, atau sekadar berkolaborasi.
+                                            Dengan suasana yang nyaman siap mendukung berbagai kebutuhan musik Anda.
                                         </p>
 
-                                    </div><!--/.new-cars-txt-->
-                                </div><!--/.col-->
-                            </div><!--/.row-->
-                        </div><!--/.single-new-cars-item-->
-                    </div><!--/.new-cars-item-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="new-cars-item">
                         <div class="single-new-cars-item">
                             <div class="row">
                                 <div class="col-md-7 col-sm-12">
                                     <div class="new-cars-img">
-                                        <img src="assets/img/BuatJingle.jpg" alt="img" />
-                                    </div><!--/.new-cars-img-->
+                                        <img src="assets/img/BuatMinus1.jpg" alt="img" />
+                                    </div>
                                 </div>
                                 <div class="col-md-5 col-sm-12">
                                     <div class="new-cars-txt">
                                         <h2><a>Jasa Musik</a></h2>
                                         <p>
-                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-                                            eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                                            sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                        </p>
-                                        <p class="new-cars-para2">
-                                            Sed ut pers unde omnis iste natus error sit voluptatem accusantium
-                                            doloremque laudantium.
+                                            Studio Musik ITERA juga menawarkan layanan pembuatan musik custom untuk
+                                            berbagai kebutuhan,
+                                            mulai dari jingle untuk iklan, aransemen musik untuk lagu-lagu orisinil,
+                                            hingga minus one
+                                            untuk latihan atau performa live. Tim komposer dari anggota MusikITERA yang
+                                            berpengalaman
+                                            siap membantu mewujudkan ide musik Anda dengan hasil yang berkualitas
+                                            tinggi.
+                                            Berkomitmen untuk memberikan hasil yang sesuai dengan kebutuhan dan visi
+                                            Anda.
                                         </p>
 
-                                    </div><!--/.new-cars-txt-->
-                                </div><!--/.col-->
-                            </div><!--/.row-->
-                        </div><!--/.single-new-cars-item-->
-                    </div><!--/.new-cars-item-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    </section><!--/.new-cars-->
+    </section>
     <!--new-cars end -->
 
     <!-- clients-say strat -->
@@ -239,19 +240,18 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <p>
-                            &copy; 2025. Studio Musik ITERA
-                        </p><!--/p-->
+                            Copyright &copy; 2025 Studio Musik ITERA
+                        </p>
                     </div>
                     <div class="col-sm-6">
                         <div class="footer-social">
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-tiktok"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="mailto:musikitera@email.com"><i class="fa fa-envelope"></i></a>
+                            musikitera@gmail.com
                         </div>
                     </div>
                 </div>
-            </div><!--/.footer-copyright-->
-        </div><!--/.container-->
+            </div>
+        </div>
 
         <div id="scroll-Top">
             <div class="return-to-top">

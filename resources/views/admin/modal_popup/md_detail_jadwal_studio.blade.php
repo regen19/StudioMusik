@@ -15,6 +15,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Peminjam</th>
+                                <th>No. Whatsapp</th>
+                                <th>Email</th>
                                 <th>Tanggal & Jam Pinjam</th>
                                 <th>Keperluan</th>
                             </tr>
@@ -23,6 +25,8 @@
                             <tr>
                                 <td>1</td>
                                 <td id="nama_user1"></td>
+                                <td id="no_wa_detail"></td>
+                                <td id="email"></td>
                                 <td id="tanggal"></td>
                                 <td id="catatan"></td>
                             </tr>
@@ -195,9 +199,10 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    // harga = response.harga_sewa
-                    no_wa = response.no_wa
+                    console.log(response.no_wa);
 
+                    $("#no_wa_detail").text(`${response.no_wa}`)
+                    $("#email").text(response.email)
                     $("#tgl_pengajuan").text("Pengajuan pada : " + response.tgl_pinjam)
                     $("#nama_user1").text(response.username)
                     $("#tanggal").text(response.tgl_pinjam + " / " + response.waktu_mulai + " - " + response
