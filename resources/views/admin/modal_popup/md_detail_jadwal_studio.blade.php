@@ -199,7 +199,6 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    console.log(response.no_wa);
 
                     $("#no_wa_detail").text(`${response.no_wa}`)
                     $("#email").text(response.email)

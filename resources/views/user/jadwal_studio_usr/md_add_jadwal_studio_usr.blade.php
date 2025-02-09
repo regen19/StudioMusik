@@ -419,17 +419,6 @@
                                 img_jaminan
                             });
                         }
-                        //  else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
-                        //     submitForm(action, id_pesanan_jadwal_studio, {
-                        //         id_user,
-                        //         id_ruangan,
-                        //         tgl_pinjam,
-                        //         waktu_mulai,
-                        //         waktu_selesai,
-                        //         ket_keperluan,
-                        //         img_jaminan
-                        //     });
-                        // }
                     } else if (isAdd && isDateBooked) {
                         submitForm(action, id_pesanan_jadwal_studio, {
                             id_user,

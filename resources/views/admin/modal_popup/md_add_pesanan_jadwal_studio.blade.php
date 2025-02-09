@@ -20,41 +20,25 @@
                             value="{{ Auth::user()->no_wa }}" readonly required>
                     </div>
 
-
                     <input type="hidden" value="{{ Auth::user()->id_user }}" name="id_user" id="id_user">
                 </div>
 
                 <div class="form-group row">
                     <div class="col-12">
                         <label for="id_ruangan">Ruangan Yang Dipinjam</label>
-                        <select name="id_ruangan" id="id_ruangan" class="form-control" onchange="selectRuangan()">
+                        <select name="id_ruangan" id="id_ruangan" class="form-control">
                             <option value="">Pilih Ruangan</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="tgl_pinjam">Tanggal Peminjaman <small class="text-danger fst-italic">*harap pilih
-                            ruangan dahulu</small></label>
+                    <label for="tgl_pinjam">Tanggal Peminjaman <small class="text-danger fst-italic">*</small></label>
                     <input type="date" class="form-control" id="tgl_pinjam" required onchange="cek_tanggal_kosong()">
                 </div>
 
-                <div class="form-group row">
-                    <div class="col-6">
-                        <label for="waktu_mulai">Waktu Mulai</label>
-                        <select class="form-control" id="waktu_mulai" required onchange="cek_tanggal_kosong()"></select>
-                    </div>
-                    <div class="col-6">
-                        <label for="waktu_selesai">Waktu Selesai</label>
-                        <select class="form-control" id="waktu_selesai" required
-                            onchange="cek_tanggal_kosong()"></select>
-                    </div>
-                </div>
-
-                <span id="alert_tgl"></span>
-
                 <div id="list_pengajuan_tudey" style="display: none">
-                    <label for="nomor_urut">List Pengajuan Hari ini</label>
+                    <label for="nomor_urut">List Pengajuan Tanggal Ini</label>
                     <table class="table table-bordered">
                         <thead>
                             <th>NO</th>
@@ -67,13 +51,28 @@
                     </table>
                 </div>
 
+                <div class="form-group row">
+                    <div class="col-6">
+                        <label for="waktu_mulai">Waktu Mulai <small class="text-danger fst-italic">*</small></label>
+                        <select class="form-control" id="waktu_mulai" required onchange="cek_tanggal_kosong()"></select>
+                    </div>
+                    <div class="col-6">
+                        <label for="waktu_selesai">Waktu Selesai <small class="text-danger fst-italic">*</small></label>
+                        <select class="form-control" id="waktu_selesai" required
+                            onchange="cek_tanggal_kosong()"></select>
+                    </div>
+                </div>
+
+                <div><span id="alert_tgl"></span></div>
+
                 <div class="form-group">
-                    <label for="ket_keperluan">Keperluan Peminjaman</label>
+                    <label for="ket_keperluan">Keperluan Peminjaman <small
+                            class="text-danger fst-italic">*</small></label>
                     <textarea class="form-control" name="ket_keperluan" id="ket_keperluan" cols="30" rows="5" required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="img_jaminan">Jaminan (KTP/KTM) <small class="text-danger fst-italic">(max: 1
+                    <label for="img_jaminan">Jaminan (KTP/KTM) <small class="text-danger fst-italic">*(max: 1
                             mb)</small></label>
                     <input type="file" class="image-preview-filepond form-control" id="img_jaminan" required>
 
@@ -108,8 +107,17 @@
                     $.each(response, function(key, val) {
                         $("#id_ruangan").append(
                             `<option value="${val.id_ruangan}">${val.nama_ruangan}</option>`
-                        )
-                    })
+                        );
+                    });
+
+                    if (response.length == 1) {
+                        $("#id_ruangan").val(`${response[0].id_ruangan}`).change();
+                        $("#id_ruangan").prop("disabled", true);
+                        $("#id_ruangan").css({
+                            "background-color": "#1b1b29"
+                        });
+                    }
+
                 },
             });
 
@@ -139,8 +147,8 @@
                 }
             }
 
-            populateTimeOptions('waktu_mulai', '17:00', '20:00', 10);
-            populateTimeOptions('waktu_selesai', '17:00', '21:00', 10);
+            populateTimeOptions('waktu_mulai', '17:00', '20:00', 15);
+            populateTimeOptions('waktu_selesai', '17:00', '21:00', 15);
 
             $('#waktu_mulai').on('change', function() {
                 var waktuMulai = $('#waktu_mulai').val();
@@ -180,17 +188,17 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.length === 0) {
-                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal tersebut kosong
-                    !</small>`);
+                        $("#alert_tgl").html(`<small class="text-success fst-italic"><i class="bi bi-check-square"></i> Tanggal dan jam tersebut kosong
+                    ! Silahkan ajukan peminjaman</small>`);
                     } else if (response.status == "ada" || response.status == "ada2") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                        class="bi bi-exclamation-triangle-fill"></i> Tanggal tersebut sudah di BOOKING
+                        class="bi bi-exclamation-triangle-fill"></i> Tanggal dan jam tersebut sudah ada peminjaman
                     !</small>`);
 
                     } else if (response.status == "weekend") {
                         $("#alert_tgl").html(`<small class="text-danger fst-italic"><i
-                        class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
-                    !</small>`);
+                                            class="bi bi-exclamation-triangle-fill"></i> Tidak bisa di hari SABTU dan Minggu
+                                        !</small>`);
                     }
                 },
                 error: function(err) {
@@ -233,10 +241,6 @@
             });
         }
 
-        function selectRuangan() {
-            let selectedOption = $("#id_ruangan option:selected");
-            let harga_sewa = selectedOption.data('harga');
-        }
 
         $("#img_jaminan").on("change", function() {
             previewImg(this, '#output');
@@ -274,7 +278,10 @@
                 $title_header.text("Tambah Pengajuan Jadwal Studio");
                 $BtnJadwalStudio.text("Simpan");
 
-                $id_ruangan.val("");
+
+                if (!($id_ruangan.prop("disabled"))) {
+                    $id_ruangan.val("");
+                }
                 $tgl_pinjam.val("");
                 $waktu_mulai.val("");
                 $waktu_selesai.val("");
@@ -305,9 +312,10 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 dataType: 'json',
-                success: function(response) { 
+                success: function(response) {
                     const $id_user = $('#id_user');
                     const $id_ruangan = $('#id_ruangan');
+                    // const $harga_sewa = $('#harga_sewa');
                     const $tgl_pinjam = $('#tgl_pinjam');
                     const $waktu_mulai = $('#waktu_mulai');
                     const $waktu_selesai = $('#waktu_selesai');
@@ -315,21 +323,32 @@
                     const $img_jaminan = $('#img_jaminan');
 
                     $('#id_ruangan').val(response.id_ruangan);
+                    // $('#harga_sewa').val(response.harga_sewa);
                     $('#tgl_pinjam').val(response.tgl_pinjam);
-                    $("#waktu_mulai").val(response.waktu_mulai);
-                    $("#waktu_selesai").val(response.waktu_selesai);
+                    $('#waktu_mulai').val(response.waktu_mulai.slice(0, -3));
+                    $('#waktu_selesai').val(response.waktu_selesai.slice(0, -3));
                     $("#ket_keperluan").val(response.ket_keperluan);
 
-                    $('#output').attr('src', '{{ asset('storage/img_upload/pesanan_jadwal') }}/' + response
+                    $('#output').attr('src',
+                        '{{ asset('storage/img_upload/pesanan_jadwal') }}/' +
+                        response
                         .img_jaminan);
                     $('#output').show();
                 },
                 error: function(xhr, status, error) {
-                    console.error('Terjadi kesalahan:', error);
+                    var errorMsg = "";
+                    if (xhr.responseJSON && xhr.responseJSON.msg) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON
+                                .msg)) {
+                            errorMsg += `${value.join(', ')}\n`;
+                        }
+                    } else {
+                        errorMsg = "Terjadi kesalahan saat menghubungi server.";
+                    }
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Terjadi kesalahan saat memproses data.',
+                        text: errorMsg,
                     });
                 }
             });
@@ -357,17 +376,21 @@
                 url: "{{ url('cek_tanggal_kosong') }}",
                 method: 'post',
                 data: {
-                    id_ruangan,
-                    tgl_pinjam,
+                    id_pesanan_jadwal_studio: id_pesanan_jadwal_studio,
+                    id_ruangan: id_ruangan,
+                    tgl_pinjam: tgl_pinjam,
+                    action: action,
                     waktu_mulai: waktu_mulai,
                     waktu_selesai: waktu_selesai,
                     _token: "{{ csrf_token() }}"
                 },
                 dataType: 'json',
                 success: function(response) {
-                    const isDateBooked = response.length === 0;
+                    console.log(response)
+
                     const isEdit = action === "edit";
                     const isAdd = action === "add";
+                    const isDateBooked = response.length === 0;
 
                     if (isEdit) {
                         if (response.status === "ada" || response.status === "ada2") {
@@ -386,7 +409,7 @@
                             });
 
                             return 0;
-                        } else if (isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
+                        } else {
                             submitForm(action, id_pesanan_jadwal_studio, {
                                 id_user,
                                 id_ruangan,
@@ -407,7 +430,8 @@
                             ket_keperluan,
                             img_jaminan
                         });
-                    } else if (isAdd && response.status === "ada" || response.status === "ada2") {
+                    } else if (isAdd && response.status === "ada" || response.status ===
+                        "ada2") {
                         Swal.fire({
                             title: "Gagal simpan.",
                             text: "Tanggal tersebut telah di BOOKING!",
@@ -428,7 +452,8 @@
                 error: function(xhr, status, error) {
                     var errorMsg = "";
                     if (xhr.responseJSON && xhr.responseJSON.msg) {
-                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON
+                                .msg)) {
                             errorMsg += `${value.join(', ')}\n`;
                         }
                     } else {
@@ -452,6 +477,7 @@
                 formData.append(key, formDataObj[key]);
             }
             formData.append('_token', "{{ csrf_token() }}");
+            formData.append('action', action);
 
             const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
                 `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;
@@ -494,7 +520,8 @@
                     $("#btnSimpanLoading").hide();
                     var errorMsg = "";
                     if (xhr.responseJSON && xhr.responseJSON.msg) {
-                        for (const [key, value] of Object.entries(xhr.responseJSON.msg)) {
+                        for (const [key, value] of Object.entries(xhr.responseJSON
+                                .msg)) {
                             errorMsg += `${value.join(', ')}\n`;
                         }
                     } else {

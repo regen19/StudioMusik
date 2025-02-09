@@ -400,9 +400,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" id="btnSimpanText" class="btn btn-primary"
+                    <button type="button" id="btnSimpanText1" class="btn btn-primary"
                         onclick="btnStatusSetuju()">Simpan</button>
-                    <span id="btnSimpanLoading" style="display:none;">
+                    <span id="btnSimpanLoading1" style="display:none;">
                         <img src="{{ asset('assets/img/loading.gif') }}" alt="Loading..." style="width:20px;" />
                     </span>
                 </div>
@@ -497,8 +497,8 @@
             }
 
             function btnStatusSetuju() {
-                $("#btnSimpanText").hide();
-                $("#btnSimpanLoading").show();
+                $("#btnSimpanText1").hide();
+                $("#btnSimpanLoading1").show();
 
                 let status_persetujuan = $('#status_persetujuan').val()
                 let keterangan_admin = $('#keterangan_admin').val()
@@ -552,14 +552,14 @@
                         },
                         complete: function() {
                             // Mengembalikan teks tombol dan menyembunyikan loading
-                            $("#btnSimpanText").show();
-                            $("#btnSimpanLoading").hide();
+                            $("#btnSimpanText1").show();
+                            $("#btnSimpanLoading1").hide();
                         },
                         error: function(xhr, status, error) {
                             // Tangani kesalahan jika terjadi
                             console.error('Error:', error);
-                            $("#btnSimpanText").show();
-                            $("#btnSimpanLoading").hide();
+                            $("#btnSimpanText1").show();
+                            $("#btnSimpanLoading1").hide();
                         }
                     });
                 }
