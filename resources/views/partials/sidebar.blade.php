@@ -145,7 +145,8 @@
                     $menu_jasa = DB::table('master_jasa_musik')->get();
                 @endphp
 
-                <li class="sidebar-item has-sub {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
+                <li
+                    class="sidebar-item has-sub {{ request()->is('pesanan_jasa_musik_saya') || request()->is('riwayat_pesanan_jasa_musik') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-music-note-list"></i>
                         <span>Jasa Musik</span>
@@ -154,6 +155,11 @@
                     <ul class="submenu">
                         <li class="submenu-item {{ request()->is('pesanan_jasa_musik_saya') ? 'active' : '' }}">
                             <a href="{{ url('/pesanan_jasa_musik_saya') }}" class="submenu-link">Pesanan Saya</a>
+                        </li>
+
+                        <li class="submenu-item {{ request()->is('riwayat_pesanan_jasa_musik') ? 'active' : '' }}">
+                            <a href="{{ url('/riwayat_pesanan_jasa_musik') }}" class="submenu-link">Riwayat Pesanan
+                                Users</a>
                         </li>
 
                         @foreach ($menu_jasa as $menu)

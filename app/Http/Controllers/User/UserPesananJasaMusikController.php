@@ -18,6 +18,27 @@ class UserPesananJasaMusikController extends Controller
         return view('user.jasa_musik_usr.pesanan_jasa_musik_usr');
     }
 
+    public function riwayat_pesanan_jasa_musik()
+    {
+        return view('user.jasa_musik_usr.riwayat_pesanan_jasa_musik');
+    }
+
+    public function riwayat_pesanan_data()
+    {
+        $pesanan = DB::table('pesanan_jasa_musik')
+            ->join('users', 'users.id_user', '=', 'pesanan_jasa_musik.id_user')
+            ->join('master_jasa_musik', 'master_jasa_musik.id_jasa_musik', '=', 'pesanan_jasa_musik.id_jasa_musik')
+            ->where('pesanan_jasa_musik.status_produksi', "Y")
+            ->orderBy('pesanan_jasa_musik.id_pesanan_jasa_musik', 'DESC')
+            ->get();
+
+        $datatable = DataTables::of($pesanan)
+            ->addIndexColumn()
+            ->toJson();
+
+        return $datatable;
+    }
+
     public function data_index()
     {
         $id_user = Auth::user()->id_user;
