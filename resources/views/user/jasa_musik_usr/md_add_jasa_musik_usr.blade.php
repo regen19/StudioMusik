@@ -30,7 +30,8 @@
                             value="{{ Auth::user()->id_user }}" readonly required>
                     </div>
                     <div class="form-group">
-                        <label for="id_jasa_musik">Jenis Jasa Musik</label>
+                        <label for="id_jasa_musik">Jenis Jasa Musik<small
+                                class="text-danger fst-italic">*</small></label>
                         <div class="form-group row">
                             <div class="col-lg-12">
                                 <select class="form-select" id="id_jasa_musik">
@@ -44,7 +45,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="keterangan">Keterangan</label>
+                        <label for="keterangan">Keterangan<small class="text-danger fst-italic">*</small></label>
                         <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="5" required></textarea>
                     </div>
                 </div>
@@ -64,7 +65,7 @@
     <script>
         $(document).ready(function() {
             list_jasa_musik();
-
+            event_list_jasa_musik();
             var today = new Date().toISOString().split('T')[0];
             $('#tgl_deadline').attr('min', today);
         })
@@ -144,7 +145,7 @@
                 $("#containerInputJasaMusik").empty();
 
                 $("#containerInputJasaMusik").empty();
-                event_list_jasa_musik();
+
 
                 $btnSimpanText.off('click').on("click", function() {
                     saveJasaMusik("add", id_pesanan_jasa_musik);
@@ -183,7 +184,8 @@
                         },
                         dataType: 'json',
                         success: function(listResponse) {
-                            $("#id_jasa_musik").empty()
+                            $("#id_jasa_musik").empty();
+
                             $.each(listResponse, function(key, value) {
                                 var selected = response.id_jasa_musik === value
                                     .id_jasa_musik ? 'selected' : '';
@@ -192,22 +194,22 @@
                                 );
                             });
 
-                            $("#id_jasa_musik").val(response.id_jasa_musik).change();
+                            $("#id_jasa_musik").val(response.id_jasa_musik);
                         }
                     });
 
-                    // INFORMASI 
+                    // INFORMASI
                     $("#containerInputJasaMusik").empty();
                     $.each(response.jasa_informasi, function(key, value) {
                         $("#containerInputJasaMusik").append(
                             `
                             <div class="form-group">
                                 <label for="input_${value.id}">${value.nama_field}</label>
-                                ${value.tipe_field == "text" ? 
-                                `<textarea type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}">${value.value_field}</textarea>` 
-                                : value.tipe_field == "number" ? 
+                                ${value.tipe_field == "text" ?
+                                `<textarea type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}">${value.value_field}</textarea>`
+                                : value.tipe_field == "number" ?
                                 `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="input_${value.id}" >`
-                                : value.tipe_field == "file" ? 
+                                : value.tipe_field == "file" ?
                                 `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}">`
                                 : ""
                                 }
@@ -240,22 +242,33 @@
             let keterangan = $('#keterangan').val();
             let informasi = [];
             let formData = new FormData();
+            let errorMessages = [];
             formData.append("id_jasa_musik", id_jasa_musik);
             formData.append("tenggat_produksi", tenggat_produksi);
             formData.append("id_user", id_user);
             formData.append("no_wa", no_wa);
             formData.append("keterangan", keterangan);
             formData.append("_token", "{{ csrf_token() }}");
+            // Validasi input utama
+            if (!tenggat_produksi) errorMessages.push("Tenggat produksi wajib diisi!");
+            if (!id_jasa_musik) errorMessages.push("Pilih jasa musik!");
             $("#containerInputJasaMusik .informasi").each(function(index) {
                 let namaField = $(this).attr("name");
                 let tipeField = $(this).attr("type");
                 let nilaiField = $(this).val();
                 if (tipeField === 'file') {
+                    let file = $(this)[0].files[0];
+                    if (!file) {
+                        errorMessages.push(`File untuk "${namaField}" wajib diunggah!`);
+                    }
                     // Append file ke formData
                     formData.append(`informasi[${index}][file]`, $(this)[0].files[0]);
                     formData.append(`informasi[${index}][nama_field]`, namaField);
                     formData.append(`informasi[${index}][tipe_field]`, tipeField);
                 } else {
+                    if (!nilaiField.trim()) {
+                        errorMessages.push(`Kolom "${namaField}" tidak boleh kosong!`);
+                    }
                     // Append data non-file
                     formData.append(`informasi[${index}][nama_field]`, namaField);
                     formData.append(`informasi[${index}][value_field]`, nilaiField);
@@ -268,17 +281,16 @@
                 });
             });
 
-            if (!id_jasa_musik || !tenggat_produksi || !id_user || !no_wa || !keterangan || informasi.length ==
-                0) {
+            if (!keterangan) errorMessages.push("Keterangan wajib diisi!");
+            if (errorMessages.length > 0) {
                 Swal.fire({
-                    title: "Gagal simpan.",
-                    text: "Harap isi semua form!",
+                    title: "Gagal Simpan",
+                    html: errorMessages.join("<br>"),
                     icon: "error"
                 });
-
                 $("#btnSimpanText").show();
                 $("#btnSimpanLoading").hide();
-                return
+                return;
             }
 
             const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jasa_musik') }}" :

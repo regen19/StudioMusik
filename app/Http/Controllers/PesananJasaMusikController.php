@@ -54,6 +54,10 @@ class PesananJasaMusikController extends Controller
             'tenggat_produksi' => 'required',
             'id_user' => 'required|numeric',
             'keterangan' => 'required',
+            'informasi' => 'required|array',
+            'informasi.*.nama_field' => 'required',
+            'informasi.*.value_field' => 'required_without:informasi.*.file',
+            'informasi.*.file' => 'required_without:informasi.*.value_field',
         ]);
 
         if ($validate->fails()) {
