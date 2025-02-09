@@ -33,6 +33,7 @@ class TutorialPenggunaanAlatController extends Controller
         $data = DB::table("tutorial_penggunaan_alat")
             ->where('id_tutorial', $id_tutorial)
             ->get();
+
         // dd($data);
         return view('user.jadwal_studio_usr.detail_penggunaan_alat', compact([
             'data'
