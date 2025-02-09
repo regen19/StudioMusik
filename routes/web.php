@@ -151,7 +151,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/showById_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'show']);
     Route::get('/informasi_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'informasi_pesanan_jasa_musik']);
     Route::get('/download_file_pesanan/{filename}', [PesananJasaMusikController::class, 'download_file_pesanan_jasa_musik']);
-    Route::put('/edit_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'update']);
+    Route::post('/edit_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'update']);
     Route::delete('/hapus_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'destroy']);
     Route::post('/select_paket_jasa/{id}', [PesananJasaMusikController::class, 'select_paket_jasa']);
 

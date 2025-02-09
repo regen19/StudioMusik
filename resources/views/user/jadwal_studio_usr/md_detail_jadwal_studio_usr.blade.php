@@ -3,10 +3,12 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Pesanan Jadwal Studio</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
                 <p class="fs-6" id="tgl_pengajuan"></p>
                 <div class="table-responsive">
@@ -65,21 +67,21 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <a id="link-img-jaminan" target="_blank" href="" class="my-3 "><img
-                                            id="img_jaminan1" style="max-width: 200px; max-height: 200px;" />
+                                    <a id="link-img-jaminan" target="_blank" class="my-3"><img id="img_jaminan1"
+                                            style="max-width: 200px; max-height: 200px;" />
                                     </a>
                                 </td>
 
                                 <!-- Kondisi Awal -->
                                 <td id="show_kondisi_awal" style="display:none;">
-                                    <a id="link-img-kondisi-awal" target="_blank" href="" class="my-3">
+                                    <a id="link-img-kondisi-awal" target="_blank" class="my-3">
                                         <img id="img_kondisi_awal" style="max-width: 200px; max-height: 200px;" />
                                     </a>
                                 </td>
 
                                 <!-- Kondisi Akhir -->
                                 <td id="show_kondisi_akhir" style="display:none;">
-                                    <a id="link-img-kondisi-akhir" target="_blank" href="" class="my-3">
+                                    <a id="link-img-kondisi-akhir" target="_blank" class="my-3">
                                         <img id="img_kondisi_akhir" style="max-width: 200px; max-height: 200px;" />
                                     </a>
                                 </td>
@@ -118,7 +120,6 @@
                                         </p>
                                     </td>
                                 </form>
-
                             </tr>
                         </tbody>
                     </table>
@@ -146,7 +147,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-
             </div>
         </div>
     </div>

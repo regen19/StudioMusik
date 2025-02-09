@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/iconly.css') }}" />
 
     {{-- dataTable --}}
-    <link rel="stylesheet" href="{{ asset('assets/dataTable/dataTables.bootstrap5.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/dataTable/table-datatable-jquery.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/dataTable/dataTables.bootstrap5.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/dataTable/table-datatable-jquery.css') }}" /> --}}
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.dataTables.css">
@@ -44,8 +44,9 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 
     <style>
-        table.table td,
-        table.table th {
+        .table td,
+        .table thead,
+        .table th {
             text-align: center;
         }
 

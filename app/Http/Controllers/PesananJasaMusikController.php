@@ -8,6 +8,7 @@ use App\Models\PesananJasaMusikModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -50,7 +51,7 @@ class PesananJasaMusikController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'id_jasa_musik' => 'required',
-            'tgl_deadline' => 'required',
+            'tenggat_produksi' => 'required',
             'id_user' => 'required|numeric',
             'keterangan' => 'required',
         ]);
@@ -65,7 +66,7 @@ class PesananJasaMusikController extends Controller
         $pesanan['status_persetujuan'] = 'P';
         $pesanan['status_pengajuan'] = 'Y';
         $pesanan['status_produksi'] = 'N';
-        $pesanan['tenggat_produksi'] = $request->tgl_deadline;
+        $pesanan['tenggat_produksi'] = $request->tenggat_produksi;
         $pesanan['tgl_produksi'] = null;
 
         $pesananModel = PesananJasaMusikModel::create($pesanan);
@@ -125,25 +126,47 @@ class PesananJasaMusikController extends Controller
     public function update(Request $request, string $id_pesanan_jasa_musik)
     {
         $validate = Validator::make($request->all(), [
-            'id_jenis_jasa' => 'required',
-            'tgl_produksi' => 'required|date',
+            'id_jasa_musik' => 'required',
+            'tenggat_produksi' => 'required',
             'id_user' => 'required|numeric',
-            'no_wa' => 'required|numeric|min:12',
             'keterangan' => 'required',
         ]);
 
         if ($validate->fails()) {
             return response()->json([
-                'msg' => $validate->errors(),
+                "msg" => $validate->errors()
             ], 422);
         }
 
-        $pesanan = $request->only('id_jenis_jasa', 'tgl_produksi', 'id_user', 'no_wa', 'keterangan');
+        $data1 = $request->only('id_jasa_musik', 'tenggat_produksi', 'keterangan');
 
-        PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($pesanan);
+        PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($data1);
+
+        foreach ($request->informasi as $index => $data) {
+            if ($data['tipe_field'] == 'file') {
+                $file = $request->file("informasi.$index.file");
+                $nama_file = time() . '-' . str_replace(' ', '_', $file->getClientOriginalName());
+                $file->move(public_path('/storage/pesanan/jasa_musik_file'), $nama_file);
+                $value_field = $nama_file;
+            } else {
+                $value_field = $data['value_field'];
+            }
+
+            $informasiModel = PesananJasaMusikInformasiModel::where('pesanan_jasa_musik_id', $id_pesanan_jasa_musik)
+                ->where('nama_field', $data['nama_field'])
+                ->first();
+
+            if ($informasiModel) {
+                $informasiModel->update([
+                    'tipe_field' => $data['tipe_field'],
+                    'value_field' => $value_field,
+                ]);
+            }
+        }
 
         return response()->json([
-            'msg' => 'Pesanan Anda telah diubah',
+            "msg" => "Pesanan Jasa Musik Telah Diubah",
+            "status" => 200,
         ], 200);
     }
 

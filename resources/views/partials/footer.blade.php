@@ -10,9 +10,9 @@
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
 {{-- DataTables --}}
-<script src="{{ asset('assets/dataTable/jquery.dataTables.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/dataTable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/dataTable/dataTables.bootstrap5.min.js') }}"></script>
-<script src="{{ asset('assets/dataTable/datatables.js') }}"></script>
+<script src="{{ asset('assets/dataTable/datatables.js') }}"></script> --}}
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>

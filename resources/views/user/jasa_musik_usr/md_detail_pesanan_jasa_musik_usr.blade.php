@@ -91,9 +91,6 @@
 </div>
 
 <script>
-    let no_wa
-    let nama_user
-
     function show_byID(id_pesanan_jasa_musik) {
         $.ajax({
             url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
@@ -103,12 +100,10 @@
                 "_token": "{{ csrf_token() }}"
             },
             success: function(response) {
-                no_wa = response.no_wa
-                nama_user = response.username
-
+                console.log(response)
                 $("#tgl_pengajuan").text("Pengajuan pada : " + response.created_at)
-                $("#nama_user").text(response.username)
-                $("#nama_jasa_musik").text(response.nama_jenis_jasa)
+                $("#nama_user").text(response.users.username)
+                $("#nama_jasa_musik").text(response.master_jasa_musik.nama_jenis_jasa)
                 $("#tanggal").html(
                     response.tgl_produksi ? response.tgl_produksi.split(" ")[0] :
                     `<div>

@@ -135,7 +135,7 @@
                                                 </button>
                                             </div>
 
-                                             <div style="margin-right: 20px;">
+                                            <div style="margin-right: 20px;">
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     ${textPersetujuan}
                                                 </button>
