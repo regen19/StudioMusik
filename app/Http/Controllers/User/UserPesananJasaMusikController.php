@@ -29,6 +29,7 @@ class UserPesananJasaMusikController extends Controller
             ->join('users', 'users.id_user', '=', 'pesanan_jasa_musik.id_user')
             ->join('master_jasa_musik', 'master_jasa_musik.id_jasa_musik', '=', 'pesanan_jasa_musik.id_jasa_musik')
             ->where('pesanan_jasa_musik.status_produksi', "Y")
+            ->orWhere("pesanan_jasa_musik.status_produksi", "P")
             ->orderBy('pesanan_jasa_musik.id_pesanan_jasa_musik', 'DESC')
             ->get();
 
