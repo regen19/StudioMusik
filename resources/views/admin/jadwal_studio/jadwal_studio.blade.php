@@ -135,7 +135,7 @@
                                                 </button>
                                             </div>
 
-                                            <div style="margin-right: 20px;">
+                                            <div >
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     ${textPersetujuan}
                                                 </button>
@@ -149,7 +149,7 @@
                                         data.review !== null && data.rating !== null) {
                                         return `
                                         <td>
-                                            <div style="margin-rigth=20px;">
+                                            <div>
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     Selesai
                                                 </button>
@@ -202,7 +202,7 @@
                                     } else {
                                         return `
                                             <td>
-                                                <div style="margin-right: 20px;">
+                                                <div>
                                                     <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                         Selesai
                                                     </button>
@@ -216,7 +216,7 @@
                                         data.review === null && data.rating === null) {
                                         return `
                                         <td>
-                                            <div style="margin-right: 20px;">
+                                            <div>
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     ${textPersetujuan}
                                                 </button>
@@ -244,7 +244,7 @@
                                         "X") {
                                         return `
                                         <td>
-                                            <div style="margin-right: 20px;">
+                                            <div>
                                                     <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     Detail
                                                 </button>
@@ -257,7 +257,7 @@
                                         "N") {
                                         return `
                                             <td>
-                                                <div style="margin-right: 20px;">
+                                                <div >
                                                     <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                         ${textPersetujuan}
                                                     </button>
@@ -273,7 +273,7 @@
                                     } else {
                                         return `
                                         <td>
-                                            <div style="margin-right: 20px;">
+                                            <div >
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     Selesai
                                                 </button>
