@@ -85,7 +85,7 @@
                 nama_user = response.username
                 biaya_paket = response.biaya_paket
 
-                $("#tgl_pengajuan").text("Pengajuan pada : " + response.created_at)
+                $("#tgl_pengajuan").text("Pengajuan pada : " + waktu(response.created_at))
                 $("#nama_user").text(response.users.username)
                 $("#tanggal").html(
                     response.tgl_produksi ? response.tgl_produksi.split(" ")[0] :

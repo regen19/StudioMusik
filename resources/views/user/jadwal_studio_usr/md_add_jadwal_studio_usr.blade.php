@@ -15,7 +15,7 @@
                             value="{{ Auth::user()->username }}" readonly required>
                     </div>
                     <div class="col-5">
-                        <label for="no_wa">Nomor WhatsApp <small class="text-danger fst-italic"></label>
+                        <label for="no_wa">Nomor WhatsApp</label>
                         <input type="number" class="form-control" name="no_wa" id="no_wa"
                             value="{{ Auth::user()->no_wa }}" readonly required>
                     </div>

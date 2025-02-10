@@ -38,18 +38,6 @@
     </div>
 
     @include('partials.footer')
-
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("loader").style.display = "block";
-
-            window.addEventListener("load", function() {
-                setTimeout(function() {
-                    document.getElementById("loader").style.display = "none";
-                }, 700);
-            });
-        });
-    </script> --}}
 </body>
 
 </html>

@@ -84,9 +84,6 @@
                         {
                             data: 'nama_ruangan',
                         },
-                        // {
-                        //     data: 'no_wa',
-                        // },
                         {
                             data: 'ket_keperluan',
                         },
@@ -135,7 +132,7 @@
                                                 </button>
                                             </div>
 
-                                            <div style="margin-right: 20px;">
+                                            <div>
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     ${textPersetujuan}
                                                 </button>
@@ -148,7 +145,7 @@
                                     data.review !== null && data.rating !== null) {
                                     return `
                                         <td>
-                                            <div style="margin-rigth=20px;">
+                                            <div >
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     Selesai
                                                 </button>
@@ -157,18 +154,13 @@
                                     `;
                                 }
 
-                                //
-                                // <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_studio}')">
-                                //                     <i class="bi bi-pencil-square"></i>
-                                //                 </button>
-
                                 if (data.status_persetujuan === "P" && data.status_pengajuan !== "X") {
                                     return `
                                         <td>
                                             <div style="margin-right: 20px;">
                                                 <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_studio}')">
-                                                     <i class="bi bi-pencil-square"></i>
-                                                 </button>
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </button>
 
                                                 <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_jadwal(${data.id_pesanan_jadwal_studio})">
                                                     Batalkan
@@ -401,4 +393,5 @@
             }
         </script>
     @endpush
+    
 @endsection
