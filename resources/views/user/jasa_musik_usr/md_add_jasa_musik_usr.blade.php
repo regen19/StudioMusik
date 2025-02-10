@@ -75,18 +75,93 @@
             $("#id_jasa_musik").on('change', function() {
                 $("#containerInputJasaMusik").empty();
                 var selectedValue = $(this).val();
-                $.ajax({
-                    url: `{{ url('/informasi_jasa_musik/${selectedValue}') }}`,
-                    method: 'get',
-                    data: {
-                        "_token": "{{ csrf_token() }}"
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        $("#containerInputJasaMusik").empty();
-                        $.each(response, function(key, value) {
-                            $("#containerInputJasaMusik").append(
-                                `
+                var kondisiAction = $("#btnSimpanText");
+                var id_pesanan = $("#btnSimpanText").data("id_pesanan");
+
+                if (kondisiAction.text() == "Ubah") {
+                    $.ajax({
+                        url: `{{ url('/showById_pesanan_jasa_musik/${id_pesanan}') }}`,
+                        method: 'post',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+
+                            $("#containerInputJasaMusik").empty();
+                            if (response.id_jasa_musik == selectedValue) {
+                                $.each(response.jasa_informasi, function(key, value) {
+
+                                    $("#containerInputJasaMusik").append(
+                                        `
+                                            <div class="form-group">
+                                                <label for="input_${value.id}">${value.nama_field}</label>
+                                                ${value.tipe_field == "text" ?
+                                                `<textarea type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}">${value.value_field}</textarea>`
+                                                : value.tipe_field == "number" ?
+                                                `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="input_${value.id}" >`
+                                                : value.tipe_field == "file" ?
+                                                `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}">`
+                                                : ""
+                                                }
+                                            </div>
+                                        `
+                                    );
+                                    if (value.tipe_field == "file") {
+                                        // Menambahkan tautan untuk file yang di-upload
+                                        var fileUrl = value.value_field;
+                                        $("#containerInputJasaMusik").append(
+
+                                            `<a href="{{ asset('storage/pesanan/jasa_musik_file') }}/${fileUrl}" target="_blank">Lihat File</a>`
+                                        );
+                                    }
+                                });
+                            } else {
+                                $.ajax({
+                                    url: `{{ url('/informasi_jasa_musik/${selectedValue}') }}`,
+                                    method: 'get',
+                                    data: {
+                                        "_token": "{{ csrf_token() }}"
+                                    },
+                                    dataType: 'json',
+                                    success: function(response) {
+                                        $("#containerInputJasaMusik").empty();
+                                        $.each(response, function(key, value) {
+                                            $("#containerInputJasaMusik")
+                                                .append(
+                                                    `
+                                                    <div class="form-group">
+                                                        <label for="${value.nama_field}">${value.nama_field}</label>
+                                                        ${value.jenis_field=="text"?
+                                                        `<textarea type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}"></textarea>`
+                                                        :
+                                                        `<input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" >`
+                                                        }
+
+                                                    </div>
+                                                    `
+                                                )
+                                        })
+                                    }
+                                });
+                            }
+
+
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: `{{ url('/informasi_jasa_musik/${selectedValue}') }}`,
+                        method: 'get',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            $("#containerInputJasaMusik").empty();
+                            $.each(response, function(key, value) {
+                                $("#containerInputJasaMusik").append(
+                                    `
                                 <div class="form-group">
                                     <label for="${value.nama_field}">${value.nama_field}</label>
                                     ${value.jenis_field=="text"?
@@ -97,10 +172,12 @@
 
                                 </div>
                                 `
-                            )
-                        })
-                    }
-                });
+                                )
+                            })
+                        }
+                    });
+                }
+
             });
 
             $('#add_jasa_musik').on('hidden.bs.modal', function() {
@@ -138,7 +215,7 @@
 
             if (action === 'add') {
                 $title_header.text("Tambah Pesanan Jasa Musik");
-                $btnSimpanText.text("Simpan");
+                $btnSimpanText.text("Simpan").removeData("id_pesanan");
 
                 $('#tgl_deadline').val("");
                 $('#keterangan').val("");
@@ -152,7 +229,7 @@
                 });
             } else if (action === 'edit') {
                 $title_header.text("Edit Pesanan Jasa Musik");
-                $btnSimpanText.text("Ubah");
+                $btnSimpanText.text("Ubah").data("id_pesanan", id_pesanan_jasa_musik);
                 $("#containerInputJasaMusik").empty();
 
                 show_byid_jasa_musik(id_pesanan_jasa_musik);
@@ -194,39 +271,9 @@
                                 );
                             });
 
-                            $("#id_jasa_musik").val(response.id_jasa_musik);
+                            $("#id_jasa_musik").val(response.id_jasa_musik).change();
                         }
                     });
-
-                    // INFORMASI
-                    $("#containerInputJasaMusik").empty();
-                    $.each(response.jasa_informasi, function(key, value) {
-                        $("#containerInputJasaMusik").append(
-                            `
-                            <div class="form-group">
-                                <label for="input_${value.id}">${value.nama_field}</label>
-                                ${value.tipe_field == "text" ?
-                                `<textarea type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}">${value.value_field}</textarea>`
-                                : value.tipe_field == "number" ?
-                                `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="input_${value.id}" >`
-                                : value.tipe_field == "file" ?
-                                `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}">`
-                                : ""
-                                }
-                            </div>
-                        `
-                        );
-
-                        if (value.tipe_field == "file") {
-                            // Menambahkan tautan untuk file yang di-upload
-                            var fileUrl = value.value_field;
-                            $("#containerInputJasaMusik").append(
-
-                                `<a href="{{ asset('storage/pesanan/jasa_musik_file') }}/${fileUrl}" target="_blank">Lihat File</a>`
-                            );
-                        }
-                    });
-
 
                 }
             });
