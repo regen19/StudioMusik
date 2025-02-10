@@ -21,13 +21,44 @@
                                     <div id="collapseOne" class="accordion-collapse collapse show"
                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <strong>This is the first item's accordion body.</strong> It is shown by
-                                            default, until the collapse plugin adds the appropriate classes that we use to
-                                            style each element. These classes control the overall appearance, as well as the
-                                            showing and hiding via CSS transitions. You can modify any of this with custom
-                                            CSS or overriding our default variables. It's also worth noting that just about
-                                            any HTML can go within the <code>.accordion-body</code>, though the transition
-                                            does limit overflow.
+                                            <strong>
+                                                <ol>
+                                                    <li>Peminjaman studio hanya dilakukan pada hari <strong>Senin -
+                                                            Jumat</strong>
+                                                        dan bisa dipakai dari <strong>pukul 17.00 - 21.00</strong>.
+                                                    </li>
+                                                    <br>
+                                                    <li>Setelah menggunakan studio, peminjam harus <strong>membereskan
+                                                            barang bawaan</strong>
+                                                        dan <strong>merapikan alat</strong> yang digunakan ke kondisi
+                                                        semula.
+                                                    </li>
+                                                    <br>
+                                                    <li>Peminjam wajib <strong>mengupload kondisi ruangan studio</strong>
+                                                        sebelum dan sesudah
+                                                        dipakai pada <strong>website studio</strong>.
+                                                    </li>
+                                                    <br>
+                                                    <li><strong>Jumlah maksimal orang</strong> yang berada dalam studio
+                                                        adalah <strong>10 orang</strong>.
+                                                    </li>
+                                                    <br>
+                                                    <li>Setiap <strong>kerusakan alat</strong> harus diganti dengan
+                                                        <strong>spesifikasi yang sama</strong>.
+                                                        Apabila tidak ada itikad baik atau pertanggungjawaban, maka akan
+                                                        diberikan <strong>sanksi</strong>.
+                                                    </li>
+                                                    <br>
+                                                    <li>Studio <strong>tidak dapat dipinjam</strong> pada saat
+                                                        berlangsungnya <strong>UTS/UAS</strong>
+                                                        dan kegiatan <strong>UKMBSM ITERA</strong>.
+                                                    </li>
+                                                    <br>
+                                                    <li><strong>Pemesanan jasa musik</strong> dilakukan dengan syarat &
+                                                        ketentuan yang sudah tercantum.
+                                                    </li>
+                                                </ol>
+                                            </strong>
                                         </div>
                                     </div>
                                 </div>
@@ -43,11 +74,9 @@
                                         <div class="accordion-body">
                                             <strong>Studio Musik ITERA diresmikan pada tanggal 22 Februari 2018 oleh
                                                 Alm. Prof. Ir. Ofyar Z Tamin, M.Sc., Ph.D., IPU., yang kala itu menjadi
-                                                rektor ITERA.
-                                                Studio Musik ITERA dibangun sebagai fasilitas kampus yang menunjang kegiatan
-                                                non-akademik seluruh civitas akedemika ITERA. Berlokasi di Gedung D Lantai
-                                                3,
-                                                tepat di ruangan ujung lantai.
+                                                rektor ITERA. Studio Musik ITERA dibangun sebagai fasilitas kampus yang
+                                                menunjang kegiatan non-akademik seluruh civitas akedemika ITERA.
+                                                Berlokasi di Gedung D Lantai 3, tepat di ruangan ujung lantai.
                                         </div>
                                     </div>
                                 </div>
