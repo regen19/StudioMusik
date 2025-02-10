@@ -145,10 +145,12 @@ class PesananJasaMusikController extends Controller
         $data1 = $request->only('id_jasa_musik', 'tenggat_produksi', 'keterangan');
 
         $jasa = PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik);
-        $info = PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->get();
+        $id_jasa_musik_lama = $jasa->id_jasa_musik;
 
-        if ($jasa->id_jasa_musik != $request->id_jasa_musik) {
-            foreach ($info as $index => $data) {
+        $infoLama = PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->get();
+
+        if ($id_jasa_musik_lama != $request->id_jasa_musik) {
+            foreach ($infoLama as $index => $data) {
                 if ($data['tipe_field'] == 'file') {
 
                     $path = '/storage/pesanan/jasa_musik_file/' . $data['value_field'];
@@ -162,21 +164,45 @@ class PesananJasaMusikController extends Controller
         $jasa->update($data1);
         PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->delete();
 
-        foreach ($request->informasi as $index => $data) {
-            if ($data['tipe_field'] == 'file') {
-                $file = $request->file("informasi.$index.file");
-                $nama_file = time() . '-' . str_replace(' ', '_', $file->getClientOriginalName());
-                $file->move(public_path('/storage/pesanan/jasa_musik_file'), $nama_file);
-                $value_field = $nama_file;
+        foreach ($request->informasi as $index => $dataBaru) {
+            // Cek apakah informasi sudah ada di database
+            $infoLamaItem = $infoLama->where('nama_field', $dataBaru['nama_field'])->first();
+
+            if ($dataBaru['tipe_field'] == 'file') {
+                // Cek apakah ada file baru di request
+                if (isset($dataBaru['file']) && $dataBaru['file'] instanceof \Illuminate\Http\UploadedFile) {
+                    // Hapus file lama jika ada di database
+
+                    $patH = public_path('/storage/pesanan/jasa_musik_file/' . $infoLamaItem->value_field);
+                    if ($infoLamaItem && File::exists($patH)) {
+                        File::delete($patH);
+                    }
+
+                    // Simpan file baru
+                    $file = $dataBaru['file'];
+                    $nama_file = time() . '-' . str_replace(' ', '_', $file->getClientOriginalName());
+                    $file->move(public_path('/storage/pesanan/jasa_musik_file'), $nama_file);
+                    $value_field = $nama_file;
+                } else {
+                    // Jika tidak ada file baru, gunakan file lama
+                    $value_field = $infoLamaItem ? $infoLamaItem->value_field : null;
+                }
             } else {
-                $value_field = $data['value_field'];
+                // Jika bukan file, langsung gunakan value dari request
+                $value_field = $dataBaru['value_field'];
             }
-            PesananJasaMusikInformasiModel::create([
-                'pesanan_jasa_musik_id' => $id_pesanan_jasa_musik,
-                'nama_field' => $data['nama_field'],
-                'tipe_field' => $data['tipe_field'],
-                'value_field' => $value_field,
-            ]);
+
+            // Update atau buat baru
+            PesananJasaMusikInformasiModel::updateOrCreate(
+                [
+                    'pesanan_jasa_musik_id' => $id_pesanan_jasa_musik,
+                    'nama_field' => $dataBaru['nama_field'],
+                ],
+                [
+                    'tipe_field' => $dataBaru['tipe_field'],
+                    'value_field' => $value_field,
+                ]
+            );
         }
 
         return response()->json([
