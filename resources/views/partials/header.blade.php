@@ -44,10 +44,11 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 
     <style>
+        table,
         .table td,
         .table thead,
         .table th {
-            text-align: center;
+            text-align: center !important;
         }
 
         .loader-container {
