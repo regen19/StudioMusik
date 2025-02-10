@@ -265,15 +265,36 @@ class PesananJasaMusikController extends Controller
         ], 200);
     }
 
-    public function select_paket_jasa(string $id_jasa_musik)
+    public function selesaikan_produksi_pesanan_jasa_musik($id_pesanan_jasa_musik)
     {
-        $paket = DB::table('paket_jasa_musik')
-            ->join('master_jasa_musik', 'master_jasa_musik.id_jasa_musik', '=', 'paket_jasa_musik.id_jasa_musik')
-            ->join('master_jenis_jasa', 'master_jenis_jasa.id_jenis_jasa', '=', 'master_jasa_musik.id_jenis_jasa')
-            // ->select("paket_jasa_musik.id_paket_jasa_musik", "paket_jasa_musik.nama_paket", "paket_jasa_musik.biaya_paket")
-            ->where('paket_jasa_musik.id_jasa_musik', $id_jasa_musik)
-            ->get();
 
-        return response()->json($paket);
+        PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update([
+            "status_produksi" => "Y"
+        ]);
+
+        $id_user = DB::table("pesanan_jasa_musik")
+            ->where("id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
+            ->pluck("id_user")
+            ->first();
+
+        $email = DB::table("users")
+            ->where("id_user", $id_user)
+            ->pluck("email")
+            ->first();
+
+        $dataEmail = DB::table("pesanan_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
+            ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
+            ->first();
+
+        $subject = "Persetujuan Peminjaman Studi Musik";
+        $view = "EmailNotif.PersetujuanJasaMusik";
+        Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+
+        return response()->json([
+            'msg' => 'Produksi telah selesai',
+        ], 200);
     }
 }

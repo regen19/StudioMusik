@@ -149,24 +149,19 @@
                                     color = "danger"
                                 }
 
-                                if (data.status_produksi === "Y") {
-                                    status = "Selesai"
-                                    color = "success"
-                                }
-
-                                if (data.status_persetujuan === "Y" && data.status_produksi === "Y" &&
-                                    data.review !== null && data.rating !== null) {
+                                if (data.status_produksi === "P") {
                                     return `
                                         <td>
                                             <div style="margin-rigth=20px;">
-                                                <button type="button" class="btn btn-success icon icon-left text-white"
-                                                    data-bs-toggle="modal" data-bs-target="#detail_pesanan" onclick="show_byID(${data.id_pesanan_jasa_musik})">
-                                                    Selesai
+                                                <button type="button" class="btn btn-info icon icon-left text-white" onclick="SelesaikanProduksi(${data.id_pesanan_jasa_musik})">
+                                                    Selesaikan
                                                 </button>
                                             </div>
                                         </td>
                                     `;
-                                } else if (data.status_pengajuan === "X") {
+                                }
+
+                                if (data.status_pengajuan === "X") {
                                     return `
                                     <td><i class="text-danger">Dibatalkan</i></td>
                                     `;
@@ -187,9 +182,62 @@
                     ],
                 });
             })
+
+            function SelesaikanProduksi(id_pesanan_jasa_musik) {
+                Swal.fire({
+                    title: "Selesaikan Produksi Musik?",
+                    text: "Proses produksi telah selesai!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, selesaikan!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        Swal.fire({
+                            title: "Menyimpan...",
+                            text: "Mohon tunggu, sedang memproses...",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        $.ajax({
+                            url: `{{ url('/selesaikan_produksi_pesanan_jasa_musik/${id_pesanan_jasa_musik}') }}`,
+                            data: {
+                                "_token": "{{ csrf_token() }}"
+                            },
+                            method: 'post',
+                            success: function(response) {
+                                Swal.fire({
+                                    title: "Berhasil!",
+                                    text: "Produksi musik telah selesai!",
+                                    icon: "success",
+                                    confirmButtonText: "OK"
+                                });
+
+                                $('#tbPesanan').DataTable().ajax.reload();
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    title: "Gagal!",
+                                    text: "Terjadi kesalahan, silakan coba lagi.",
+                                    icon: "error",
+                                    confirmButtonText: "OK"
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         </script>
     @endpush
 
+    {{-- UBAH STATUS PERSETUJUAN --}}
     <div class="modal fade" id="status_persetujuan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">

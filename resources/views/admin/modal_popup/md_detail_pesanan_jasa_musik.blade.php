@@ -64,6 +64,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <span id="btnProses"></span>
+                <span id="btnSelesaiProduksi"></span>
             </div>
         </div>
     </div>
@@ -79,12 +80,13 @@
                 "_token": "{{ csrf_token() }}"
             },
             success: function(response) {
+
                 no_wa = response.no_wa
                 nama_user = response.username
                 biaya_paket = response.biaya_paket
 
                 $("#tgl_pengajuan").text("Pengajuan pada : " + response.created_at)
-                $("#nama_user").text(response.username)
+                $("#nama_user").text(response.users.username)
                 $("#tanggal").html(
                     response.tgl_produksi ? response.tgl_produksi.split(" ")[0] :
                     `<div>

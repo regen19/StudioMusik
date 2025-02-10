@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/pesanan_jasa_musik', [PesananJasaMusikController::class, 'index']);
         Route::get('/fetch_pesanan_jasa_musik', [PesananJasaMusikController::class, 'data_index']);
         Route::post('/status_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'status_pesanan_jasa_musik']);
+        Route::post('/selesaikan_produksi_pesanan_jasa_musik/{id}', [PesananJasaMusikController::class, 'selesaikan_produksi_pesanan_jasa_musik']);
 
         // LAPORAN
         Route::get('/laporan_admin', [LaporanController::class, 'index']);
