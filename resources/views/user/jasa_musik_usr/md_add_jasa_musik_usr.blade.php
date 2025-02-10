@@ -259,7 +259,7 @@
                 let nilaiField = $(this).val();
                 if (tipeField === 'file') {
                     let file = $(this)[0].files[0];
-                    if (!file) {
+                    if (!file && action == "add") {
                         errorMessages.push(`File untuk "${namaField}" wajib diunggah!`);
                     }
                     // Append file ke formData

@@ -144,8 +144,23 @@ class PesananJasaMusikController extends Controller
 
         $data1 = $request->only('id_jasa_musik', 'tenggat_produksi', 'keterangan');
 
-        PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($data1);
-        PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->delete();
+        $jasa = PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik);
+        $info = PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->get();
+
+        if ($jasa->id_jasa_musik != $request->id_jasa_musik) {
+            foreach ($info as $index => $data) {
+                if ($data['tipe_field'] == 'file') {
+
+                    $path = '/storage/pesanan/jasa_musik_file/' . $info['value_field'];
+                    if (File::exists(public_path($path))) {
+                        File::delete(public_path($path));
+                    }
+                }
+            }
+        }
+
+        $jasa->update($data1);
+        $info->delete();
 
         foreach ($request->informasi as $index => $data) {
             if ($data['tipe_field'] == 'file') {
