@@ -221,7 +221,8 @@
                             // Menambahkan tautan untuk file yang di-upload
                             var fileUrl = value.value_field;
                             $("#containerInputJasaMusik").append(
-                                `<a href="${fileUrl}" target="_blank">Lihat File</a>`
+
+                                `<a href="{{ asset('storage/pesanan/jasa_musik_file') }}/${fileUrl}" target="_blank">Lihat File</a>`
                             );
                         }
                     });

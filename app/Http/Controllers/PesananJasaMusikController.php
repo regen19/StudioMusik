@@ -145,6 +145,7 @@ class PesananJasaMusikController extends Controller
         $data1 = $request->only('id_jasa_musik', 'tenggat_produksi', 'keterangan');
 
         PesananJasaMusikModel::findOrFail($id_pesanan_jasa_musik)->update($data1);
+        PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->delete();
 
         foreach ($request->informasi as $index => $data) {
             if ($data['tipe_field'] == 'file') {
@@ -155,17 +156,12 @@ class PesananJasaMusikController extends Controller
             } else {
                 $value_field = $data['value_field'];
             }
-
-            $informasiModel = PesananJasaMusikInformasiModel::where('pesanan_jasa_musik_id', $id_pesanan_jasa_musik)
-                ->where('nama_field', $data['nama_field'])
-                ->first();
-
-            if ($informasiModel) {
-                $informasiModel->update([
-                    'tipe_field' => $data['tipe_field'],
-                    'value_field' => $value_field,
-                ]);
-            }
+            PesananJasaMusikInformasiModel::create([
+                'pesanan_jasa_musik_id' => $id_pesanan_jasa_musik,
+                'nama_field' => $data['nama_field'],
+                'tipe_field' => $data['tipe_field'],
+                'value_field' => $value_field,
+            ]);
         }
 
         return response()->json([
