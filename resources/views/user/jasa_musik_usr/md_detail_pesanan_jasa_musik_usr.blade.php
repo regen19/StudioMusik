@@ -101,7 +101,8 @@
             },
             success: function(response) {
                 console.log(response)
-                $("#tgl_pengajuan").text("Pengajuan pada : " + response.created_at)
+
+                $("#tgl_pengajuan").text("Pengajuan pada : " + waktu(response.created_at))
                 $("#nama_user").text(response.users.username)
                 $("#nama_jasa_musik").text(response.master_jasa_musik.nama_jenis_jasa)
                 $("#tanggal").html(
