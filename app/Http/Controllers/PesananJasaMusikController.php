@@ -151,7 +151,7 @@ class PesananJasaMusikController extends Controller
             foreach ($info as $index => $data) {
                 if ($data['tipe_field'] == 'file') {
 
-                    $path = '/storage/pesanan/jasa_musik_file/' . $info['value_field'];
+                    $path = '/storage/pesanan/jasa_musik_file/' . $data['value_field'];
                     if (File::exists(public_path($path))) {
                         File::delete(public_path($path));
                     }
@@ -160,7 +160,7 @@ class PesananJasaMusikController extends Controller
         }
 
         $jasa->update($data1);
-        $info->delete();
+        PesananJasaMusikInformasiModel::where("pesanan_jasa_musik_id", $id_pesanan_jasa_musik)->delete();
 
         foreach ($request->informasi as $index => $data) {
             if ($data['tipe_field'] == 'file') {
