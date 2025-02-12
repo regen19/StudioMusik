@@ -60,11 +60,7 @@
                     "columnDefs": [{
                         "width": "100%",
                     }],
-                    layout: {
-                        topStart: {
-                            buttons: ['excel', 'pdf']
-                        }
-                    },
+
                     ajax: {
                         url: "{{ url('/fetch_jadwal_studio_saya') }}",
                         type: 'GET',
@@ -145,7 +141,7 @@
                                     data.review !== null && data.rating !== null) {
                                     return `
                                         <td>
-                                            <div >
+                                            <div style="margin-right: 20px;">
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_studio" onclick="show_byID(${data.id_pesanan_jadwal_studio})">
                                                     Selesai
                                                 </button>
@@ -393,5 +389,4 @@
             }
         </script>
     @endpush
-    
 @endsection

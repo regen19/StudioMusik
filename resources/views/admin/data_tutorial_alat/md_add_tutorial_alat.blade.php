@@ -258,7 +258,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: errorMsg,
+                        text: errorMsg = "Harap isi file gambar!",
                     });
                 }
             });

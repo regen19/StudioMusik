@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PesananJadwalStudioModel;
 use App\Models\PesananJasaMusikModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomepageController extends Controller
 {
@@ -13,7 +14,9 @@ class HomepageController extends Controller
         $pesananJasaMusik = PesananJasaMusikModel::select(
             'pesanan_jasa_musik.review',
             'pesanan_jasa_musik.rating',
-            'users.username'
+            'users.username',
+            'users.email',
+            DB::raw("'Jasa Musik' as type")
         )
             ->join('users', 'pesanan_jasa_musik.id_user', '=', 'users.id_user')
             ->whereNotNull('pesanan_jasa_musik.rating')
@@ -29,7 +32,9 @@ class HomepageController extends Controller
         $pesananJadwalStudio = PesananJadwalStudioModel::select(
             'detail_pesanan_jadwal_studio.review',
             'detail_pesanan_jadwal_studio.rating',
-            'users.username'
+            'users.username',
+            'users.email',
+            DB::raw("'Studio Musik' as type")
         )
             ->join('detail_pesanan_jadwal_studio', 'pesanan_jadwal_studio.id_pesanan_jadwal_studio', '=', 'detail_pesanan_jadwal_studio.id_pesanan_jadwal_studio')
             ->join('users', 'pesanan_jadwal_studio.id_user', '=', 'users.id_user')
@@ -44,6 +49,7 @@ class HomepageController extends Controller
             });
 
         $gabunganPesanan = $pesananJasaMusik->concat($pesananJadwalStudio);
+       
 
         $dataReview = $gabunganPesanan->sortByDesc('created_at');
 

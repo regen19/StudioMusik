@@ -202,7 +202,7 @@
 
                     $("#no_wa_detail").text(`${response.no_wa}`)
                     $("#email").text(response.email)
-                    $("#tgl_pengajuan").text("Pengajuan pada : " + response.tgl_pinjam)
+                    $("#tgl_pengajuan").text("Pengajuan pada : " + waktu(response.created_at))
                     $("#nama_user1").text(response.username)
                     $("#tanggal").text(response.tgl_pinjam + " / " + response.waktu_mulai + " - " + response
                         .waktu_selesai)

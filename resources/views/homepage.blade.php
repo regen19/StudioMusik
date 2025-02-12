@@ -164,12 +164,11 @@
                                         <p>
                                             Studio Musik ITERA juga menawarkan layanan pembuatan musik custom untuk
                                             berbagai kebutuhan,
-                                            mulai dari jingle untuk iklan, aransemen musik untuk lagu-lagu orisinil,
+                                            mulai dari pembuatan jingle, aransemen musik untuk lagu-lagu orisinil,
                                             hingga minus one
-                                            untuk latihan atau performa live. Tim komposer dari anggota MusikITERA yang
-                                            berpengalaman
-                                            siap membantu mewujudkan ide musik Anda dengan hasil yang berkualitas
-                                            tinggi.
+                                            untuk latihan atau performa live. Tim komposer dari anggota UKMBSM ITERA
+                                            yang berpengalaman
+                                            siap membantu mewujudkan ide musik Anda dengan hasil yang berkualitas.
                                             Berkomitmen untuk memberikan hasil yang sesuai dengan kebutuhan dan visi
                                             Anda.
                                         </p>
@@ -203,9 +202,7 @@
                             <div class="single-testimonial-box">
                                 <div class="testimonial-description">
                                     <div class="testimonial-info">
-                                        <div class="testimonial-img">
-                                            <img src="assets/images/clients/c1.png" alt="image of clients person" />
-                                        </div><!--/.testimonial-img-->
+                                        <h2><a>{{ $review->type }}</a></h2>
                                     </div><!--/.testimonial-info-->
                                     <div class="testimonial-comment">
                                         <p>
@@ -214,6 +211,7 @@
                                     </div><!--/.testimonial-comment-->
                                     <div class="testimonial-person">
                                         <h2><a>{{ $review->username }}</a></h2>
+                                        <p>{{ $review->email }}</p>
                                     </div><!--/.testimonial-person-->
                                 </div><!--/.testimonial-description-->
                             </div><!--/.single-testimonial-box-->

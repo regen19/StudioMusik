@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	"use strict";
-    
+
         /*==================================
 * Author        : "ThemeSine"
 * Template Name : CarVilla HTML Template
@@ -16,7 +16,7 @@ $(document).ready(function(){
 3. owl carousel
 ======================================*/
 
-    // 1. Scroll To Top 
+    // 1. Scroll To Top
 		$(window).on('scroll',function () {
 			if ($(this).scrollTop() > 300) {
 				$('.return-to-top').fadeIn();
@@ -43,11 +43,11 @@ $(document).ready(function(){
             $(".welcome-hero-txt button").addClass("animated fadeInDown").css({'opacity':'0'});
         });
 
-	
+
 	// 3. owl carousel
 
 		// i.  new-cars-carousel
-		
+
 			$("#new-cars-carousel").owlCarousel({
 				items: 1,
 				autoplay:true,
@@ -64,23 +64,23 @@ $(document).ready(function(){
 
 
 		// ii. .testimonial-carousel
-	
-		
+
+
 			var owl=$('.testimonial-carousel');
 			owl.owlCarousel({
 				items:3,
 				margin:0,
-				
-				loop:true,
+
+				loop:false,
 				autoplay:true,
 				smartSpeed:1000,
-				
+
 				//nav:false,
 				//navText:["<i class='fa fa-angle-left'></i>","<i class='fa fa-angle-right'></i>"],
-				
+
 				dots:false,
 				autoplayHoverPause:false,
-			
+
 				responsiveClass:true,
 					responsive:{
 						0:{
@@ -93,12 +93,12 @@ $(document).ready(function(){
 							items:3
 						}
 					}
-				
-				
+
+
 			});
 
 		// iii. .brand-item (carousel)
-		
+
 			$('.brand-item').owlCarousel({
 				items:6,
 				loop:true,
@@ -121,8 +121,8 @@ $(document).ready(function(){
 						}
 					}
 				});
-				
-				
+
+
 				$('.play').on('click',function(){
 					owl.trigger('play.owl.autoplay',[1000])
 				})

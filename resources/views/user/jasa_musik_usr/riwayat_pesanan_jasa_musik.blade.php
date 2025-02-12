@@ -1,7 +1,7 @@
 @extends('partials.main')
 @section('MainContent')
     <div class="page-heading">
-        <h3>Riwayat Pesanan Jasa Musik Selurh Users</h3>
+        <h3>Riwayat Jadwal Produksi Jasa Musik</h3>
     </div>
 
     <div class="mb-3">

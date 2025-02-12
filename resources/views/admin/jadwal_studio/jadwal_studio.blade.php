@@ -60,8 +60,11 @@
                         "width": "100%",
                     }],
                     layout: {
-                        topStart: {
-                            buttons: ['excel', 'pdf']
+                        topEnd: {
+                            buttons: ['excel', 'pdf'],
+                            search: {
+                                placeholder: 'Search'
+                            }
                         }
                     },
                     ajax: {

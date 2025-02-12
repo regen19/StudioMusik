@@ -37,9 +37,11 @@
                                     <div class="my-2" style="width:100%; border: 1px solid red">
                                         <div class="p-2" style="font-size: 16px">
                                             {{ $reviewnya->username }}
+
                                             <small
                                                 style="font-size: 12px;"><i>{{ \Carbon\Carbon::parse($reviewnya->updated_at)->diffForHumans() }}</i></small>
-
+                                            <br>
+                                            {{ $reviewnya->email }}
                                             <div class="rating" style="font-size: 10px">
                                                 <input type="radio" id="star5_{{ $reviewnya->id_pesanan_jadwal_studio }}"
                                                     name="rating_{{ $reviewnya->id_pesanan_jadwal_studio }}" value="5"

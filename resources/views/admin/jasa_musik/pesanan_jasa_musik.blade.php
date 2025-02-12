@@ -49,8 +49,11 @@
                         "width": "100%",
                     }],
                     layout: {
-                        topStart: {
-                            buttons: ['excel', 'pdf']
+                        topEnd: {
+                            buttons: ['excel', 'pdf'],
+                            search: {
+                                placeholder: 'Search'
+                            }
                         }
                     },
                     ajax: {
@@ -259,7 +262,7 @@
 
                     <div class="form-group">
                         <label for="tgl_pinjam">Status Persetujuan</label>
-                        <select name="stts_setuju" id="stts_setuju" class="form-control" onchange="cek_setuju()">
+                        <select name="stts_setuju" id="stts_setuju" class="form-select" onchange="cek_setuju()">
                             <option value="P">Pengajuan</option>
                             <option value="Y">Disetujui</option>
                             <option value="N">Ditolak</option>
@@ -275,7 +278,7 @@
 
                     <div class="form-group">
                         <label for="tgl_pinjam">Status Produksi</label>
-                        <select name="stts_produksi" id="stts_produksi" class="form-control" onchange="cek_setuju()">
+                        <select name="stts_produksi" id="stts_produksi" class="form-select" onchange="cek_setuju()">
                             <option value="P">Diproses</option>
                             <option value="Y">Selesai</option>
                             <option value="N">Diajukan</option>

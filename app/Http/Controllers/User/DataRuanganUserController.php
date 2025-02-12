@@ -11,7 +11,7 @@ class DataRuanganUserController extends Controller
     public function index()
     {
         $data_ruangan = DB::table("data_ruangan")
-            // ->leftJoin("detail_data_ruangan", "detail_data_ruangan.id_ruangan", "=", "data_ruangan.id_ruangan")  
+            // ->leftJoin("detail_data_ruangan", "detail_data_ruangan.id_ruangan", "=", "data_ruangan.id_ruangan")
             ->get();
 
         // dd($data_ruangan);
@@ -33,7 +33,7 @@ class DataRuanganUserController extends Controller
             ->leftJoin('users', 'users.id_user', "=", "pesanan_jadwal_studio.id_user")
             ->where("pesanan_jadwal_studio.id_ruangan", $id_ruangan)
             ->where("detail_pesanan_jadwal_studio.rating", "!=", null)
-            ->select("users.username", "detail_pesanan_jadwal_studio.*")
+            ->select("users.username", "users.email", "detail_pesanan_jadwal_studio.*")
             ->get();
 
         // dd($review_user);
