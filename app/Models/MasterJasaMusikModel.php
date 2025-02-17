@@ -19,15 +19,14 @@ class MasterJasaMusikModel extends Model
         'sk',
         'deskripsi',
         'gambar',
-        'keterangan',
-        'biaya_produksi',
     ];
 
     public function formJasa(): HasMany
     {
         return $this->hasMany(
             FormJasaMusikModel::class,
-            'jasa_musik_id', 'id_jasa_musik'
+            'jasa_musik_id',
+            'id_jasa_musik'
         );
     }
 }

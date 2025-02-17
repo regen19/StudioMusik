@@ -114,8 +114,6 @@ class DataRuanganController extends Controller
             $data->kapasitas = $request->input('kapasitas');
             $data->lokasi = $request->input('lokasi');
             $data->fasilitas = $request->input('fasilitas');
-            
-
             $data->save();
 
             return response()->json([

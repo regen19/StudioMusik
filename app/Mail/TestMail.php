@@ -30,7 +30,7 @@ class TestMail extends Mailable
     {
         return new Envelope(
             subject: 'Test Mail',
-            from: new Address('musikitera@gmail.com', 'Test Mail')
+            from: new Address('musikitera@itera.ac.id', 'Test Mail')
         );
     }
 

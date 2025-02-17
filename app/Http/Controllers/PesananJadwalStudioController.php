@@ -159,7 +159,9 @@ class PesananJadwalStudioController extends Controller
                 ->select(
                     "pesanan_jadwal_studio.*",
                     "users.username",
-                    "data_ruangan.nama_ruangan"
+                    "data_ruangan.nama_ruangan",
+                    DB::raw("TIME_FORMAT(pesanan_jadwal_studio.waktu_mulai, '%H:%i') as waktu_mulai"),
+                    DB::raw("TIME_FORMAT(pesanan_jadwal_studio.waktu_selesai, '%H:%i') as waktu_selesai")
                 )
                 ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $jadwalStudio->id_pesanan_jadwal_studio)
                 ->first();
@@ -167,6 +169,7 @@ class PesananJadwalStudioController extends Controller
             $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
             $view = "EmailNotif.PengajuanStudioMusikMail";
             Mail::to('musikitera@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+            Mail::to('regenvoid@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
             // Commit transaksi
             DB::commit();

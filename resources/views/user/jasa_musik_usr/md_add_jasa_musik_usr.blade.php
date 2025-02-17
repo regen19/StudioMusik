@@ -10,22 +10,21 @@
                 @csrf
                 <div class="modal-body">
 
-                    <div class="form-group">
-                        <label for="tgl_deadline">Tanggal Deadline Pesanan</label>
-                        <input type="date" class="form-control" name="tgl_deadline" id="tgl_deadline" required>
-                    </div>
                     <div class="form-group row">
                         <div class="col-7">
                             <label for="nama_peminjam">Nama Peminjam</label>
                             <input type="text" class="form-control" name="nama_peminjam" id="nama_peminjam"
-                                value="{{ Auth::user()->username }}" readonly required>
+                                value="{{ Auth::user()->username }}" disabled required>
                         </div>
                         <div class="col-5">
                             <label for="no_wa">Nomor WhatsApp</label>
                             <input type="number" class="form-control" name="no_wa" id="no_wa"
-                                value="{{ Auth::user()->no_wa }}" readonly required>
+                                value="{{ Auth::user()->no_wa }}" disabled required>
                         </div>
-
+                        <div class="form-group">
+                            <label for="tgl_deadline">Tanggal Deadline Pesanan</label>
+                            <input type="date" class="form-control" name="tgl_deadline" id="tgl_deadline" required>
+                        </div>
                         <input type="hidden" class="form-control" name="id_user" id="id_user"
                             value="{{ Auth::user()->id_user }}" readonly required>
                     </div>
@@ -400,5 +399,10 @@
 
             });
         }
+    </script>
+    <script>
+        document.getElementById("tgl_deadline").addEventListener("click", function() {
+            this.showPicker(); // Memunculkan datepicker secara otomatis
+        });
     </script>
 @endpush

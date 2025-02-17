@@ -12,12 +12,12 @@
                     <div class="col-7">
                         <label for="id_user">Nama Peminjam</label>
                         <input type="text" class="form-control" name="nama_user" id="nama_user"
-                            value="{{ Auth::user()->username }}" readonly required>
+                            value="{{ Auth::user()->username }}" disabled required>
                     </div>
                     <div class="col-5">
                         <label for="no_wa">Nomor WhatsApp</label>
                         <input type="number" class="form-control" name="no_wa" id="no_wa"
-                            value="{{ Auth::user()->no_wa }}" readonly required>
+                            value="{{ Auth::user()->no_wa }}" disabled required>
                     </div>
 
                     <input type="hidden" value="{{ Auth::user()->id_user }}" name="id_user" id="id_user">
@@ -113,9 +113,9 @@
                     if (response.length == 1) {
                         $("#id_ruangan").val(`${response[0].id_ruangan}`).change();
                         $("#id_ruangan").prop("disabled", true);
-                        $("#id_ruangan").css({
-                            "background-color": "#1b1b29"
-                        });
+                        // $("#id_ruangan").css({
+                        //     "background-color": "#1b1b29"
+                        // });
                     }
 
                 },
@@ -534,5 +534,10 @@
                 }
             });
         }
+    </script>
+    <script>
+        document.getElementById("tgl_pinjam").addEventListener("click", function() {
+            this.showPicker(); // Memunculkan datepicker secara otomatis
+        });
     </script>
 @endpush
