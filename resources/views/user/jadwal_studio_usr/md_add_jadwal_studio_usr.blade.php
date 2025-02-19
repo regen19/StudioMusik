@@ -147,7 +147,7 @@
                 }
             }
 
-            populateTimeOptions('waktu_mulai', '17:00', '20:00', 15);
+            populateTimeOptions('waktu_mulai', '17:00', '20:15', 15);
             populateTimeOptions('waktu_selesai', '17:00', '21:00', 15);
 
             $('#waktu_mulai').on('change', function() {
@@ -156,7 +156,7 @@
                 // Nonaktifkan semua opsi di bawah waktu_mulai di waktu_selesai
                 if (waktuMulai) {
                     $('#waktu_selesai option').each(function() {
-                        if ($(this).val() < waktuMulai) {
+                        if ($(this).val() <= waktuMulai) {
                             $(this).attr('disabled', 'disabled');
                         } else {
                             $(this).removeAttr('disabled');

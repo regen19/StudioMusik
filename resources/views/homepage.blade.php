@@ -58,23 +58,17 @@
 </head>
 
 <body>
-    <!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
 
-    <!--welcome-hero start -->
     <section id="home" class="welcome-hero">
 
-        <!-- top-area Start -->
         <div class="top-area">
             <div class="header-area">
-                <!-- Start Navigation -->
+
                 <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"
                     data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
 
                     <div class="container">
 
-                        <!-- Start Header Navigation -->
                         <div class="navbar-header">
                             <button type="button" class="navbar-toggle" data-toggle="collapse"
                                 data-target="#navbar-menu">
@@ -82,26 +76,23 @@
                             </button>
                             <a class="navbar-brand" href="index.html"><span></span></a>
 
-                        </div><!--/.navbar-header-->
-                        <!-- End Header Navigation -->
+                        </div>
 
-                        <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
                             <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                                 <li class=" scroll active"><a href="#home">Home</a></li>
                                 <li class="scroll"><a href="#new-cars">Fitur</a></li>
                                 <li class="scroll"><a href="#clients-say">Review</a></li>
                                 <li class="scroll"><a href="#contact">Contact</a></li>
-                            </ul><!--/.nav -->
-                        </div><!-- /.navbar-collapse -->
-                    </div><!--/.container-->
-                </nav><!--/nav-->
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
                 <!-- End Navigation -->
-            </div><!--/.header-area-->
+            </div>
             <div class="clearfix"></div>
 
-        </div><!-- /.top-area-->
-        <!-- top-area End -->
+        </div>
 
         <div class="container">
             <div class="welcome-hero-txt">
@@ -115,15 +106,13 @@
         </div>
 
 
-    </section><!--/.welcome-hero-->
-    <!--welcome-hero end -->
-
+    </section>
 
     <section id="new-cars" class="new-cars">
         <div class="container">
             <div class="section-header">
                 <h2>FITUR</h2>
-            </div><!--/.section-header-->
+            </div>
             <div class="new-cars-content">
                 <div class="owl-carousel owl-theme" id="new-cars-carousel">
                     <div class="new-cars-item">
@@ -180,9 +169,7 @@
                     </div>
 
     </section>
-    <!--new-cars end -->
 
-    <!-- clients-say strat -->
     <section id="clients-say" class="clients-say">
         <div class="container">
             <div class="section-header">
@@ -203,34 +190,30 @@
                                 <div class="testimonial-description">
                                     <div class="testimonial-info">
                                         <h2><a>{{ $review->type }}</a></h2>
-                                    </div><!--/.testimonial-info-->
+                                    </div>
                                     <div class="testimonial-comment">
                                         <p>
                                             {{ $review->review }}
                                         </p>
-                                    </div><!--/.testimonial-comment-->
+                                    </div>
                                     <div class="testimonial-person">
                                         <h2><a>{{ $review->username }}</a></h2>
                                         <p>{{ $review->email }}</p>
-                                    </div><!--/.testimonial-person-->
-                                </div><!--/.testimonial-description-->
-                            </div><!--/.single-testimonial-box-->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @empty
                     @endforelse
 
-                </div><!--/.testimonial-carousel-->
-            </div><!--/.row-->
-        </div><!--/.container-->
+                </div>
+            </div>
+        </div>
 
-    </section><!--/.clients-say-->
-    <!-- clients-say end -->
+    </section>
 
-    <!--blog start -->
-    <section id="blog" class="blog"></section><!--/.blog-->
-    <!--blog end -->
+    <section id="blog" class="blog"></section>
 
-    <!--contact start-->
     <footer id="contact" class="contact">
         <div class="container">
 
@@ -257,14 +240,10 @@
                     title="" data-original-title="Back to Top" aria-hidden="true"></i>
             </div>
 
-        </div><!--/.scroll-Top-->
+        </div>
 
-    </footer><!--/.contact-->
-    <!--contact end-->
+    </footer>
 
-
-
-    <!-- Include all js compiled plugins (below), or include individual files as needed -->
 
     <script src="assets/js/jquery.js"></script>
 

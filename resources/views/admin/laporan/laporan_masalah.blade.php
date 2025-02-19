@@ -52,8 +52,11 @@
                         "width": "100%",
                     }],
                     layout: {
-                        topStart: {
-                            buttons: ['excel', 'pdf']
+                        topEnd: {
+                            buttons: ['excel', 'pdf'],
+                            search: {
+                                placeholder: 'Search'
+                            }
                         }
                     },
                     ajax: {
@@ -89,7 +92,7 @@
                                                     <i class="bi bi-pencil-square"></i>
                                             </button>
 
-                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_laporan(${data.id_laporan})"> 
+                                            <button type="button" class="btn btn-danger icon icon-left text-white" onclick="hapus_laporan(${data.id_laporan})">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
