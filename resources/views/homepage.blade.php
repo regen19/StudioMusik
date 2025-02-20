@@ -99,7 +99,7 @@
                 <h2>STUDIO MUSIK ITERA</h2>
                 <p>
                     Sistem informasi ini dirancang untuk memudahkan dalam manajemen studio musik untuk penjadwalan
-                    pememinjaman studio dan pemesanan jasa musik.
+                    peminjaman studio dan pemesanan jasa musik.
                 </p>
                 <button class="welcome-btn" onclick="window.location.href='/login'">Login</button>
             </div>

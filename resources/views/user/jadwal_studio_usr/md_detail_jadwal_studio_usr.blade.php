@@ -67,8 +67,8 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <a id="link-img-jaminan" target="_blank" class="my-3"><img id="img_jaminan1"
-                                            style="max-width: 200px; max-height: 200px;" />
+                                    <a id="link-img-jaminan" target="_blank" class="my-3">
+                                        <img id="img_jaminan1" style="max-width: 200px; max-height: 200px;" />
                                     </a>
                                 </td>
 
