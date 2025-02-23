@@ -92,12 +92,12 @@ class PesananJasaMusikController extends Controller
         }
 
         $dataEmail = DB::table("pesanan_jasa_musik")
-            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_user")
             ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
             ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
             ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $pesananModel->id_pesanan_jasa_musik)
             ->first();
-
+        
         $subject = "Pengajuan Jasa Musik Baru Hari ini";
         $view = "EmailNotif.PengajuanJasaMusikMail";
         Mail::to('musikitera@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
@@ -251,7 +251,7 @@ class PesananJasaMusikController extends Controller
             ->first();
 
         $dataEmail = DB::table("pesanan_jasa_musik")
-            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_user")
             ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
             ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
             ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
@@ -284,7 +284,7 @@ class PesananJasaMusikController extends Controller
             ->first();
 
         $dataEmail = DB::table("pesanan_jasa_musik")
-            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_jasa_musik")
+            ->join("users", "users.id_user", "=", "pesanan_jasa_musik.id_user")
             ->join("master_jasa_musik", "master_jasa_musik.id_jasa_musik", "=", "pesanan_jasa_musik.id_jasa_musik")
             ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
             ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $id_pesanan_jasa_musik)
