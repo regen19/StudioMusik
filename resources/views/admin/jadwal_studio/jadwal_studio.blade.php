@@ -47,6 +47,7 @@
     @include('admin.modal_popup.md_detail_jadwal_studio')
 
     @push('script')
+    <script src="assets/mgpopup/jquery.magnific-popup.js"></script>
         <script>
             $(document).ready(function() {
                 let id_user = $("#id_user").val();

@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Pesanan Jadwal Studio</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Detail Peminjaman Studio</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -70,8 +70,10 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <p class="my-3 "><img id="img_jaminan1"
-                                            style="max-width: 200px; max-height: 200px;" />
+                                    <p class="my-3 ">
+                                        <a id="link-img-jaminan" target="_blank" href="" class="my-3">
+                                            <img id="img_jaminan1" style="max-width: 200px; max-height: 200px;" />
+                                        </a>
                                     </p>
                                 </td>
                                 <!-- Kondisi Awal -->
@@ -92,15 +94,12 @@
                                 <form id="form_kondisi_awal" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <td id="show_form_kondisi_awal" style="display:none;">
-                                        <input type="file" class="image-preview-filepond form-control"
-                                            name="kondisi_awal" id="input_kondisi_awal" required>
+
                                         <p class="my-3">
                                             <img id="img_kondisi_awal_preview"
                                                 style="display: none; max-width: 200px; max-height: 200px;" />
                                         </p>
                                         <p>
-                                            <button class="btn btn-success" id="btn_simpan_awal"
-                                                data-type="awal">Simpan</button>
                                         </p>
                                     </td>
                                 </form>
@@ -110,15 +109,11 @@
                                     @csrf
 
                                     <td id="show_form_kondisi_akhir" style="display:none;">
-                                        <input type="file" class="image-preview-filepond form-control"
-                                            name="kondisi_akhir" id="input_kondisi_akhir" required>
                                         <p class="my-3">
                                             <img id="img_kondisi_akhir_preview"
                                                 style="display: none; max-width: 200px; max-height: 200px;" />
                                         </p>
                                         <p>
-                                            <button class="btn btn-success" id="btn_simpan_akhir"
-                                                data-type="akhir">Simpan</button>
                                         </p>
                                     </td>
                                 </form>
@@ -254,6 +249,8 @@
                     $("#catatan_admin").text(response.ket_admin)
                     $('#img_jaminan1').attr('src', '{{ asset('storage/img_upload/pesanan_jadwal') }}/' +
                         response.img_jaminan);
+                    $("#link-img-jaminan").attr("href",
+                        "{{ asset('storage/img_upload/pesanan_jadwal') }}/" + response.img_jaminan);
 
                     if (response.img_kondisi_awal == null) {
                         $('#show_kondisi_awal').hide();

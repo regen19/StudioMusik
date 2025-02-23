@@ -14,8 +14,10 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nama</th>
-                                <th>Tanggal & Jam Produksi</th>
+                                <th>Nama Pemesan</th>
+                                <th>No. Whatsapp</th>
+                                <th>Email</th>
+                                <th>Mulai Produksi</th>
                                 <th>Tenggat Produksi</th>
                                 <th>Keterangan</th>
                             </tr>
@@ -24,6 +26,8 @@
                             <tr>
                                 <td>1</td>
                                 <td id="nama_user"></td>
+                                <td id="no_wa_detail"></td>
+                                <td id="email"></td>
                                 <td id="tanggal"></td>
                                 <td id="tenggat"></td>
                                 <td id="catatan"></td>
@@ -84,9 +88,12 @@
                 no_wa = response.no_wa
                 nama_user = response.username
                 biaya_paket = response.biaya_paket
+                console.log(response);
 
                 $("#tgl_pengajuan").text("Pengajuan pada : " + waktu(response.created_at))
                 $("#nama_user").text(response.users.username)
+                $("#no_wa_detail").text(response.users.no_wa)
+                $("#email").text(response.users.email)
                 $("#tanggal").html(
                     response.tgl_produksi ? response.tgl_produksi.split(" ")[0] :
                     `<div>

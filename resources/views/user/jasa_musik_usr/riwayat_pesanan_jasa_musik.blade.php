@@ -46,11 +46,6 @@
                     "columnDefs": [{
                         "width": "100%",
                     }],
-                    layout: {
-                        topStart: {
-                            buttons: ['excel', 'pdf']
-                        }
-                    },
                     ajax: {
                         url: "{{ url('/riwayat_pesanan_data') }}",
                         type: 'GET',

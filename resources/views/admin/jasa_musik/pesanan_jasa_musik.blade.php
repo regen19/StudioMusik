@@ -40,6 +40,9 @@
     @push('script')
         <script>
             $(document).ready(function() {
+                var today = new Date().toISOString().split('T')[0];
+                $('#tgl_produksi').attr('min', today);
+                $('#tenggat_produksi').attr('min', today);
                 $('#tbPesanan').DataTable({
                     processing: true,
                     serverSide: true,

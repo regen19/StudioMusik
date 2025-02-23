@@ -220,14 +220,20 @@
             <div class="footer-copyright">
                 <div class="row">
                     <div class="col-sm-6">
-                        <p>
+                        <p class="">
                             Copyright &copy; 2025 Studio Musik ITERA
                         </p>
                     </div>
                     <div class="col-sm-6">
                         <div class="footer-social">
-                            <a href="mailto:musikitera@email.com"><i class="fa fa-envelope"></i></a>
+                            <a href="mailto:musikitera@gmail.com"><i class="fa fa-envelope"></i></a>
                             musikitera@gmail.com
+                        </div>
+                        <div class="footer-social">
+                            <a href="https://wa.me/6289505177202" target="_blank">
+                                <i class="fa fa-whatsapp"></i>
+                            </a>
+                            0895-0517-7202
                         </div>
                     </div>
                 </div>
