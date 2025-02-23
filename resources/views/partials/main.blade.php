@@ -29,7 +29,8 @@
                     </div>
                     <div class="float-end">
                         <p>
-                            Develop by <a href="#">Regen</a>
+                            Develop by <a href="https://www.instagram.com/regenrps" target="_blank"
+                                rel="noopener noreferrer">Regen</a>
                         </p>
                     </div>
                 </div>
