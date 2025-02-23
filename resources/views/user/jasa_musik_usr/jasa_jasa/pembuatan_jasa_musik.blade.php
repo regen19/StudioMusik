@@ -49,7 +49,7 @@
                                         <div class="carousel-item active">
                                             @if ($jenis_jasa)
                                                 <img src="{{ asset('storage/img_upload/jasa_musik/' . $jenis_jasa->gambar) }}"
-                                                    class="d-block w-100" alt="..." style="height: 650px">
+                                                    class="img-fluid" alt="...">
                                             @else
                                                 <p class="text-center">Gambar sedang diperbarui</p>
                                             @endif

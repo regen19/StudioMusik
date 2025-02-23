@@ -6,7 +6,7 @@
 
     <div class="row">
         @foreach ($data_ruangan as $ruangan)
-            <div class="col-4">
+            <div class="col col-md-4">
                 <div class="card">
                     <img src="{{ asset('storage/img_upload/data_ruangan/' . $ruangan->thumbnail) }}" class="card-img-top"
                         alt="..." height="200px">

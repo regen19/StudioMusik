@@ -108,7 +108,7 @@
                                                 <div class="carousel-item active">
                                                     <img src="{{ asset('storage/img_upload/jasa_musik/' . $dp->gambar) }}"
                                                         class="d-block w-100" alt="..." style="height: 600px">
-                                                    <div class="carousel-caption d-none d-md-block">
+                                                    <div class="carousel-caption">
                                                         <h5>{{ $dp->nama_jenis_jasa }}</h5>
                                                         <p class="text-white">{{ $dp->deskripsi }}</p>
                                                     </div>
@@ -117,7 +117,7 @@
                                                 <div class="carousel-item">
                                                     <img src="{{ asset('storage/img_upload/jasa_musik/' . $dp->gambar) }}"
                                                         class="d-block w-100" alt="...">
-                                                    <div class="carousel-caption d-none d-md-block">
+                                                    <div class="carousel-caption">
                                                         <h5>{{ $dp->nama_jenis_jasa }}</h5>
                                                         <p class="text-white">{{ $dp->deskripsi }}</p>
                                                     </div>
