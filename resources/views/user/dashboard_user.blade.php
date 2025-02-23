@@ -145,3 +145,41 @@
     </div>
 @endsection
 
+<style>
+/*.dashboard user*/
+    .carousel-image {
+        max-height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .custom-caption {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: auto;
+    }
+
+    .custom-caption h5,
+    .custom-caption p {
+        color: white;
+        margin-bottom: 0;
+    }
+
+    .accordion-button {
+        background-color: rgba(70, 130, 180, 0.6) !important;
+        color: #F5F5F5 !important;
+        font-weight: bold;
+    }
+
+    .accordion-button:focus,
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(50, 110, 160, 0.7) !important;
+        color: #FFFFFF !important;
+    }
+
+    .accordion-item {
+        border: 2px solid rgba(30, 60, 90, 0.5);
+    }
+</style>
