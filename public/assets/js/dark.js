@@ -42,9 +42,9 @@ function initTheme() {
 
   //Register change listener
   mediaQuery.addEventListener("change", (e) =>
-    setTheme(e.matches ? "dark" : "light", true)
+    setTheme(e.matches ? "light" : "dark", true)
   )
-  return setTheme(mediaQuery.matches ? "dark" : "light", true)
+  return setTheme(mediaQuery.matches ? "light" : "dark", true)
 }
 
 window.addEventListener('DOMContentLoaded', () => {
