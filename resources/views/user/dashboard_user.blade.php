@@ -145,25 +145,3 @@
     </div>
 @endsection
 
-<!-- CSS Custom -->
-<style>
-    .carousel-image {
-        max-height: 200px;
-        width: 100%;
-        object-fit: cover;
-    }
-
-    .custom-caption {
-        background: rgba(0, 0, 0, 0.6);
-        padding: 10px 20px;
-        border-radius: 10px;
-        width: fit-content;
-        margin: auto;
-    }
-
-    .custom-caption h5,
-    .custom-caption p {
-        color: white;
-        margin-bottom: 0;
-    }
-</style>

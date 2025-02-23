@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/app-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/iconly.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
 
     {{-- dataTable --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/dataTable/dataTables.bootstrap5.min.css') }}" />
