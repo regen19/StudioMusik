@@ -102,38 +102,29 @@
                                         <button type="button" data-bs-target="#carouselExampleCaptions"
                                             data-bs-slide-to="2" aria-label="Slide 3"></button>
                                     </div>
-                                    <div class="carousel-inner">
-                                        @foreach ($display as $key => $dp)
-                                            @if ($key == 0)
-                                                <div class="carousel-item active">
+                                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            @foreach ($display as $key => $dp)
+                                                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                     <img src="{{ asset('storage/img_upload/jasa_musik/' . $dp->gambar) }}"
-                                                        class="img-fluid" alt="...">
-                                                    <div class="carousel-caption d-none d-md-block">
-                                                        <h5>{{ $dp->nama_jenis_jasa }}</h5>
-                                                        <p class="text-white">{{ $dp->deskripsi }}</p>
-                                                    </div>
-                                                    <div class="d-block d-md-none text-center p-3 bg-light">
-                                                        <h5>{{ $dp->nama_jenis_jasa }}</h5>
-                                                        <p>{{ $dp->deskripsi }}</p>
-                                                    </div>
-                                                </div>
+                                                        class="img-fluid w-100" alt="...">
 
-                                            @else
-                                                <div class="carousel-item">
-                                                    <img src="{{ asset('storage/img_upload/jasa_musik/' . $dp->gambar) }}"
-                                                        class="img-fluid" alt="...">
-                                                    <div class="carousel-caption d-none d-md-block">
+                                                    <!-- Caption di dalam gambar (Desktop) -->
+                                                    <div class="carousel-caption d-none d-md-block custom-caption">
                                                         <h5>{{ $dp->nama_jenis_jasa }}</h5>
-                                                        <p class="text-white">{{ $dp->deskripsi }}</p>
+                                                        <p>{{ $dp->deskripsi }}</p>
                                                     </div>
+
+                                                    <!-- Caption di luar gambar (Mobile) -->
                                                     <div class="d-block d-md-none text-center p-3 bg-light">
                                                         <h5>{{ $dp->nama_jenis_jasa }}</h5>
                                                         <p>{{ $dp->deskripsi }}</p>
                                                     </div>
                                                 </div>
-                                            @endif
-                                        @endforeach
+                                            @endforeach
+                                        </div>
                                     </div>
+
                                     <button class="carousel-control-prev" type="button"
                                         data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -153,3 +144,26 @@
         </section>
     </div>
 @endsection
+
+<!-- CSS Custom -->
+<style>
+    .carousel-image {
+        max-height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .custom-caption {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 20px;
+        border-radius: 10px;
+        width: fit-content;
+        margin: auto;
+    }
+
+    .custom-caption h5,
+    .custom-caption p {
+        color: white;
+        margin-bottom: 0;
+    }
+</style>
