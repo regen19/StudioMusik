@@ -80,6 +80,28 @@
                 </li>
 
                 <li
+                    class="sidebar-item has-sub {{ request()->is('data_alat') || request()->is('data_tutorial_alat') || request()->is('data_peminjam_alat') ? 'active' : '' }}">
+                    <a href="#" class="sidebar-link">
+                    <i class="bi bi-boombox-fill"></i>
+                        <span>Alat Musik</span>
+                    </a>
+
+                    <ul class="submenu">
+                        <li class="submenu-item {{ request()->is('data_alat') ? 'active' : '' }}">
+                            <a href="{{ url('/data_alat') }}" class="submenu-link">Data Alat</a>
+                        </li>
+
+                        <li class="submenu-item {{ request()->is('data_peminjam_alat') ? 'active' : '' }}">
+                            <a href="{{ url('/data_peminjam_alat') }}" class="submenu-link">Data Peminjam Alat</a>
+                        </li>
+
+                        <!-- <li class="submenu-item {{ request()->is('data_tutorial_alat') ? 'active' : '' }}">
+                            <a href="{{ url('/data_tutorial_alat') }}" class="submenu-link">Tutorial Penggunaan Alat</a>
+                        </li> -->
+                    </ul>
+                </li>
+
+                <li
                     class="sidebar-item has-sub {{ request()->is('master_jasa_musik') || request()->is('pesanan_jasa_musik') ? 'active' : '' }}">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-file-music"></i>
@@ -141,6 +163,30 @@
                     </ul>
                 </li>
 
+                <li
+                    class="sidebar-item has-sub {{ request()->is('data_ruangan_studio') || request()->is('jadwal_studio_saya') || request()->is('tutorial_penggunaan_alat') ? 'active' : '' }}">
+                    <a href="#" class="sidebar-link">
+                    <i class="bi bi-boombox-fill"></i>
+                        <span>Alat Musik</span>
+                    </a>
+
+                    <ul class="submenu">
+                        <li class="submenu-item {{ request()->is('data_ruangan_studio') ? 'active' : '' }}">
+                            <a href="{{ url('/data_ruangan_studio') }}" class="submenu-link">
+                                <span>Alat Musik</span>
+                            </a>
+                        </li>
+                        <li class="submenu-item {{ request()->is('jadwal_studio_saya') ? 'active' : '' }}">
+                            <a href="{{ url('/jadwal_studio_saya') }}" class="submenu-link">Alat Dipinjam</a>
+                        </li>
+
+                        <li class="submenu-item {{ request()->is('tutorial_penggunaan_alat') ? 'active' : '' }}">
+                            <a href="{{ url('/tutorial_penggunaan_alat') }}" class="submenu-link">Tutorial Penggunaan
+                                Alat</a>
+                        </li>
+                    </ul>
+                </li>
+
                 @php
                     $menu_jasa = DB::table('master_jasa_musik')->get();
                 @endphp
@@ -168,6 +214,13 @@
             @endcan
 
             <li class="sidebar-title">AKUN USER</li>
+
+            <li class="sidebar-item {{ request()->is('ManageAkunUser') ? 'active' : '' }}">
+                    <a href="{{ url('/ManageAkunUser') }}" class="sidebar-link">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Manage Akun User</span>
+                    </a>
+            </li>
 
             <li class="sidebar-item has-sub">
                 <a href="#" class="sidebar-link">

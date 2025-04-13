@@ -30,6 +30,25 @@
                     </div>
                     <div class="col-6 col-lg-3 col-md-6">
                         <div class="card h-75">
+                            <div class="card-body px-4 py-4-5 d-flex flex-column ">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="stats-icon purple mb-2">
+                                            <i class="iconly-boldBag"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                        <h6 class="text-muted font-semibold">
+                                            <strong> Peminjaman Alat </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?>
+                                        </h6>
+                                        <h6 class="font-extrabold mb-0">{{ $studio_musik_approve }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card h-75">
                             <div class="card-body px-4 py-4-5 d-flex flex-column">
                                 <div class="row">
                                     <div class="col-auto">
