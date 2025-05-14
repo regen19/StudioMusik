@@ -97,7 +97,7 @@ class PesananJasaMusikController extends Controller
             ->select("pesanan_jasa_musik.*", "users.username", "master_jasa_musik.nama_jenis_jasa")
             ->where("pesanan_jasa_musik.id_pesanan_jasa_musik", $pesananModel->id_pesanan_jasa_musik)
             ->first();
-        
+
         $subject = "Pengajuan Jasa Musik Baru Hari ini";
         $view = "EmailNotif.PengajuanJasaMusikMail";
         Mail::to('musikitera@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));

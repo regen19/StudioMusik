@@ -65,8 +65,31 @@
         $(document).ready(function() {
             list_jasa_musik();
             event_list_jasa_musik();
-            var today = new Date().toISOString().split('T')[0];
-            $('#tgl_deadline').attr('min', today);
+
+            const today = new Date();
+
+
+            // Hitung tanggal min: besok
+            const minDateObj = new Date(today);
+            minDateObj.setDate(minDateObj.getDate() + 1);
+
+            // Hitung tanggal max: 3 bulan dari hari ini
+            const maxDateObj = new Date(today);
+            maxDateObj.setMonth(maxDateObj.getMonth() + 3);
+
+            // Fungsi bantu untuk format YYYY-MM-DD
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+
+            // Set atribut min dan max pada input
+            // Set atribut min dan max pada input
+            $('#tgl_deadline').attr('min', formatDate(minDateObj));
+            $('#tgl_deadline').attr('max', formatDate(maxDateObj));
+
         })
 
 
@@ -100,7 +123,7 @@
                                                 : value.tipe_field == "number" ?
                                                 `<input type="${value.tipe_field}" class="form-control informasi" value="${value.value_field}" name="${value.nama_field}" id="input_${value.id}" >`
                                                 : value.tipe_field == "file" ?
-                                                `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}">`
+                                                `<input type="${value.tipe_field}" class="form-control informasi" name="${value.nama_field}" id="input_${value.id}" data-file-url="${value.value_field}" accept=".mp3, .mp4, .wav">`
                                                 : ""
                                                 }
                                             </div>
@@ -134,7 +157,7 @@
                                                         ${value.jenis_field=="text"?
                                                         `<textarea type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}"></textarea>`
                                                         :
-                                                        `<input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" >`
+                                                        `<input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" ${value.jenis_field === "file" ? 'accept=".mp3, .mp4, .wav"' : ""}>`
                                                         }
 
                                                     </div>
@@ -166,7 +189,7 @@
                                     ${value.jenis_field=="text"?
                                     `<textarea type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}"></textarea>`
                                     :
-                                    `<input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" >`
+                                    `<input type="${value.jenis_field}" class="form-control informasi" name="${value.nama_field}" id="${value.nama_field}" ${value.jenis_field === "file" ? 'accept=".mp3, .mp4, .wav"' :"" }>`
                                     }
 
                                 </div>
@@ -305,11 +328,20 @@
                 let nilaiField = $(this).val();
                 if (tipeField === 'file') {
                     let file = $(this)[0].files[0];
-                    if (!file && action == "add") {
+
+                    const allowedTypes = ['video/mp4', 'audio/mpeg', 'audio/wav',
+                    'audio/x-wav']; // tipe MIME yang diperbolehkan
+
+                    if (!file && action === "add") {
                         errorMessages.push(`File untuk "${namaField}" wajib diunggah!`);
+                    } else if (file && !allowedTypes.includes(file.type)) {
+                        errorMessages.push(
+                            `Format file untuk "${namaField}" tidak didukung! (Hanya .mp3, .mp4, .wav)`);
+                    } else {
+                        // Hanya append jika file valid
+                        formData.append(`informasi[${index}][file]`, file);
                     }
-                    // Append file ke formData
-                    formData.append(`informasi[${index}][file]`, $(this)[0].files[0]);
+
                     formData.append(`informasi[${index}][nama_field]`, namaField);
                     formData.append(`informasi[${index}][tipe_field]`, tipeField);
                 } else {
