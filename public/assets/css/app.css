@@ -739,6 +739,15 @@ progress {
     max-width: 100%;
     height: auto;
 }
+
+.foto_alat {
+    padding: 0.25rem;
+    background-color: #f2f7ff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    max-width: 100%;
+    height: auto;
+}
 .figure {
     display: inline-block;
 }

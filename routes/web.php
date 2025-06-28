@@ -9,12 +9,14 @@ use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PesananJadwalStudioController;
+use App\Http\Controllers\PesananJadwalAlatController;
 use App\Http\Controllers\PesananJasaMusikController;
 use App\Http\Controllers\TutorialPenggunaanAlatController;
 use App\Http\Controllers\User\DataRuanganUserController;
 use App\Http\Controllers\User\DataAlatUserController;
 use App\Http\Controllers\User\DisplayJasaMusikController;
 use App\Http\Controllers\User\UserJadwalStudioController;
+use App\Http\Controllers\User\UserAlatDipinjamController;
 use App\Http\Controllers\User\UserPesananJasaMusikController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\HomepageController;
@@ -87,8 +89,8 @@ Route::middleware('auth')->group(function () {
 
         // PESANAN JADWAL ALAT
         Route::get('/data_peminjam_alat', [PesananJadwalAlatController::class, 'index']);
-        Route::get('/fetch_pesanan_jadwal_alat', [PesananJadwalAlatController::class, 'data_index']);
-        Route::post('/status_pesanan_jadwal_alat/{id}', [PesananJadwalAlatController::class, 'status_pesanan_jadwal_alat']);
+        Route::get('/fetch_pesanan_pinjam_alat', [PesananJadwalAlatController::class, 'data_index']);
+        Route::post('/status_pesanan_pinjam_alat/{id}', [PesananJadwalAlatController::class, 'status_pesanan_pinjam_alat']);
         // Route::post("/harga_sewa_Alat", [PesananJadwalAlatController::class, 'harga_sewa_Alat']);
         Route::get('/lihat_harga_sewa_alat', [PesananJadwalAlatController::class, 'lihat_harga_alat']);
 
@@ -103,12 +105,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/add_laporan_masalah', [LaporanController::class, 'store']);
         Route::delete('/hapus_laporan_masalah/{id}', [LaporanController::class, 'destroy']);
 
-        // MANAGE AKUN USER
-        Route::get('/manage_user', [ManageUserController::class, 'index']);
-        Route::get('/fetch_manage_user', [ManageUserController::class, 'data_index']);
-        Route::post('/edit_manage_user/{id}', [ManageUserControllerr::class, 'update']);
-        Route::delete('/hapus_manage_user/{id}', [ManageUserController::class, 'destroy']);
-
         // PAKET HARGA JASA MUSIK
         Route::get('/paket_harga_jasa_musik/{id}', [PaketJasaMusikController::class, 'index']);
         Route::get('/fetch_paket_harga_jasa_musik', [PaketJasaMusikController::class, 'data_index']);
@@ -122,7 +118,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/fetch_tutorial_alat', [TutorialPenggunaanAlatController::class, 'data_index']);
         Route::post('/add_tutorial_alat', [TutorialPenggunaanAlatController::class, 'store']);
         Route::delete('/hapus_tutorial_alat/{id}', [TutorialPenggunaanAlatController::class, 'destroy']);
+
+        // MANAGE USERS
+        Route::get('/data_user', [ManageUserController::class, 'index']);
+        Route::get('/fetch_data_user', [ManageUserController::class, 'data_index']);
+        Route::post('/add_data_user', [ManageUserController::class, 'store']);
+        Route::post('/showById_data_user/{id}', [ManageUserController::class, 'show']);
+        Route::post('/edit_data_user/{id}', [ManageUserController::class, 'update']);
+        Route::delete('/hapus_data_user/{id}', [ManageUserController::class, 'destroy']);                 
+});
+
     });
+    
 
     Route::middleware('isUser')->group(function () {
         Route::get('/dashboard_user', [DashboardController::class, 'dashboard_user']);
@@ -131,13 +138,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/data_ruangan_studio', [DataRuanganUserController::class, 'index']);
         Route::get('/user_review_ruangan/{id}', [DataRuanganUserController::class, 'user_review_ruangan']);
 
-        // // DATA ALAT
-        // Route::get('/data_alat', [DataAlatUserController::class, 'index']);
-        // Route::get('/user_review_alat/{id}', [DataAlatUserController::class, 'user_review_alat']);
+        // DATA ALAT
+        Route::get('/data_alat_user', [DataAlatUserController::class, 'index']);
+        Route::get('/user_review_alat/{id}', [DataAlatUserController::class, 'user_review_alat']);
 
         // JADWAL STUDIO SAYA
         Route::get("/jadwal_studio_saya", [UserJadwalStudioController::class, 'index']);
         Route::get("/fetch_jadwal_studio_saya", [UserJadwalStudioController::class, 'data_index']);
+
+        // ALAT DIPINJAM
+        Route::get("/alat_dipinjam", [UserAlatDipinjamController::class, 'index']);
+        Route::get("/fetch_alat_dipinjam", [UserAlatDipinjamController::class, 'data_index']);
 
         // PESANAN JASA MUSIK SAYA
         Route::get('/pesanan_jasa_musik_saya', [UserPesananJasaMusikController::class, 'index']);
@@ -165,12 +176,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/cek_tanggal_kosong', [PesananJadwalStudioController::class, 'cek_tanggal_kosong']);
     
     // JADWAL ALAT
-    Route::post('/add_pesanan_jadwal_alat', [PesananJadwalAlatController::class, 'store']);
-    Route::post('/showById_pesanan_jadwal_alat/{id}', [PesananJadwalAlatController::class, 'show']);
-    Route::post('/edit_pesanan_jadwal_alat/{id}', [PesananJadwalAlatController::class, 'update']);
-    Route::delete('/hapus_pesanan_jadwal_alat/{id}', [PesananJadwalAlatController::class, 'destroy']);
-    Route::post('/bayar_alat_musik', [PesananJadwalAlatController::class, 'bayar_alat_musik']);
-    Route::post('/cek_tanggal_kosong', [PesananJadwalAlatController::class, 'cek_tanggal_kosong']);
+    Route::post('/add_pesanan_pinjam_alat', [UserAlatDipinjamController::class, 'store']);
+    Route::post('/showById_pesanan_pinjam_alat/{id}', [UserAlatDipinjamController::class, 'show']);
+    Route::post('/edit_pesanan_pinjam_alat/{id}', [UserAlatDipinjamController::class, 'update']);
+    Route::delete('/hapus_pesanan_pinjam_alat/{id}', [UserAlatDipinjamController::class, 'destroy']);
+    Route::post('/bayar_alat_musik', [UserAlatDipinjamController::class, 'bayar_alat_musik']);
+    Route::post('/cek_tanggal_kosong', [UserAlatDipinjamController::class, 'cek_tanggal_kosong']);
 
     // Upload kondisi ruangan
     Route::post('/upload_img_kondisi_awal', [PesananJadwalStudioController::class, 'upload_img_kondisi_awal']);
@@ -196,6 +207,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran_studio_sukses', [UserJadwalStudioController::class, 'pembayaran_studio_sukses']);
     Route::post('/pengembalian_ruangan', [UserJadwalStudioController::class, 'pengembalian_ruangan']);
 
+    // BAYARAN BIAYA PERAWATAN
+    Route::get('/get_snap_token', [UserJadwalStudioController::class, 'get_snap_token']);
+    Route::post('/pembayaran_biaya_perawatan_sukses', [UserJadwalStudioController::class, 'pembayaran_biaya_perawatan_sukses']);
+    Route::post('/pengembalian_alat', [UserJadwalStudioController::class, 'pengembalian_alat']);
+
     // BAYARAN JASA MUSIK
     Route::get('/get_snap_token_jasa', [UserPesananJasaMusikController::class, 'get_snap_token']);
     Route::post('/pembayaran_jasa_sukses', [UserPesananJasaMusikController::class, 'pembayaran_jasa_sukses']);
@@ -204,4 +220,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/tutorial_penggunaan_alat', [TutorialPenggunaanAlatController::class, 'index_user']);
     Route::get('/detail_penggunaan_alat/{id}', [TutorialPenggunaanAlatController::class, 'detail_penggunaan_alat']);
     Route::post('/fetch_data_tutorial', [TutorialPenggunaanAlatController::class, 'data_index']);
-});
+;

@@ -7,6 +7,8 @@
         <img src="{{ asset('assets/img/ball-triangle.svg') }}" class="loader" alt="audio" width="200px" height="200px">
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <div id="app">
         <!-- SIDEBAR -->
         <div id="sidebar">
@@ -29,7 +31,7 @@
                     </div>
                     <div class="float-end">
                         <p>
-                            Develop by <a href="#">Regen</a>
+                            Develop by <a href="#">Eben</a>
                         </p>
                     </div>
                 </div>

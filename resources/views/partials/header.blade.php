@@ -27,6 +27,7 @@
     {{-- Quill --}}
     {{-- <link rel="stylesheet" href="{{ asset('assets/quill/quill.snow.css') }}" /> --}}
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
     <script src="{{ asset('assets/js/initTheme.js') }}"></script>
 

@@ -10,7 +10,7 @@
         </a>
 
         <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
-            Buat alat
+            Tambah alat
         </button>
     </div>
 
@@ -24,7 +24,6 @@
                                 <th>No.</th>
                                 <th>Foto Alat</th>
                                 <th>Nama Alat</th>
-                                {{-- <th>Biaya Perawatan</th> --}}
                                 <th>Tipe Alat</th>
                                 <th>Jumlah</th>
                                 <th>Biaya Perawatan</th>
@@ -65,9 +64,9 @@
                         },
                         {
                             data: null,
-                            // render: function(data) {
-                            //     return `<a target="_blank" href="{{ asset('storage/img_upload/data_alat') }}/${data.foto_alat}"><img src="{{ asset('storage/img_upload/data_alat') }}/${data.foto_alat}" class="img-foto_alat" max-width="90px" max-height="60px"></a>`;
-                            // }
+                            render: function(data) {
+                                return `<a target="_blank" href="{{ asset('storage/img_upload/data_alat') }}/${data.foto_alat}"><img src="{{ asset('storage/img_upload/data_alat') }}/${data.foto_alat}" class="foto_alat" max-width="90px" max-height="60px"></a>`;
+                            }
                         },
                         {
                             data: 'nama_alat'

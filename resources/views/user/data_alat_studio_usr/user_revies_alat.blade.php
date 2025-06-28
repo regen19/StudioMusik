@@ -22,10 +22,10 @@
                         </div>
                         <h4 class="card-title mt-3">{{ $data_alat->nama_alat }}</h4>
                         <p><span class="badge text-bg-info text-white"><i class="bi bi-people"></i>
-                                {{ $data_alat->kapasitas }}</span>
+                                {{ $data_alat->jumlah_alat }}</span>
 
                         </p>
-                        <p class="card-text">Fasilitas = {{ $data_alat->fasilitas }}</p>
+                        <p class="card-text">tipe_alat = {{ $data_alat->tipe_alat }}</p>
 
                         <hr>
                         <h4><i>Review User</i></h4>

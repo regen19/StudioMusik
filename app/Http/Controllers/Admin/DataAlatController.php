@@ -19,10 +19,10 @@ class DataAlatController extends Controller
 
     public function data_index()
     {
-        $jasa_musik = DB::table('data_alat')
+        $data_alat = DB::table('data_alat')
             ->get();
 
-        $datatable = DataTables::of($jasa_musik)
+        $datatable = DataTables::of($data_alat)
             ->addIndexColumn()
             ->toJson();
 
@@ -36,7 +36,7 @@ class DataAlatController extends Controller
             "tipe_alat" => "required",
             'jumlah_alat' => "nullable",
             'biaya_perawatan' => "nullable",
-            // "harga_sewa" => "required",
+            
             "foto_alat" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
         ]);
 
@@ -83,8 +83,8 @@ class DataAlatController extends Controller
             "tipe_alat" => "required",
             'jumlah_alat' => "nullable",
             'biaya_perawatan' => "nullable",
-            // "harga_sewa" => "required",
-            // "foto_alat" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
+            
+            
         ]);
 
         if ($validate->fails()) {
@@ -114,7 +114,7 @@ class DataAlatController extends Controller
             $data->tipe_alat = $request->input('tipe_alat');
             $data->jumlah_alat = $request->input('jumlah_alat');
             $data->biaya_perawatan = $request->input('biaya_perawatan');
-            // $data->harga_sewa = $request->input('harga_sewa');
+            
 
             $data->save();
 
@@ -128,9 +128,9 @@ class DataAlatController extends Controller
         ], 404);
     }
 
-    public function destroy(string $id_jasa_musik)
+    public function destroy(string $id_data_alat)
     {
-        $data = DataAlatModel::findOrFail($id_jasa_musik);
+        $data = DataAlatModel::findOrFail($id_data_alat);
 
         if ($data) {
             $path = '/storage/img_upload/data_alat/' . $data->foto_alat;

@@ -12,17 +12,17 @@
                         alt="..." height="200px">
                     <div class="card-body">
                         <h5 class="card-title">{{ $alat->nama_alat }}</h5>
-                        <p><span class="badge text-bg-info text-white"><i class="bi bi-people"></i>
-                                {{ $alat->kapasitas }}</span>
+                        <p><span class="badge text-bg-info text-white"><i class="bi bi-cart"></i>
+                                {{ $alat->jumlah_alat }}</span>
                             {{-- <span class="badge text-bg-success"><i class="bi bi-cash-stack"></i>
                                 Rp{{ $alat->harga_sewa }}</span> --}}
                         </p>
-                        <p class="card-text">Fasilitas = {{ $alat->fasilitas }}</p>
-                        <a href="{{ url('/jadwal_studio_saya') }}" class="btn btn-primary"><i class="bi bi-cart-check"></i>
+                        <p class="card-text">Tipe Alat = {{ $alat->tipe_alat }}</p>
+                        <a href="{{ url('/alat_dipinjam') }}" class="btn btn-primary"><i class="bi bi-cart-check"></i>
                             Pinjam</a>
-                        <a href="{{ url('/user_review_alat/' . $alat->id_alat) }}"
+                        <!-- <a href="{{ url('/user_review_alat/' . $alat->id_alat) }}"
                             class="btn btn-secondary text-white"><i class="bi bi-star"></i>
-                            User Review</a>
+                            User Review</a> -->
                     </div>
                 </div>
             </div>

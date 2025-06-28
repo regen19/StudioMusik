@@ -27,7 +27,7 @@ class PesananJadwalAlatController extends Controller
     {
 
         $tgl_pinjam = $request->input("tgl_pinjam");
-        $id_ruangan = $request->input("id_ruangan");
+        $id_alat = $request->input("id_alat");
         $waktu_mulai = $request->input("waktu_mulai");
         $waktu_selesai = $request->input("waktu_selesai");
 
@@ -38,16 +38,16 @@ class PesananJadwalAlatController extends Controller
         }
 
         $cek_tanggal =
-            DB::table('pesanan_jadwal_alat')
-            ->join("detail_pesanan_jadwal_alat", "detail_pesanan_jadwal_alat.id_pesanan_jadwal_alat", "=", "pesanan_jadwal_alat.id_pesanan_jadwal_alat")
-            ->where('pesanan_jadwal_alat.tgl_pinjam', $tgl_pinjam)
-            ->where("pesanan_jadwal_alat.id_ruangan", $id_ruangan)
+            DB::table('pesanan_pinjam_alat')
+            ->join("detail_pesanan_pinjam_alat", "detail_pesanan_pinjam_alat.id_pesanan_pinjam_alat", "=", "pesanan_pinjam_alat.id_pesanan_pinjam_alat")
+            ->where('pesanan_pinjam_alat.tgl_pinjam', $tgl_pinjam)
+            ->where("pesanan_pinjam_alat.id_alat", $id_alat)
             ->where(function ($query) use ($waktu_mulai, $waktu_selesai) {
-                $query->whereBetween('pesanan_jadwal_alat.waktu_mulai', [$waktu_mulai, $waktu_selesai])
-                    ->orWhereBetween('pesanan_jadwal_alat.waktu_selesai', [$waktu_mulai, $waktu_selesai])
+                $query->whereBetween('pesanan_pinjam_alat.waktu_mulai', [$waktu_mulai, $waktu_selesai])
+                    ->orWhereBetween('pesanan_pinjam_alat.waktu_selesai', [$waktu_mulai, $waktu_selesai])
                     ->orWhere(function ($query) use ($waktu_mulai, $waktu_selesai) {
-                        $query->where('pesanan_jadwal_alat.waktu_mulai', '<', $waktu_selesai)
-                            ->where('pesanan_jadwal_alat.waktu_selesai', '>', $waktu_mulai);
+                        $query->where('pesanan_pinjam_alat.waktu_mulai', '<', $waktu_selesai)
+                            ->where('pesanan_pinjam_alat.waktu_selesai', '>', $waktu_mulai);
                     });
             })
             ->get();
@@ -69,11 +69,11 @@ class PesananJadwalAlatController extends Controller
 
     public function data_index()
     {
-        $pesanan = DB::table('pesanan_jadwal_alat')
-            ->join("users", "users.id_user", "=", "pesanan_jadwal_alat.id_user")
-            ->join("detail_pesanan_jadwal_alat", "detail_pesanan_jadwal_alat.id_pesanan_jadwal_alat", "=", "pesanan_jadwal_alat.id_pesanan_jadwal_alat")
-            ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_alat.id_ruangan")
-            ->orderBy("pesanan_jadwal_alat.id_pesanan_jadwal_alat", "DESC")
+        $pesanan = DB::table('pesanan_pinjam_alat')
+            ->join("users", "users.id_user", "=", "pesanan_pinjam_alat.id_user")
+            ->join("detail_pesanan_pinjam_alat", "detail_pesanan_pinjam_alat.id_pesanan_pinjam_alat", "=", "pesanan_pinjam_alat.id_pesanan_pinjam_alat")
+            ->join("data_alat", "data_alat.id_alat", "=", "pesanan_pinjam_alat.id_alat")
+            ->orderBy("pesanan_pinjam_alat.id_pesanan_pinjam_alat", "DESC")
             ->get();
 
         $datatable = DataTables::of($pesanan)
@@ -95,7 +95,7 @@ class PesananJadwalAlatController extends Controller
                 'waktu_mulai' => "nullable",
                 'waktu_selesai' => "nullable",
                 'ket_keperluan' => "nullable",
-                "img_jaminan" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
+                "foto_jaminan" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
             ]);
 
             if ($validate->fails()) {
@@ -105,21 +105,21 @@ class PesananJadwalAlatController extends Controller
             }
 
             // Simpan data pesanan
-            $pesanan = $request->only('id_user', 'id_ruangan', 'tgl_pinjam', 'waktu_mulai', 'waktu_selesai', 'ket_keperluan');
+            $pesanan = $request->only('id_user', 'id_alat', 'tgl_pinjam', 'waktu_mulai', 'waktu_selesai', 'ket_keperluan');
 
             // Proses upload gambar jaminan jika ada
-            if ($request->hasFile('img_jaminan')) {
-                $img = $request->file('img_jaminan');
+            if ($request->hasFile('foto_jaminan')) {
+                $img = $request->file('foto_jaminan');
                 $nama_img = $request->tgl_pinjam . "- Jaminan " . str_replace(' ', '_', $request->id_user) . "." . $img->getClientOriginalExtension();
                 $img->move(public_path('/storage/img_upload/pesanan_jadwal'), $nama_img);
-                $pesanan['img_jaminan'] = $nama_img;
+                $pesanan['foto_jaminan'] = $nama_img;
             }
 
             // Simpan pesanan ke dalam tabel PesananJadwalAlatModel
-            $jadwalalat = PesananJadwalAlatModel::create($pesanan);
+            $jadwalAlat = PesananJadwalAlatModel::create($pesanan);
 
             $detailPesanan = [
-                "id_pesanan_jadwal_alat" => $jadwalalat->id_pesanan_jadwal_alat,
+                "id_pesanan_pinjam_alat" => $jadwalAlat->id_pesanan_pinjam_alat,
                 "status_persetujuan" => "P",
                 "status_pengajuan" => "Y",
                 "status_peminjaman" => "N",
@@ -128,19 +128,19 @@ class PesananJadwalAlatController extends Controller
             // Simpan detail pesanan ke dalam tabel DetailPesananJadwalAlatModel
             DetailPesananJadwalAlatModel::create($detailPesanan);
 
-            $dataEmail = DB::table("pesanan_jadwal_alat")
-                ->join("users", "users.id_user", "=", "pesanan_jadwal_alat.id_user")
-                ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_alat.id_ruangan")
+            $dataEmail = DB::table("pesanan_pinjam_alat")
+                ->join("users", "users.id_user", "=", "pesanan_pinjam_alat.id_user")
+                ->join("data_alat", "data_alat.id_alat", "=", "pesanan_pinjam_alat.id_alat")
                 ->select(
-                    "pesanan_jadwal_alat.*",
+                    "pesanan_pinjam_alat.*",
                     "users.username",
-                    "data_ruangan.nama_ruangan"
+                    "data_alat.nama_alat"
                 )
-                ->where("pesanan_jadwal_alat.id_pesanan_jadwal_alat", $jadwalalat->id_pesanan_jadwal_alat)
+                ->where("pesanan_pinjam_alat.id_pesanan_pinjam_alat", $jadwalAlat->id_pesanan_pinjam_alat)
                 ->first();
 
             $subject = "Pengajuan Peminjaman alat Musik Baru Hari ini";
-            $view = "EmailNotif.PengajuanAlatMusikMail";
+            $view = "EmailNotif.PengajuanalatMusikMail";
             Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
             // Commit transaksi
@@ -160,12 +160,12 @@ class PesananJadwalAlatController extends Controller
         }
     }
 
-    public function show(string $id_pesanan_jadwal_alat)
+    public function show(string $id_pesanan_pinjam_alat)
     {
-        $data = DB::table('pesanan_jadwal_alat')
-            ->join("users", "users.id_user", "=", "pesanan_jadwal_alat.id_user")
-            ->join("detail_pesanan_jadwal_alat", "detail_pesanan_jadwal_alat.id_pesanan_jadwal_alat", "=", "pesanan_jadwal_alat.id_pesanan_jadwal_alat")
-            ->where("pesanan_jadwal_alat.id_pesanan_jadwal_alat", $id_pesanan_jadwal_alat)
+        $data = DB::table('pesanan_pinjam_alat')
+            ->join("users", "users.id_user", "=", "pesanan_pinjam_alat.id_user")
+            ->join("detail_pesanan_pinjam_alat", "detail_pesanan_pinjam_alat.id_pesanan_pinjam_alat", "=", "pesanan_pinjam_alat.id_pesanan_pinjam_alat")
+            ->where("pesanan_pinjam_alat.id_pesanan_pinjam_alat", $id_pesanan_pinjam_alat)
             ->first();
 
         if (empty($data)) {
@@ -177,17 +177,17 @@ class PesananJadwalAlatController extends Controller
         }
     }
 
-    public function update(Request $request, string $id_pesanan_jadwal_alat)
+    public function update(Request $request, string $id_pesanan_pinjam_alat)
     {
         $validate = Validator::make($request->all(), [
             "id_user" => "required",
-            "id_ruangan" => "required",
+            "id_alat" => "required",
             'tgl_pinjam' => "nullable",
             'no_wa' => "nullable",
             'waktu_mulai' => "nullable",
             'waktu_selesai' => "nullable",
             'ket_keperluan' => "nullable",
-            // "img_jaminan" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
+            // "foto_jaminan" => "nullable|image|mimes:png,jpg,jpeg|max:1024",
         ]);
 
         if ($validate->fails()) {
@@ -196,24 +196,24 @@ class PesananJadwalAlatController extends Controller
             ], 422);
         }
 
-        $data = PesananJadwalAlatModel::findOrFail($id_pesanan_jadwal_alat);
+        $data = PesananJadwalAlatModel::findOrFail($id_pesanan_pinjam_alat);
 
         if ($data) {
             // Menghapus dan mengganti gambar jika ada file gambar baru yang diunggah
-            if ($request->hasFile('img_jaminan')) {
-                $path = 'storage/img_upload/pesanan_jadwal' . $data->img_jaminan;
+            if ($request->hasFile('foto_jaminan')) {
+                $path = 'storage/img_upload/pesanan_jadwal' . $data->foto_jaminan;
                 if (File::exists(public_path($path))) {
                     File::delete(public_path($path));
                 }
 
-                $img = $request->file('img_jaminan');
+                $img = $request->file('foto_jaminan');
                 $extension = $img->getClientOriginalExtension();
                 $nama_img = time() . "-" . str_replace(' ', '_', $request->id_user) . "." . $extension;
                 $img->move(public_path('/storage/img_upload/pesanan_jadwal'), $nama_img);
-                $data->img_jaminan = $nama_img;
+                $data->foto_jaminan = $nama_img;
             }
 
-            $data->id_ruangan = $request->input('id_ruangan');
+            $data->id_alat = $request->input('id_alat');
             $data->tgl_pinjam = $request->input('tgl_pinjam');
             $data->no_wa = $request->input('no_wa');
             $data->waktu_mulai = $request->input('waktu_mulai');
@@ -223,18 +223,18 @@ class PesananJadwalAlatController extends Controller
             $data->save();
 
             return response()->json([
-                'msg' => 'Data ruangan berhasil diperbarui',
+                'msg' => 'Data alat berhasil diperbarui',
             ], 200);
         }
     }
 
-    public function destroy(string $id_pesanan_jadwal_alat)
+    public function destroy(string $id_pesanan_pinjam_alat)
     {
-        $data = DetailPesananJadwalAlatModel::findOrFail($id_pesanan_jadwal_alat);
-        $path = '/storage/img_upload/pesanan_jadwal/' . $data->img_jaminan;
+        $data = DetailPesananJadwalAlatModel::findOrFail($id_pesanan_pinjam_alat);
+        $path = '/storage/img_upload/pesanan_jadwal/' . $data->foto_jaminan;
 
         if ($data) {
-            $path = '/storage/img_upload/pesanan_jadwal/' . $data->img_jaminan;
+            $path = '/storage/img_upload/pesanan_jadwal/' . $data->foto_jaminan;
             if (File::exists(public_path($path))) {
                 File::delete(public_path($path));
             }
@@ -246,7 +246,7 @@ class PesananJadwalAlatController extends Controller
         }
     }
 
-    public function simpan_img_kondisi_ruangan(Request $request, string $id_pesanan_jadwal_alat)
+    public function simpan_img_kondisi_alat(Request $request, string $id_pesanan_pinjam_alat)
     {
         $validator = Validator::make(
             $request->all(),
@@ -260,7 +260,7 @@ class PesananJadwalAlatController extends Controller
         if ($validator->fails()) {
             return response()->json(['message' => 'Validasi gagal.', 'errors' => $validator->errors(),], 422);
         }
-        $data = DetailPesananJadwalAlatModel::findOrFail($id_pesanan_jadwal_alat);
+        $data = DetailPesananJadwalAlatModel::findOrFail($id_pesanan_pinjam_alat);
         if ($data) {
             if ($request->hasFile('kondisi_awal')) {
                 $pathAwal = 'storage/img_upload/kondisi/awal/' . $data->img_kondisi_awal;
@@ -269,7 +269,7 @@ class PesananJadwalAlatController extends Controller
                 }
                 $imgAwal = $request->file('kondisi_awal');
                 $extensionAwal = $imgAwal->getClientOriginalExtension();
-                $namaImgAwal = "awal-" . str_replace(' ', '_', $id_pesanan_jadwal_alat) . "." . $extensionAwal;
+                $namaImgAwal = "awal-" . str_replace(' ', '_', $id_pesanan_pinjam_alat) . "." . $extensionAwal;
                 $imgAwal->move(public_path('/storage/img_upload/kondisi/awal'), $namaImgAwal);
                 $data->img_kondisi_awal = $namaImgAwal;
             }
@@ -280,7 +280,7 @@ class PesananJadwalAlatController extends Controller
                 }
                 $imgAkhir = $request->file('kondisi_akhir');
                 $extensionAkhir = $imgAkhir->getClientOriginalExtension();
-                $namaImgAkhir = "akhir-" . str_replace(' ', '_', $id_pesanan_jadwal_alat) . "." . $extensionAkhir;
+                $namaImgAkhir = "akhir-" . str_replace(' ', '_', $id_pesanan_pinjam_alat) . "." . $extensionAkhir;
                 $imgAkhir->move(public_path('/storage/img_upload/kondisi/akhir'), $namaImgAkhir);
                 $data->img_kondisi_akhir = $namaImgAkhir;
             }
@@ -291,7 +291,7 @@ class PesananJadwalAlatController extends Controller
     }
 
 
-    public function status_pesanan_jadwal_alat(Request $request, string $id_pesanan_jadwal_alat)
+    public function status_pesanan_pinjam_alat(Request $request, string $id_pesanan_pinjam_alat)
     {
         $validate = Validator::make($request->all(), [
             "status_persetujuan" => "required",
@@ -305,14 +305,14 @@ class PesananJadwalAlatController extends Controller
         }
 
         // Mengambil ID detail pesanan jadwal alat
-        $id_detail_pesanan_jadwal_alat = DB::table('pesanan_jadwal_alat')
-            ->join("detail_pesanan_jadwal_alat", "detail_pesanan_jadwal_alat.id_pesanan_jadwal_alat", "=", "pesanan_jadwal_alat.id_pesanan_jadwal_alat")
-            ->where("detail_pesanan_jadwal_alat.id_pesanan_jadwal_alat", $id_pesanan_jadwal_alat)
-            ->select("detail_pesanan_jadwal_alat.id_detail_pesanan_jadwal_alat")
+        $id_detail_pesanan_pinjam_alat = DB::table('pesanan_pinjam_alat')
+            ->join("detail_pesanan_pinjam_alat", "detail_pesanan_pinjam_alat.id_pesanan_pinjam_alat", "=", "pesanan_pinjam_alat.id_pesanan_pinjam_alat")
+            ->where("detail_pesanan_pinjam_alat.id_pesanan_pinjam_alat", $id_pesanan_pinjam_alat)
+            ->select("detail_pesanan_pinjam_alat.id_detail_pesanan_pinjam_alat")
             ->first();
 
-        $id_user = DB::table("pesanan_jadwal_alat")
-            ->where("id_pesanan_jadwal_alat", $id_pesanan_jadwal_alat)
+        $id_user = DB::table("pesanan_pinjam_alat")
+            ->where("id_pesanan_pinjam_alat", $id_pesanan_pinjam_alat)
             ->pluck("id_user")
             ->first();
 
@@ -321,36 +321,36 @@ class PesananJadwalAlatController extends Controller
             ->pluck("email")
             ->first();
 
-        $dataEmail = DB::table("pesanan_jadwal_alat")
-            ->join("detail_pesanan_jadwal_alat", "detail_pesanan_jadwal_alat.id_pesanan_jadwal_alat", "=", "pesanan_jadwal_alat.id_pesanan_jadwal_alat")
-            ->join("users", "users.id_user", "=", "pesanan_jadwal_alat.id_user")
-            ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_alat.id_ruangan")
+        $dataEmail = DB::table("pesanan_pinjam_alat")
+            ->join("detail_pesanan_pinjam_alat", "detail_pesanan_pinjam_alat.id_pesanan_pinjam_alat", "=", "pesanan_pinjam_alat.id_pesanan_pinjam_alat")
+            ->join("users", "users.id_user", "=", "pesanan_pinjam_alat.id_user")
+            ->join("data_alat", "data_alat.id_alat", "=", "pesanan_pinjam_alat.id_alat")
             ->select(
-                "pesanan_jadwal_alat.*",
+                "pesanan_pinjam_alat.*",
                 "users.username",
-                "detail_pesanan_jadwal_alat.status_persetujuan",
-                "data_ruangan.nama_ruangan"
+                "detail_pesanan_pinjam_alat.status_persetujuan",
+                "data_alat.nama_alat"
             )
-            ->where("pesanan_jadwal_alat.id_pesanan_jadwal_alat", $id_pesanan_jadwal_alat)
+            ->where("pesanan_pinjam_alat.id_pesanan_pinjam_alat", $id_pesanan_pinjam_alat)
             ->first();
 
-        $subject = "Persetujuan Peminjaman Studi Musik";
+        $subject = "Persetujuan Peminjaman Alat Musik";
         $view = "EmailNotif.PersetujuanalatMusik";
         Mail::to($email)->send(new PengajuanUserEmail($dataEmail, $subject, $view));
 
-        if (!$id_detail_pesanan_jadwal_alat) {
+        if (!$id_detail_pesanan_pinjam_alat) {
             return response()->json([
                 "msg" => "Detail pesanan jadwal alat tidak ditemukan"
             ], 404);
         }
 
-        // Mengupdate keterangan_admin di tabel pesanan_jadwal_alat
-        PesananJadwalAlatModel::findOrFail($id_pesanan_jadwal_alat)->update([
+        // Mengupdate keterangan_admin di tabel pesanan_pinjam_alat
+        PesananJadwalAlatModel::findOrFail($id_pesanan_pinjam_alat)->update([
             'ket_admin' => $request->input('ket_admin')
         ]);
 
-        // Mengupdate status_persetujuan di tabel detail_pesanan_jadwal_alat
-        DetailPesananJadwalAlatModel::findOrFail($id_detail_pesanan_jadwal_alat->id_detail_pesanan_jadwal_alat)->update([
+        // Mengupdate status_persetujuan di tabel detail_pesanan_pinjam_alat
+        DetailPesananJadwalAlatModel::findOrFail($id_detail_pesanan_pinjam_alat->id_detail_pesanan_pinjam_alat)->update([
             'status_persetujuan' => $request->input('status_persetujuan')
         ]);
 
@@ -363,10 +363,10 @@ class PesananJadwalAlatController extends Controller
     // {
 
     //     $validate = Validator::make($request->all(), [
-    //         "id_pesanan_jadwal_alat" => "required"
+    //         "id_pesanan_pinjam_alat" => "required"
     //     ]);
 
-    //     $id_pesanan_jadwal_alat = $request->input("id_pesanan_jadwal_alat");
+    //     $id_pesanan_pinjam_alat = $request->input("id_pesanan_pinjam_alat");
 
     //     if ($validate->fails()) {
     //         return response()->json([
@@ -374,8 +374,8 @@ class PesananJadwalAlatController extends Controller
     //         ], 422);
     //     }
 
-    //     $datanya = DB::table('pesanan_jadwal_alat')
-    //         ->where("id_pesanan_jadwal_alat", $id_pesanan_jadwal_alat)
+    //     $datanya = DB::table('pesanan_pinjam_alat')
+    //         ->where("id_pesanan_pinjam_alat", $id_pesanan_pinjam_alat)
     //         ->first();
 
     //     // Set your Merchant Server Key
@@ -389,7 +389,7 @@ class PesananJadwalAlatController extends Controller
 
     //     $params = array(
     //         'transaction_details' => array(
-    //             'order_id' => $id_pesanan_jadwal_alat,
+    //             'order_id' => $id_pesanan_pinjam_alat,
     //             'gross_amount' => $datanya->harga_perawatan,
     //         ),
     //         'customer_details' => array(

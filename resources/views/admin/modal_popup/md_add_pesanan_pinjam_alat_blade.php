@@ -1,4 +1,4 @@
-<div class="modal fade" id="add_jadwal_studio" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="add_alat_dipinjam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -17,9 +17,9 @@
 
                 <div class="form-group row">
                     <div class="col-12">
-                        <label for="id_ruangan">Ruangan Yang Dipinjam</label>
-                        <select name="id_ruangan" id="id_ruangan" class="form-control">
-                            <option value="">Pilih Ruangan</option>
+                        <label for="id_alat">Alat Yang Dipinjam</label>
+                        <select name="id_alat" id="id_alat" class="form-control">
+                            <option value="">Pilih Alat</option>
                         </select>
                     </div>
                     {{-- <div class="col-4">
@@ -58,9 +58,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="img_jaminan">Jaminan (KTP/KTM) <small class="text-danger fst-italic">(max: 1
+                    <label for="foto_jaminan">Jaminan (KTP/KTM) <small class="text-danger fst-italic">(max: 1
                             mb)</small></label>
-                    <input type="file" class="image-preview-filepond form-control" id="img_jaminan" required>
+                    <input type="file" class="image-preview-filepond form-control" id="foto_jaminan" required>
 
                     <p class="my-3 output"><img id="output"
                             style="display: none; max-width: 200px; max-height: 200px;" />
@@ -69,7 +69,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary" id="BtnJadwalStudio">Simpan</button>
+                <button type="submit" class="btn btn-primary" id="BtnPinjamAlat">Simpan</button>
             </div>
         </div>
     </div>
@@ -89,8 +89,8 @@
                 success: function(response) {
 
                     $.each(response, function(key, val) {
-                        $("#id_ruangan").append(
-                            `<option value="${val.id_ruangan}">${val.nama_ruangan}</option>`
+                        $("#id_alat").append(
+                            `<option value="${val.id_alat}">${val.nama_ruangan}</option>`
                         )
                     })
                 },
@@ -125,14 +125,14 @@
 
         function cek_tanggal_kosong() {
             let tgl_pinjam = $("#tgl_pinjam").val();
-            let id_ruangan = $("#id_ruangan").val();
+            let id_alat = $("#id_alat").val();
 
             $.ajax({
                 url: `{{ url('cek_tanggal_kosong') }}`,
                 method: 'post',
                 data: {
                     "tgl_pinjam": tgl_pinjam,
-                    "id_ruangan": id_ruangan,
+                    "id_alat": id_alat,
                     "_token": "{{ csrf_token() }}"
                 },
                 dataType: 'json',
@@ -153,7 +153,7 @@
             });
         }
 
-        $("#img_jaminan").on("change", function() {
+        $("#foto_jaminan").on("change", function() {
             previewImg(this, '#output');
         });
 
@@ -170,54 +170,54 @@
             }
         }
 
-        function openModal(action, id_pesanan_jadwal_studio = null) {
-            $("#add_jadwal_studio").modal("show");
+        function openModal(action, id_pesanan_pinjam_alat = null) {
+            $("#add_pinjam_alat").modal("show");
 
             const $title_header = $("#title_header");
-            const $BtnJadwalStudio = $("#BtnJadwalStudio");
+            const $BtnPinjamAlat = $("#BtnPinjamAlat");
 
             const $id_user = $('#id_user');
-            const $id_ruangan = $('#id_ruangan');
+            const $id_alat = $('#id_alat');
             // const $harga_sewa = $('#harga_sewa');
             const $tgl_pinjam = $('#tgl_pinjam');
             const $no_wa = $('#no_wa');
             const $waktu_mulai = $('#waktu_mulai');
             const $waktu_selesai = $('#waktu_selesai');
             const $ket_keperluan = $('#ket_keperluan');
-            const $img_jaminan = $('#img_jaminan');
+            const $foto_jaminan = $('#foto_jaminan');
             const $output = $('#output');
 
             if (action === 'add') {
                 $title_header.text("Tambah Pengajuan Jadwal Studio");
-                $BtnJadwalStudio.text("Simpan");
+                $BtnPinjamAlat.text("Simpan");
 
-                $id_ruangan.val("");
+                $id_alat.val("");
                 $tgl_pinjam.val("");
                 $waktu_mulai.val("");
                 $waktu_selesai.val("");
                 $ket_keperluan.val("");
                 $no_wa.val("");
-                $img_jaminan.val("");
+                $foto_jaminan.val("");
                 $output.hide();
 
-                $BtnJadwalStudio.off('click').on("click", function() {
-                    saveJadwalStudio("add", id_pesanan_jadwal_studio);
+                $BtnPinjamAlat.off('click').on("click", function() {
+                    savePinjamAlat("add", id_pesanan_pinjam_alat);
                 });
             } else if (action === 'edit') {
                 $title_header.text("Edit Pengajuan Jadwal Studio");
-                $BtnJadwalStudio.text("Ubah");
+                $BtnPinjamAlat.text("Ubah");
 
-                show_byId_jadwalPesanan(id_pesanan_jadwal_studio);
+                show_byId_jadwalPesanan(id_pesanan_pinjam_alat);
 
-                $BtnJadwalStudio.off('click').on("click", function() {
-                    saveJadwalStudio("edit", id_pesanan_jadwal_studio);
+                $BtnPinjamAlat.off('click').on("click", function() {
+                    savePinjamAlat("edit", id_pesanan_pinjam_alat);
                 });
             }
         }
 
-        function show_byId_jadwalPesanan(id_pesanan_jadwal_studio) {
+        function show_byId_jadwalPesanan(id_pesanan_pinjam_alat) {
             $.ajax({
-                url: `{{ url('/showById_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`,
+                url: `{{ url('/showById_pesanan_pinjam_alat/${id_pesanan_pinjam_alat}') }}`,
                 method: 'POST',
                 data: {
                     "_token": "{{ csrf_token() }}"
@@ -225,16 +225,16 @@
                 dataType: 'json',
                 success: function(response) {
                     const $id_user = $('#id_user');
-                    const $id_ruangan = $('#id_ruangan');
+                    const $id_alat = $('#id_alat');
                     // const $harga_sewa = $('#harga_sewa');
                     const $tgl_pinjam = $('#tgl_pinjam');
                     const $no_wa = $('#no_wa');
                     const $waktu_mulai = $('#waktu_mulai');
                     const $waktu_selesai = $('#waktu_selesai');
                     const $ket_keperluan = $('#ket_keperluan');
-                    const $img_jaminan = $('#img_jaminan');
+                    const $foto_jaminan = $('#foto_jaminan');
 
-                    $('#id_ruangan').val(response.id_ruangan);
+                    $('#id_alat').val(response.id_alat);
                     // $('#harga_sewa').val(response.harga_sewa);
                     $('#tgl_pinjam').val(response.tgl_pinjam);
                     $('#no_wa').val(response.no_wa);
@@ -243,7 +243,7 @@
                     $("#ket_keperluan").val(response.ket_keperluan);
 
                     $('#output').attr('src', '{{ asset('storage/img_upload/pesanan_jadwal') }}/' + response
-                        .img_jaminan);
+                        .foto_jaminan);
                     $('#output').show();
                 },
                 error: function(xhr, status, error) {
@@ -257,18 +257,18 @@
             });
         }
 
-        function saveJadwalStudio(action, id_pesanan_jadwal_studio) {
+        function savePinjamAlat(action, id_pesanan_pinjam_alat) {
             const id_user = $('#id_user').val();
-            const id_ruangan = $('#id_ruangan').val();
+            const id_alat = $('#id_alat').val();
             const tgl_pinjam = $('#tgl_pinjam').val();
             // const harga_sewa = $('#harga_sewa').val();
             const no_wa = $('#no_wa').val();
             const waktu_mulai = $('#waktu_mulai').val();
             const waktu_selesai = $('#waktu_selesai').val();
             const ket_keperluan = $('#ket_keperluan').val();
-            const img_jaminan = $('#img_jaminan')[0].files[0];
+            const foto_jaminan = $('#foto_jaminan')[0].files[0];
 
-            if (!id_ruangan || !no_wa || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
+            if (!id_alat || !no_wa || !tgl_pinjam || !waktu_mulai || !waktu_selesai || !ket_keperluan) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
@@ -281,7 +281,7 @@
                 url: "{{ url('cek_tanggal_kosong') }}",
                 method: 'post',
                 data: {
-                    id_ruangan,
+                    id_alat,
                     tgl_pinjam,
                     _token: "{{ csrf_token() }}"
                 },
@@ -299,29 +299,29 @@
                                 icon: "error"
                             });
                         } else if (!isDateBooked || (response[0].tgl_pinjam == tgl_pinjam)) {
-                            submitForm(action, id_pesanan_jadwal_studio, {
+                            submitForm(action, id_pesanan_pinjam_alat, {
                                 id_user,
-                                id_ruangan,
+                                id_alat,
                                 // harga_sewa,
                                 tgl_pinjam,
                                 waktu_mulai,
                                 waktu_selesai,
                                 ket_keperluan,
                                 no_wa,
-                                img_jaminan
+                                foto_jaminan
                             });
                         }
                     } else if (isAdd && !isDateBooked) {
-                        submitForm(action, id_pesanan_jadwal_studio, {
+                        submitForm(action, id_pesanan_pinjam_alat, {
                             id_user,
-                            id_ruangan,
+                            id_alat,
                             // harga_sewa,
                             tgl_pinjam,
                             waktu_mulai,
                             waktu_selesai,
                             ket_keperluan,
                             no_wa,
-                            img_jaminan
+                            foto_jaminan
                         });
                     } else if (isAdd && isDateBooked) {
                         Swal.fire({
@@ -342,15 +342,15 @@
             });
         }
 
-        function submitForm(action, id_pesanan_jadwal_studio, formDataObj) {
+        function submitForm(action, id_pesanan_pinjam_alat, formDataObj) {
             const formData = new FormData();
             for (const key in formDataObj) {
                 formData.append(key, formDataObj[key]);
             }
             formData.append('_token', "{{ csrf_token() }}");
 
-            const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
-                `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;
+            const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_pinjam_alat') }}" :
+                `{{ url('/edit_pesanan_pinjam_alat/${id_pesanan_pinjam_alat}') }}`;
 
             $.ajax({
                 url: ajaxUrl,
@@ -359,8 +359,8 @@
                 contentType: false,
                 processData: false,
                 success: function(response) {
-                    $('#tableJadwalStudio').DataTable().ajax.reload();
-                    $("#add_jadwal_studio").modal("hide");
+                    $('#tableJadwalAlat').DataTable().ajax.reload();
+                    $("#add_pinjam_alat").modal("hide");
 
                     Swal.fire({
                         icon: "success",

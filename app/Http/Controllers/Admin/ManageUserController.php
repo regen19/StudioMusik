@@ -1,13 +1,14 @@
 <?php
 
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ManageUserModel;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,103 +16,100 @@ class ManageUserController extends Controller
 {
     public function index()
     {
-        $manage = DB::table('users')
-            ->orderBy("id_user", "DESC")
-            ->get();
-
-        return view('admin.manage_user.manage_user');
+        return view('admin.users.users');
     }
 
     public function data_index()
     {
-        $manage = ManageUserModel::all();
-        $data = datatables()->of($manage)->addIndexColumn()->addColumn('gambar', function ($row) {
-            $img_html = '';
-            $images = json_decode($row->gambar, true);
-            if (is_array($images)) {
-                foreach ($images as $img) {
-                    if (is_string($img)) {
-                        $img_html .= '<a target="_blank" href="' . asset($img) . '"><img src="' . asset($img) . '" class="img-thumbnail" style="max-width: 50px; max-height: 50px;"></a> ';
-                    }
-                }
-            }
-            return $img_html;
-        })->rawColumns(['gambar'])->make(true);
+        $users = DB::table('users')
+            ->get();
 
-        return $data;
+        $datatable = DataTables::of($users)
+            ->addIndexColumn()
+            ->toJson();
+
+        return $datatable;
     }
 
     public function store(Request $request)
     {
-        // $validate = Validator::make($request->all(), [
-        //     "jenis_laporan" => "required",
-        //     "tgl_laporan" => "required",
-        //     "gambar.*" => "required|image|mimes:png,jpg,jpeg|max:1024",
-        //     "keterangan" => "required",
-        // ]);
+        $validated = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+            'no_wa' => 'required',
+            'email' => 'required|email'
+        ]);
 
-        // if ($validate->fails()) {
-        //     return response()->json([
-        //         "msg" => $validate->errors()
-        //     ], 422);
-        // }
+        $validated['password'] = Hash::make($validated['password']);
 
-        // // $imagePaths = [];
-        // // if ($request->hasfile('gambar')) {
-        // //     foreach ($request->file('gambar') as $image) {
-        // //         $name = time() . '-Laporan.' . $image->getClientOriginalExtension();
-        // //         $path = $image->move(public_path('/storage/img_upload/laporan'), $name);
-        // //         $imagePaths[] = $path;
-        // //     }
-        // // }
+        User::create($validated);
+        return response()->json(['message' => 'User added successfully']);
+    }
 
-        // $imagePaths = [];
-        // if ($request->hasFile('gambar')) {
-        //     foreach ($request->file('gambar') as $image) {
-        //         $name = time() . '-Laporan.' . $image->getClientOriginalExtension();
-        //         $image->move(public_path('/storage/img_upload/laporan'), $name);
-        //         $imagePaths[] = '/storage/img_upload/laporan/' . $name;
-        //     }
-        // }
+    public function show(string $id_user)
+    {
+        $data = User::where("id_user", $id_user)->first();
 
-        // LaporanModel::create([
-        //     'tgl_laporan' => $request->tgl_laporan,
-        //     'jenis_laporan' => $request->jenis_laporan,
-        //     'keterangan' => $request->keterangan,
-        //     'gambar' => json_encode($imagePaths, JSON_UNESCAPED_SLASHES)
-        // ]);
+        if (empty($data)) {
+            return response()->json([
+                "msg" => "Data tidak ditemukan...",
+            ], 404);
+        } else {
+            return response()->json($data);
+        }
+    }
 
-        // return response()->json([
-        //     "msg" => "Jasa musik berhasil disimpan",
-        // ], 200);
+    public function update(Request $request, string $id_user)
+    {
+        $validate = Validator::make($request->all(), [
+            "username" => "required",
+            "email" => "required",
+            'no_wa' => "nullable",
+       
+        ]);
+
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->password);
+        }
+
+        if ($validate->fails()) {
+            return response()->json([
+                'msg' => $validate->errors()
+            ], 422);
+        }
+
+        $data = User::findOrFail($id_user);
+
+        return response()->json([
+            'msg' => 'Data user tidak ditemukan',
+        ], 404);
     }
 
     public function destroy(string $id_user)
     {
-        $data = ManageUserModel::findOrFail($id_user);
+        $data = User::findOrFail($id_user);
 
-        $images = json_decode($data->gambar, true);
-        if (is_array($images)) {
-            foreach ($images as $img) {
-                if (file_exists(public_path($img))) {
-                    unlink(public_path($img));
-                }
+        if ($data) {
+            $path = '/storage/img_upload/data_user/' . $data->foto_user;
+            if (File::exists(public_path($path))) {
+                File::delete(public_path($path));
             }
+
+            $data->delete();
+
+            return response()->json(['msg' => 'Data berhasil dihapus'], 200);
         }
 
-        $data->delete();
+        return response()->json(['msg' => 'Data tidak ditemukan'], 404);
+    }
 
-        return response()->json(['msg' => 'Data berhasil dihapus'], 200);
+    public function list_data_user()
+    {
+        $data =
+            DB::table('data_user')
+            ->select("id_user", "username", "email")
+            ->get();
+
+        return response()->json($data);
     }
 }
-
-        // if ($data) {
-        //     $path = 'storage/img_upload/' . $data->gambar;
-        //     if (File::exists(public_path($path))) {
-        //         File::delete(public_path($path));
-        //     }
-
-        //     $data->delete();
-
-        //     return response()->json(['msg' => 'Data berhasil dihapus'], 200);
-        // }
