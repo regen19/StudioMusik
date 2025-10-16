@@ -29,9 +29,15 @@
                 </div>
 
                 <div class="form-group">
+<<<<<<< Updated upstream
                     <label for="foto_alat">Foto Alat <small class="text-danger fst-italic">(max: 1
                             mb)</small></small></label>
                     <input type="file" class="image-preview-filepond form-control" id="foto_alat" required>
+=======
+                    <label for="foto_alat">Foto Alat <small class="text-danger fst-italic">(max: 1 mb)</small></label>
+                    <input type="file" class="image-preview-filepond form-control" id="foto_alat" name="foto_alat" required>
+                    {{-- PERBAIKAN KRITIS: Tambah name="foto_alat" --}}
+>>>>>>> Stashed changes
 
                     <p class="my-3 output"><img id="output"
                             style="display: none; max-width: 200px; max-height: 200px;" />
@@ -141,10 +147,28 @@
             const jumlah_alat = $('#jumlah_alat').val();
             const biaya_perawatan = $('#biaya_perawatan').val();
 
+<<<<<<< Updated upstream
             if (!nama_alat || !tipe_alat || !jumlah_alat) {
                 Swal.fire({
                     title: "Gagal simpan.",
                     text: "Harap isi semua form!",
+=======
+            if (action === 'add' && !foto_alat) {
+                Swal.fire({
+                    title: "Gagal simpan.",
+                    text: "Foto Alat wajib diisi saat menambah data baru!",
+                    icon: "error"
+                });
+                return;
+            }
+            // -----------------------------------------------------------
+
+            // Validasi input wajib lainnya (sudah ada)
+            if (!nama_alat || !tipe_alat || !jumlah_alat) {
+                Swal.fire({
+                    title: "Gagal simpan.",
+                    text: "Nama Alat, Tipe Alat, dan Jumlah Alat wajib diisi!",
+>>>>>>> Stashed changes
                     icon: "error"
                 });
                 return;

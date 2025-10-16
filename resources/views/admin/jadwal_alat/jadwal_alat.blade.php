@@ -9,10 +9,20 @@
                 Refresh</button>
         </a>
 
+<<<<<<< Updated upstream
         <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
             Ajukan Peminjaman
         </button>
 
+=======
+        <!-- <button type="button" class="btn btn-primary icon icon-left" onclick="openModal('add')"><i class="bi bi-plus-lg"></i>
+            Ajukan Peminjaman
+        </button> -->
+
+        <a href="{{ route('jadwal.alat', ['tanggal'=>date('Y-m-d'),'mulai'=>'08:00','selesai'=>'17:00']) }}"
+            class="btn btn-secondary text-white"><i class="bi bi-calendar-week"></i> Lihat Jadwal Ketersediaan
+        </a>
+>>>>>>> Stashed changes
 
         <input type="hidden" value="{{ Auth::user()->id_user }}" id="id_user">
     </div>
@@ -42,14 +52,52 @@
         </div>
     </section>
 
+<<<<<<< Updated upstream
 
     <!-- @include('admin.modal_popup.md_add_pesanan_pinjam_alat')
     @include('admin.modal_popup.md_detail_jadwal_alat') -->
+=======
+    <div class="modal fade" id="detail_alat" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Pesanan Pinjam Alat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="tgl_pengajuan"></p>
+                    <table class="table">
+                        <tr><th>Nama</th><td id="nama_user1"></td></tr>
+                        <tr><th>Tanggal & Jam</th><td id="tanggal"></td></tr>
+                        <tr><th>Keperluan</th><td id="catatan"></td></tr>
+                        <tr><th>Status Persetujuan</th><td id="status_setuju"></td></tr>
+                        <tr><th>Status Peminjaman</th><td id="status_pinjam"></td></tr>
+                    </table>
+
+                    <div class="d-flex gap-3">
+                        <a id="link-foto-jaminan" target="_blank" style="display:none">
+                            <img id="foto_jaminan1" style="max-width:200px;max-height:200px"/>
+                        </a>
+                    </div>
+
+                    <div class="mt-3">
+                        <label>Keterangan Admin</label>
+                        <textarea id="catatan_admin" class="form-control" rows="3" readonly></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+>>>>>>> Stashed changes
 
     @push('script')
         <script>
             $(document).ready(function() {
                 let id_user = $("#id_user").val();
+<<<<<<< Updated upstream
 
                 $('#tableJadwalAlat').DataTable({
                     processing: true,
@@ -113,6 +161,45 @@
                                         </a>
                                     </div>
                                 `;
+=======
+                    $('#tableJadwalAlat').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        paging: true,
+                        searching: true,
+                        ajax: {
+                            url: "{{ url('/fetch_pesanan_pinjam_alat') }}", 
+                            type: 'GET',
+                        },
+                        order: [[1, 'desc']],
+                        columns: [
+                            { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+
+                            { data: 'tgl_pinjam', name: 'p.tgl_pinjam' },
+
+                            {
+                            data: null,
+                            render: function (row) {
+                                return row.waktu_mulai + ' - ' + row.waktu_selesai;
+                            },
+                            name: 'p.waktu_mulai'
+                            },
+
+                            { data: 'username', name: 'u.username' },
+
+                            { data: 'nama_alat', name: 'a.nama_alat' },
+
+                            { data: 'ket_keperluan', name: 'p.ket_keperluan' },
+
+                            {
+                            data: null,
+                            render: function (data) {
+                                let status = "", color = "";
+                                if (data.status_persetujuan === "P") { status = "Pengajuan"; color = "warning"; }
+                                else if (data.status_persetujuan === "Y") { status = "Disetujui"; color = "success"; }
+                                else if (data.status_persetujuan === "N") { status = "Ditolak";   color = "danger";  }
+                                return `<div><a type="button" class="badge bg-${color}">${status}</a></div>`;
+>>>>>>> Stashed changes
                             }
                         },
                         {
@@ -130,13 +217,21 @@
                                         <td>
                                             <div style="margin-rigth=20px;">
                                                 <button type="button" class="btn btn-warning icon icon-left text-white"
+<<<<<<< Updated upstream
                                                     data-bs-toggle="modal" data-bs-target="#rating" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                    data-bs-toggle="modal" data-bs-target="#rating" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     Beri Rating
                                                 </button>
                                             </div>
 
                                             <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     ${textPersetujuan}
                                                 </button>
                                             </div>
@@ -150,7 +245,11 @@
                                         return `
                                         <td>
                                             <div style="margin-rigth=20px;">
+<<<<<<< Updated upstream
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     Selesai
                                                 </button>
                                             </div>
@@ -164,6 +263,10 @@
                                         return `
                                         <td>
                                             <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
+=======
+                                              @canany(['isAdmin','isUser'])
+>>>>>>> Stashed changes
                                                 <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_pesanan_jadwal_alat}')">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
@@ -172,10 +275,20 @@
                                                     Batalkan
                                                 </button>
 
+<<<<<<< Updated upstream
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
                                                     Detail
                                                 </button>
                                             </div>
+=======
+                                                <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+                                                    Detail
+                                                </button>
+                                            </div>
+                                            @else
+                                                <span class="text-muted">View only</span>
+                                            @endcanany
+>>>>>>> Stashed changes
                                         </td>
                                     `;
 
@@ -188,7 +301,11 @@
                                                         Pengembalian
                                                     </button>
 
+<<<<<<< Updated upstream
                                                     <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                    <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                         ${textPersetujuan}
                                                     </button>
                                                 </div>
@@ -203,7 +320,11 @@
                                         return `
                                             <td>
                                                 <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
                                                     <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                    <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                         Selesai
                                                     </button>
                                                 </div>
@@ -217,7 +338,11 @@
                                         return `
                                         <td>
                                             <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
                                                 <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     ${textPersetujuan}
                                                 </button>
                                             </div>
@@ -231,7 +356,11 @@
                                         return `
                                         <td>
                                             <div style="margin-rigth=20px;">
+<<<<<<< Updated upstream
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     Selesai
                                                 </button>
                                             </div>
@@ -245,7 +374,11 @@
                                         return `
                                         <td>
                                             <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
                                                     <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                    <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     Detail
                                                 </button>
                                             </div>
@@ -258,7 +391,11 @@
                                         return `
                                             <td>
                                                 <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
                                                     <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                    <button type="button" class="btn btn-${colorBtn} icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                         ${textPersetujuan}
                                                     </button>
                                                 </div>
@@ -274,7 +411,11 @@
                                         return `
                                         <td>
                                             <div style="margin-right: 20px;">
+<<<<<<< Updated upstream
                                                 <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_jadwal_alat})">
+=======
+                                                <button type="button" class="btn btn-success icon icon-left text-white" data-bs-toggle="modal" data-bs-target="#detail_alat" onclick="show_byID(${data.id_pesanan_pinjam_alat || data.id_pesanan_jadwal_alat})">
+>>>>>>> Stashed changes
                                                     Selesai
                                                 </button>
                                             </div>
@@ -362,6 +503,73 @@
         </script>
     @endpush
 
+<<<<<<< Updated upstream
+=======
+    @push('script')
+    <script>
+        (function () {
+            window.show_byID = function (id) {
+                $.ajax({
+                url: `{{ url('/showById_pesanan_pinjam_alat') }}/${id}`,
+                type: 'POST',
+                dataType: 'json',
+                data: { _token: "{{ csrf_token() }}" },
+                success: function (r) {
+                    $('#tgl_pengajuan').text('Pengajuan pada : ' + (r.created_at ?? r.tgl_pinjam));
+                    $('#nama_user1').text(r.username ?? '-');
+                    $('#tanggal').text(`${r.tgl_pinjam} / ${r.waktu_mulai} - ${r.waktu_selesai}`);
+                    $('#catatan').text(r.ket_keperluan ?? '-');
+                    $('#catatan_admin').val(r.ket_admin ?? '');
+
+                    const stMap   = { P: ['Pengajuan','warning'], Y: ['Disetujui','success'], N: ['Ditolak','danger'] };
+                    const pinjMap = { Y: ['Telah Selesai','success'], N: ['Proses','warning'] };
+                    const s1 = stMap[r.status_persetujuan] || ['-','secondary'];
+                    const s2 = pinjMap[r.status_peminjaman] || ['-','secondary'];
+                    $('#status_setuju').html(`<span class="badge bg-${s1[1]}">${s1[0]}</span>`);
+                    $('#status_pinjam').html(`<span class="badge bg-${s2[1]}">${s2[0]}</span>`);
+
+                    if (r.foto_jaminan) {
+                    const src = `{{ asset('storage/img_upload/data_jaminan') }}/${r.foto_jaminan}`;
+                    $('#link-foto-jaminan').attr('href', src).show();
+                    $('#foto_jaminan1').attr('src', src).show();
+                    } else {
+                    $('#link-foto-jaminan').attr('href','').hide();
+                    $('#foto_jaminan1').attr('src','').hide();
+                    }
+
+                    if (r.img_kondisi_awal) {
+                    const s = `{{ asset('storage/img_upload/kondisi/awal') }}/${r.img_kondisi_awal}`;
+                    $('#show_form_kondisi_awal').hide();
+                    $('#img_kondisi_awal').attr('src', s);
+                    $('#link-img-kondisi-awal').attr('href', s);
+                    $('#show_kondisi_awal').show();
+                    } else {
+                    $('#show_kondisi_awal').hide();
+                    $('#show_form_kondisi_awal').show();
+                    }
+
+                    if (r.img_kondisi_akhir) {
+                    const s = `{{ asset('storage/img_upload/kondisi/akhir') }}/${r.img_kondisi_akhir}`;
+                    $('#show_form_kondisi_akhir').hide();
+                    $('#img_kondisi_akhir').attr('src', s);
+                    $('#link-img-kondisi-akhir').attr('href', s);
+                    $('#show_kondisi_akhir').show();
+                    } else {
+                    $('#show_kondisi_akhir').hide();
+                    $('#show_form_kondisi_akhir').show();
+                    }
+
+                        bootstrap.Modal.getOrCreateInstance(document.getElementById('detail_alat')).show();
+                    },
+                        error: function () { Swal.fire({ icon:'error', title:'Oops…', text:'Gagal memuat detail.' });
+                    }
+                });
+            };
+        })();
+    </script>
+    @endpush
+
+>>>>>>> Stashed changes
     {{-- STATUS PERSETUJUAN --}}
     <div class="modal fade" id="status_jadwal_alat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">

@@ -53,6 +53,7 @@ class UserJadwalStudioController extends Controller
     }
 
     // public function store(Request $request)
+<<<<<<< Updated upstream
     // {
     //     $validate = Validator::make($request->all(), [
     //         "tgl_pinjam" => "required",
@@ -92,31 +93,100 @@ class UserJadwalStudioController extends Controller
     // }
 
     // public function get_snap_token(Request $request)
+=======
+>>>>>>> Stashed changes
     // {
-    //     // Set your Merchant Server Key
-    //     \Midtrans\Config::$serverKey = config('midtrans.serverKey');
-    //     // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-    //     \Midtrans\Config::$isProduction = false;
-    //     // Set sanitization on (default)
-    //     \Midtrans\Config::$isSanitized = true;
-    //     // Set 3DS transaction for credit card to true
-    //     \Midtrans\Config::$is3ds = true;
+    //     $validate = Validator::make($request->all(), [
+    //         "tgl_pinjam" => "required",
+    //         "id_user" => "required|numeric",
+    //         "no_wa" => "required|numeric",
+    //         "keterangan" => "required",
+    //     ]);
 
-    //     $params = array(
-    //         'transaction_details' => array(
-    //             'order_id' => rand(),
-    //             'gross_amount' => $request->input('harga_perawatan'),
-    //         ),
-    //         'customer_details' => array(
-    //             'first_name' => $request->input('nama_user'),
-    //             'phone' => $request->input('no_wa'),
-    //         ),
-    //     );
+    //     if ($validate->fails()) {
+    //         return response()->json([
+    //             "msg" => $validate->errors()
+    //         ], 422);
+    //     }
 
-    //     $snapToken = \Midtrans\Snap::getSnapToken($params);
+    //     $pesanan = $request->only('tgl_pinjam', 'id_user', 'no_wa', 'keterangan');
+    //     $pesanan['status_persetujuan'] = "P";
+    //     $pesanan['status_pembayaran'] = "N";
 
-    //     return response()->json($snapToken);
+    //     $pesananModel = PesananJadwalStudioModel::create($pesanan);
+
+    //     $dataEmail = DB::table("pesanan_jadwal_studio")
+    //         ->join("users", "users.id_user", "=", "pesanan_jadwal_studio.id_user")
+    //         ->join("data_ruangan", "data_ruangan.id_ruangan", "=", "pesanan_jadwal_studio.id_ruangan")
+    //         ->select("pesanan_jadwal_studio.*", "users.username", "data_ruangan.nama_ruangan")
+    //         ->where("pesanan_jadwal_studio.id_pesanan_jadwal_studio", $pesananModel->id_pesanan_jadwal_studio)
+    //         ->first();
+
+    //     $subject = "Pengajuan Peminjaman Studio Musik Baru Hari ini";
+    //     $view = "EmailNotif.PengajuanStudioMusikMail";
+    //     Mail::to('candrawahyuf@gmail.com')->send(new PengajuanUserEmail($dataEmail, $subject, $view));
+
+    //     return redirect('jadwal_studio_saya')->with('success', 'Pengajuan jadwal studio tersimpan!');
+
+    //     // return response()->json([
+    //     //     "msg" => "Pesanan Anda berhasil disimpan",
+    //     // ], 200);
     // }
+
+    public function get_snap_token(Request $request)
+    {
+        \Midtrans\Config::$serverKey   = config('midtrans.serverKey');
+        \Midtrans\Config::$isProduction = (bool) config('midtrans.isProduction', false);
+        \Midtrans\Config::$isSanitized  = true;
+        \Midtrans\Config::$is3ds        = true;
+
+        $grossAmount = (int) ($request->input('harga_perawatan') ?? 0);
+        $orderId     = 'ORD-' . now()->format('YmdHis') . '-' . mt_rand(1000,9999);
+
+        $params = [
+            'transaction_details' => [
+                'order_id'      => $orderId,
+                'gross_amount'  => $grossAmount,
+            ],
+            'customer_details' => [
+                'first_name' => (string) $request->input('nama_user', ''),
+                'phone'      => (string) $request->input('no_wa', ''),
+            ],
+        ];
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        return response()->json(['token' => $snapToken]);
+    }
+
+    public function pembayaran_biaya_perawatan_sukses(Request $request)
+    {
+        $id = $request->input('id_pesanan_pinjam_alat');
+        if (!$id) return response()->json(['ok'=>false,'message'=>'id_pesanan_pinjam_alat kosong'], 422);
+
+        DB::table('detail_pesanan_pinjam_alat')
+        ->where('id_pesanan_pinjam_alat', $id)
+        ->update(['status_pembayaran' => 'Y', 'updated_at' => now()]);
+
+        return response()->json(['ok'=>true]);
+    }
+
+    public function pengembalian_alat(Request $request)
+    {
+        $id = $request->input('id_pesanan_pinjam_alat');
+        if (!$id) {
+            return response()->json(['ok' => false, 'message' => 'id_pesanan_pinjam_alat kosong'], 422);
+        }
+
+        DB::table('detail_pesanan_pinjam_alat')
+            ->where('id_pesanan_pinjam_alat', $id)
+            ->update([
+                'status_pengembalian' => 'Y',
+                'updated_at'          => now(),
+            ]);
+
+        return response()->json(['ok' => true]);
+    }
 
     public function pembayaran_studio_sukses(Request $request)
     {

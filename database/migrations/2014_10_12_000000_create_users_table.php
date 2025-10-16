@@ -14,7 +14,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('no_wa');
             $table->string('password');
-            $table->enum("user_role", ["admin", "user", "k3l"])->default('user');
+            $table->enum("user_role", ['admin', 'k3l', 'ukmbs', 'user'])->default('user');
+            // --- TAMBAHAN KRUSIAL ---
+        $table->string('foto_user', 255)->nullable(); // Menambahkan kolom foto_user
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

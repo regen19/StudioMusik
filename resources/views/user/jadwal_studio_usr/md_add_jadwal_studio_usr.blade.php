@@ -375,25 +375,27 @@
             });
         }
 
-        function submitForm(action, id_pesanan_jadwal_studio, formDataObj) {
-            $("#BtnJadwalStudio").hide();
-            $("#btnSimpanLoading").show();
-
+        function submitForm(action, id_pesanan_pinjam_alat, formDataObj) {
             const formData = new FormData();
-            for (const key in formDataObj) {
-                formData.append(key, formDataObj[key]);
-            }
+
+            const jumlah = formDataObj.jumlah || 1;
+            formData.append('list_alat[0][id_alat]', formDataObj.id_alat);
+            formData.append('list_alat[0][jumlah]', jumlah);
+
+            formData.append('id_user', formDataObj.id_user);
+            formData.append('tgl_pinjam', formDataObj.tgl_pinjam);
+            formData.append('waktu_mulai', formDataObj.waktu_mulai);
+            formData.append('waktu_selesai', formDataObj.waktu_selesai);
+            formData.append('ket_keperluan', formDataObj.ket_keperluan);
+            formData.append('no_wa', formDataObj.no_wa);
+            if (formDataObj.foto_jaminan) formData.append('foto_jaminan', formDataObj.foto_jaminan);
             formData.append('_token', "{{ csrf_token() }}");
 
-            const ajaxUrl = action === "add" ? "{{ url('/add_pesanan_jadwal_studio') }}" :
-                `{{ url('/edit_pesanan_jadwal_studio/${id_pesanan_jadwal_studio}') }}`;
+            const ajaxUrl = action === "add"
+                ? "{{ url('/add_pesanan_pinjam_alat') }}"
+                : `{{ url('/edit_pesanan_pinjam_alat/${id_pesanan_pinjam_alat}') }}`;
 
-            $.ajax({
-                url: ajaxUrl,
-                method: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
+            $.ajax({ url: ajaxUrl, method:'POST', data: formData, contentType:false, processData:false,
                 success: function(response) {
                     $('#tableJadwalStudio').DataTable().ajax.reload();
                     $("#add_jadwal_studio").modal("hide");

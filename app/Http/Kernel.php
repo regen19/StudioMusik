@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'isK3l' => \App\Http\Middleware\IsK3lMiddleware::class,
         'isUser' => \App\Http\Middleware\IsUserMiddleware::class,
         'user-access' => \App\Http\Middleware\IsUserMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 }

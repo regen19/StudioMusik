@@ -19,39 +19,36 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'     => 'required|email',
-            'password'  => 'required',
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 400,
+                'status'  => 400,
                 'message' => $validator->errors()->first(),
             ]);
         }
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email','password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            if (Auth::user()->user_role == 'admin' || Auth::user()->user_role == 'k3l') {
-                return response()->json([
-                    'status' => 200,
-                    'redirect' => url('/dashboard'),
-                ]);
-            } else if (Auth::user()->user_role == 'user') {
-                return response()->json([
-                    'status' => 200,
-                    'redirect' => url('/dashboard_user'),
-                ]);
+            $role = Auth::user()->user_role;
+            if (in_array($role, ['admin','k3l','ukmbs'])) {
+                return response()->json(['status' => 200, 'redirect' => url('/dashboard')]);
+            } elseif ($role === 'user') {
+                return response()->json(['status' => 200, 'redirect' => url('/dashboard_user')]);
             }
-        } else {
-            return response()->json([
-                'status' => 401,
-                'message' => "Email atau password salah.",
-            ]);
+
+            return response()->json(['status' => 200, 'redirect' => url('/')]);
         }
+
+        return response()->json([
+            'status'  => 401,
+            'message' => 'Email atau password salah.',
+        ]);
     }
 
     public function register(Request $request)

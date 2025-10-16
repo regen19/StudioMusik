@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
-
 use App\Models\User;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,26 +14,19 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        // Model::class => Policy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     */
     public function boot(): void
     {
         $this->registerPolicies();
 
-        Gate::define('isAdmin', function (User $user) {
-            return $user->user_role === 'admin';
-        });
+        Gate::define('isAdmin', fn(User $u) => $u->user_role === 'admin');
+        Gate::define('isK3l',   fn(User $u) => $u->user_role === 'k3l');
+        Gate::define('isUkmbs', fn(User $u) => $u->user_role === 'ukmbs');
+        Gate::define('isUser',  fn(User $u) => $u->user_role === 'user');
 
-        Gate::define('isK3l', function (User $user) {
-            return $user->user_role === 'k3l';
-        });
-
-        Gate::define('isUser', function (User $user) {
-            return $user->user_role === 'user';
-        });
+        Gate::define('approve-peminjaman', fn(User $u) => $u->user_role === 'k3l');
+        Gate::define('pengembalian-alat', fn(User $u) => $u->user_role === 'ukmbs');
     }
 }

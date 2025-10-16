@@ -41,7 +41,11 @@
                                         <h6 class="text-muted font-semibold">
                                             <strong> Peminjaman Alat </strong> <br> <?php echo strftime('%B', strtotime(date('M'))); ?>
                                         </h6>
+<<<<<<< Updated upstream
                                         <h6 class="font-extrabold mb-0">{{ $studio_musik_approve }}</h6>
+=======
+                                        <h6 class="font-extrabold mb-0">{{ $peminjaman_alat }}</h6>
+>>>>>>> Stashed changes
                                     </div>
                                 </div>
                             </div>

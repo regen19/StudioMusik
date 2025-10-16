@@ -4,6 +4,7 @@
         <h3>Dashboard User</h3>
         <p>Halo, Selamat datang {{ Auth::user()->username }}!</p>
     </div>
+
     <div class="page-content">
         <section class="row">
             <div class="col-12 col-lg-12">

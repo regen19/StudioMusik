@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,14 +11,16 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = "users";
-    protected $primaryKey = "id_user";
+    protected $table = 'users';        // sesuai nama tabel
+    protected $primaryKey = 'id_user'; // sesuai kolom primary key
+    public $incrementing = true;       // karena id_user AUTO_INCREMENT
+    protected $keyType = 'int';        // tipe kolom bigint
 
     protected $fillable = [
         'username',
         'email',
         'password',
-        "no_wa",
+        'no_wa',
         'user_role',
     ];
 
@@ -28,9 +29,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'password' => 'hashed', // Laravel 10+ otomatis hash
     ];
 }

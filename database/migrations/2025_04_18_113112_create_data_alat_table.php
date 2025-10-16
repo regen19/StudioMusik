@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('nama_alat');
             $table->string('tipe_alat');
             $table->integer('jumlah_alat');
+<<<<<<< Updated upstream
             $table->string('foto_alat');
+=======
+            $table->string('foto_alat')->nullable();
+>>>>>>> Stashed changes
             $table->integer('biaya_perawatan');
             $table->enum('status', ['Tersedia', 'Dipinjam', 'Rusak'])->default('Tersedia');
             $table->timestamps();

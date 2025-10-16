@@ -19,6 +19,12 @@ return new class extends Migration
             $table->string('img_kondisi_awal')->nullable();
             $table->string('img_kondisi_akhir')->nullable();
             $table->integer('biaya_perawatan')->nullable();
+<<<<<<< Updated upstream
+=======
+            // --- TAMBAHAN KRUSIAL ---
+             $table->enum('status_persetujuan', ['Y', 'N', 'P'])->default('P');
+            $table->enum('status_peminjaman', ['Y', 'N', 'P'])->default('P'); 
+>>>>>>> Stashed changes
             $table->timestamps();
             $table->foreign('id_alat')->references('id_alat')->on('data_alat')->cascadeOnDelete();
             $table->foreign('id_pesanan_pinjam_alat')->references('id_pesanan_pinjam_alat')->on('pesanan_pinjam_alat')->cascadeOnDelete();

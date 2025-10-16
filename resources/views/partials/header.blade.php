@@ -87,6 +87,9 @@
         .rating input:checked~label {
             color: orange;
         }
+
+        .header .dropdown-menu, .navbar .dropdown-menu { z-index: 2000; }
+        .badge { pointer-events: none; }
     </style>
 
 </head>

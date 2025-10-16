@@ -65,7 +65,21 @@
                         {
                             data: null,
                             render: function(data) {
+<<<<<<< Updated upstream
                                 return `<a target="_blank" href="{{ asset('storage/img_upload/data_alat') }}/${data.foto_alat}"><img src="{{ asset('storage/img_upload/data_alat') }}/${data.foto_alat}" class="foto_alat" max-width="90px" max-height="60px"></a>`;
+=======
+                                const defaultImg = "{{ asset('images/no-image.png') }}"; // Opsional: untuk gambar default
+                                const imgPath = data.foto_alat 
+                                    ? "{{ asset('storage/img_upload/data_alat') }}/" + data.foto_alat
+                                    : defaultImg;
+
+                                return `<a target="_blank" href="${imgPath}">
+                                            <img src="${imgPath}" 
+                                                class="foto_alat" 
+                                                style="max-width:90px; max-height:60px;"
+                                                onerror="this.onerror=null; this.src='${defaultImg}'">
+                                        </a>`;
+>>>>>>> Stashed changes
                             }
                         },
                         {
@@ -98,6 +112,10 @@
                                 return `
                                         <td>
                                             <div style="margin-rigth=20px;">
+<<<<<<< Updated upstream
+=======
+                                              @canany(['isAdmin','isUser'])
+>>>>>>> Stashed changes
                                                 <button type="button" class="btn btn-info icon icon-left text-white" onclick="openModal('edit', '${data.id_alat}')">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
@@ -106,6 +124,12 @@
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
+<<<<<<< Updated upstream
+=======
+                                            @else
+                                                <span class="text-muted">View only</span>
+                                            @endcanany
+>>>>>>> Stashed changes
                                         </td>
                                     `;
                             }

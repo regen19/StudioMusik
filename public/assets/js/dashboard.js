@@ -130,29 +130,32 @@ let optionsIndonesia = {
   colors: ["#dc3545"],
 }
 
-var chartProfileVisit = new ApexCharts(
-  document.querySelector("#chart-profile-visit"),
-  optionsProfileVisit
-)
-var chartVisitorsProfile = new ApexCharts(
-  document.getElementById("chart-visitors-profile"),
-  optionsVisitorsProfile
-)
-var chartEurope = new ApexCharts(
-  document.querySelector("#chart-europe"),
-  optionsEurope
-)
-var chartAmerica = new ApexCharts(
-  document.querySelector("#chart-america"),
-  optionsAmerica
-)
-var chartIndonesia = new ApexCharts(
-  document.querySelector("#chart-indonesia"),
-  optionsIndonesia
-)
+if (window.ApexCharts) {
+  const elProfile  = document.querySelector("#chart-profile-visit");
+  if (elProfile) {
+    new ApexCharts(elProfile, optionsProfileVisit).render();
+  }
 
-chartIndonesia.render()
-chartAmerica.render()
-chartEurope.render()
-chartProfileVisit.render()
-chartVisitorsProfile.render()
+  const elVisitors = document.getElementById("chart-visitors-profile");
+  if (elVisitors) {
+    new ApexCharts(elVisitors, optionsVisitorsProfile).render();
+  }
+
+  const elEurope   = document.querySelector("#chart-europe");
+  if (elEurope) {
+    new ApexCharts(elEurope, optionsEurope).render();
+  }
+
+  const elAmerica  = document.querySelector("#chart-america");
+  if (elAmerica) {
+    new ApexCharts(elAmerica, optionsAmerica).render();
+  }
+
+  const elIndo     = document.querySelector("#chart-indonesia");
+  if (elIndo) {
+    new ApexCharts(elIndo, optionsIndonesia).render();
+  }
+} else {
+  // Opsional: biar ketahuan kalau library belum diload
+  // console.warn("ApexCharts belum ter-load; lewati render chart.");
+}
